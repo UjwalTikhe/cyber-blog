@@ -31,15 +31,15 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'Fira Code', 'monospace'],
-        display: ['"Fredoka"', '"Plus Jakarta Sans"', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
       },
       boxShadow: {
-        'cute-sm': '0 4px 15px -1px rgba(244, 114, 182, 0.12), 0 0 0 1px rgba(251, 207, 232, 0.8)',
-        'cute-card': '0 12px 30px -4px rgba(244, 114, 182, 0.15), 0 0 0 1px rgba(251, 207, 232, 0.9)',
-        'cute-glow': '0 0 25px -2px rgba(244, 114, 182, 0.35)',
-        'cute-pill': '0 2px 8px 0 rgba(244, 114, 182, 0.18)',
+        'cute-sm': '0 4px 15px -1px rgba(244, 114, 182, 0.1), 0 0 0 1px rgba(251, 207, 232, 0.8)',
+        'cute-card': '0 12px 30px -4px rgba(244, 114, 182, 0.12), 0 0 0 1px rgba(251, 207, 232, 0.9)',
+        'cute-glow': '0 0 25px -2px rgba(244, 114, 182, 0.3)',
+        'cute-pill': '0 2px 8px 0 rgba(244, 114, 182, 0.15)',
       },
       typography: {
         DEFAULT: {
@@ -73,21 +73,26 @@ export default {
               content: '""',
             },
             h1: {
-              color: '#1e1b4b',
-              fontFamily: '"Fredoka", "Plus Jakarta Sans", sans-serif',
-              fontWeight: '700',
+              color: '#0f172a',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontWeight: '800',
+              letterSpacing: '-0.025em',
             },
             h2: {
-              color: '#1e1b4b',
-              fontFamily: '"Fredoka", "Plus Jakarta Sans", sans-serif',
+              color: '#0f172a',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
               fontWeight: '700',
+              letterSpacing: '-0.02em',
             },
             h3: {
-              color: '#1e1b4b',
-              fontFamily: '"Fredoka", "Plus Jakarta Sans", sans-serif',
+              color: '#0f172a',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontWeight: '700',
             },
             h4: {
-              color: '#1e1b4b',
+              color: '#0f172a',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontWeight: '600',
             },
             blockquote: {
               borderLeftColor: '#f472b6',

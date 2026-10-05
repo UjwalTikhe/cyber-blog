@@ -10,7 +10,7 @@ import { ArsenalView } from './components/ArsenalView';
 import { ComposeStudio } from './components/ComposeStudio';
 import { TerminalModal } from './components/TerminalModal';
 import { Footer } from './components/Footer';
-import { Search, Filter, Tag, X, PlusCircle } from 'lucide-react';
+import { Search, Filter, Tag, X, PlusCircle, SearchX } from 'lucide-react';
 
 const CATEGORIES: ('All' | PostCategory)[] = [
   'All',
@@ -24,17 +24,30 @@ const CATEGORIES: ('All' | PostCategory)[] = [
 ];
 
 const categoryLabels: Record<'All' | PostCategory, string> = {
-  'All': 'All ✨',
-  'Foundations': '🌸 Foundations',
-  'Homelab': '🏠 Homelab',
-  'CTF & Labs': '🚩 CTF & Labs',
-  'Networking': '📡 Networking',
-  'Blue Team': '🛡️ Blue Team',
-  'Red Team': '⚔️ Red Team',
-  'Tools & Scripts': '✨ Tools & Scripts',
+  'All': 'All Topics',
+  'Foundations': 'Foundations',
+  'Homelab': 'Homelab',
+  'CTF & Labs': 'CTF & Labs',
+  'Networking': 'Networking',
+  'Blue Team': 'Blue Team',
+  'Red Team': 'Red Team',
+  'Tools & Scripts': 'Tools & Scripts',
 };
 
 export function App() {
+  // Author check: In local development, the user is the owner.
+  // On production, visitors have read-only access.
+  // The owner can unlock author studio locally, or with '?author=1' or '#author' if needed.
+  const isOwner = useMemo(() => {
+    if (import.meta.env.DEV) return true;
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('author') === '1' || window.location.hash === '#author') return true;
+      if (localStorage.getItem('is_blog_author') === 'true') return true;
+    }
+    return false;
+  }, []);
+
   // Posts state initialized from localStorage + defaults
   const [posts, setPosts] = useState<Post[]>(() => {
     try {
@@ -78,6 +91,8 @@ export function App() {
         } else if (hash === 'arsenal') {
           setCurrentTab('arsenal');
           setSelectedPost(null);
+        } else if (hash === 'author') {
+          // Author mode shortcut
         } else {
           const found = posts.find((p) => p.id === hash);
           if (found) {
@@ -151,8 +166,8 @@ export function App() {
   }, [posts]);
 
   return (
-    <div className="min-h-screen bg-[#faf7f9] text-[#1e1b4b] flex flex-col font-sans selection:bg-pink-200 selection:text-pink-900">
-      {/* Top Cute Navbar */}
+    <div className="min-h-screen bg-[#faf7f9] text-[#1e1b4b] flex flex-col font-sans selection:bg-rose-200 selection:text-rose-900">
+      {/* Top Navbar */}
       <Navbar
         currentTab={currentTab}
         setCurrentTab={(tab) => {
@@ -162,6 +177,7 @@ export function App() {
         onOpenCompose={() => setIsComposeOpen(true)}
         onOpenTerminal={() => setIsTerminalOpen(true)}
         onHomeClick={handleBackToLogs}
+        isOwner={isOwner}
       />
 
       {/* Main View Router */}
@@ -198,6 +214,7 @@ export function App() {
                 feed?.scrollIntoView({ behavior: 'smooth' });
               }}
               onComposeClick={() => setIsComposeOpen(true)}
+              isOwner={isOwner}
             />
 
             {/* Filter & Search Ribbon */}
@@ -211,7 +228,7 @@ export function App() {
                     placeholder="Search writeups by tool, concept, or tag..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-11 pr-10 py-2.5 rounded-full bg-white border border-pink-200 focus:border-pink-500 text-xs font-sans text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all shadow-cute-pill"
+                    className="w-full pl-11 pr-10 py-2.5 rounded-full bg-white border border-pink-200 focus:border-rose-400 text-xs font-sans text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all shadow-cute-pill"
                   />
                   {searchQuery && (
                     <button
@@ -223,18 +240,20 @@ export function App() {
                   )}
                 </div>
 
-                {/* Compose CTA helper */}
+                {/* Filter info & Owner Compose Trigger */}
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-sans text-slate-500 font-medium hidden sm:inline">
-                    Showing <strong className="text-pink-600 font-bold">{filteredPosts.length}</strong> logs ✨
+                  <span className="text-xs font-sans text-slate-500 font-medium">
+                    Showing <strong className="text-rose-600 font-bold">{filteredPosts.length}</strong> writeups
                   </span>
-                  <button
-                    onClick={() => setIsComposeOpen(true)}
-                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-pink-600 transition-all shadow-cute-pill hover:scale-105"
-                  >
-                    <PlusCircle className="w-3.5 h-3.5 text-pink-500" />
-                    <span>New Writeup 🌸</span>
-                  </button>
+                  {isOwner && (
+                    <button
+                      onClick={() => setIsComposeOpen(true)}
+                      className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-rose-600 transition-all shadow-cute-pill hover:scale-105"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5 text-rose-500" />
+                      <span>New Writeup</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -253,8 +272,8 @@ export function App() {
                     }}
                     className={`px-4 py-1.5 rounded-full text-xs font-sans font-bold whitespace-nowrap transition-all ${
                       selectedCategory === cat && !activeTag
-                        ? 'bg-pink-500 text-white shadow-cute-pill'
-                        : 'bg-white text-slate-600 hover:text-pink-600 hover:bg-pink-50 border border-pink-200'
+                        ? 'bg-rose-500 text-white shadow-cute-pill'
+                        : 'bg-white text-slate-600 hover:text-rose-600 hover:bg-pink-50 border border-pink-200'
                     }`}
                   >
                     {categoryLabels[cat]}
@@ -266,15 +285,15 @@ export function App() {
               {activeTag && (
                 <div className="flex items-center gap-2 py-2">
                   <span className="text-xs font-sans text-slate-500 font-medium">Filtering by tag:</span>
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-pink-100 text-pink-700 text-xs font-sans font-bold border border-pink-200">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-sans font-bold border border-rose-200">
                     #{activeTag}
-                    <button onClick={() => setActiveTag(null)} className="hover:text-pink-900 ml-1">
+                    <button onClick={() => setActiveTag(null)} className="hover:text-rose-900 ml-1">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
                   <button
                     onClick={() => setActiveTag(null)}
-                    className="text-xs font-sans font-medium text-pink-500 hover:underline"
+                    className="text-xs font-sans font-medium text-rose-500 hover:underline"
                   >
                     Clear tag
                   </button>
@@ -297,10 +316,12 @@ export function App() {
                 </div>
               ) : (
                 <div className="text-center py-16 bg-white border border-pink-200 rounded-3xl p-8 max-w-lg mx-auto space-y-4 shadow-cute-card">
-                  <div className="text-4xl">🌸</div>
-                  <h3 className="font-display font-bold text-xl text-slate-900">No Logs Found Dear~</h3>
+                  <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-200 text-rose-500 flex items-center justify-center mx-auto">
+                    <SearchX className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-display font-bold text-xl text-slate-900">No Writeups Found</h3>
                   <p className="text-xs text-slate-600 font-sans">
-                    No articles match "{searchQuery || activeTag}". Try clearing the search or write a new entry in the Studio!
+                    No articles match "{searchQuery || activeTag}". Try clearing the search filter or browsing other categories.
                   </p>
                   <button
                     onClick={() => {
@@ -308,9 +329,9 @@ export function App() {
                       setSelectedCategory('All');
                       setActiveTag(null);
                     }}
-                    className="px-5 py-2.5 rounded-full bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-pink-600 hover:bg-pink-100 transition-colors shadow-cute-pill"
+                    className="px-5 py-2.5 rounded-full bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-rose-600 hover:bg-pink-100 transition-colors shadow-cute-pill"
                   >
-                    Reset All Filters ✨
+                    Reset All Filters
                   </button>
                 </div>
               )}
@@ -318,8 +339,8 @@ export function App() {
               {/* Tag Cloud Overview */}
               <div className="mt-16 pt-8 border-t border-pink-100">
                 <div className="flex items-center gap-2 mb-4 font-display font-bold text-xs text-slate-700">
-                  <Tag className="w-3.5 h-3.5 text-pink-500" />
-                  <span>KNOWLEDGE TOPIC CLUSTER 🌸</span>
+                  <Tag className="w-3.5 h-3.5 text-rose-500" />
+                  <span>KNOWLEDGE TOPIC CLUSTER</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {allTags.map((tag) => (
@@ -328,8 +349,8 @@ export function App() {
                       onClick={() => setActiveTag(tag)}
                       className={`text-xs font-sans font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
                         activeTag === tag
-                          ? 'bg-pink-500 text-white font-bold border-pink-500 shadow-cute-pill'
-                          : 'bg-white text-slate-600 hover:text-pink-600 hover:bg-pink-50 border-pink-200 shadow-sm'
+                          ? 'bg-rose-500 text-white font-bold border-rose-500 shadow-cute-pill'
+                          : 'bg-white text-slate-600 hover:text-rose-600 hover:bg-pink-50 border-pink-200 shadow-sm'
                       }`}
                     >
                       #{tag}

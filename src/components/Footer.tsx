@@ -1,4 +1,4 @@
-import { Radio, Heart } from 'lucide-react';
+import { Radio, Shield, Lock } from 'lucide-react';
 
 export const Footer = () => {
   return (
@@ -8,21 +8,23 @@ export const Footer = () => {
           {/* Brand info */}
           <div className="md:col-span-5 space-y-3">
             <div className="flex items-center gap-2 text-slate-900 font-display font-bold text-base">
-              <span className="text-xl">🌸</span>
-              <span>0xSEC // CYBER LOGS</span>
-              <span className="text-[11px] text-pink-600 bg-pink-100 px-2.5 py-0.5 rounded-full border border-pink-200">
-                100-DAY DIARY ✨
+              <div className="w-6 h-6 rounded-lg bg-pink-100 border border-pink-200 flex items-center justify-center text-rose-500">
+                <Shield className="w-3.5 h-3.5" />
+              </div>
+              <span>0xSEC // SECURITY JOURNAL</span>
+              <span className="text-[11px] text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 font-semibold">
+                100-DAY JOURNAL
               </span>
             </div>
             <p className="text-slate-600 text-xs leading-relaxed font-sans max-w-sm">
-              Documenting the journey into offensive security and incident response with soft, cozy vibes. Every lab walkthrough reflects reproducible isolated simulations with blue team defenses~
+              Documenting practical offensive security, network forensics, and incident response with reproducible step-by-step writeups. Every walkthrough reflects isolated virtual labs and defensive blue-team mitigations.
             </p>
             <div className="flex items-center gap-3 pt-1">
               <a
                 href="https://github.com/UjwalTikhe"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-pink-600 transition-colors shadow-cute-pill"
+                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-rose-600 transition-colors shadow-cute-pill"
                 title="GitHub Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -33,36 +35,39 @@ export const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-pink-600 transition-colors shadow-cute-pill"
+                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-rose-600 transition-colors shadow-cute-pill"
                 title="LinkedIn Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                 </svg>
               </a>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-pink-600 text-[11px] font-bold shadow-cute-pill">
-                <Radio className="w-3 h-3 text-pink-500 animate-pulse" />
-                <span>RSS READY 🌸</span>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-rose-600 text-[11px] font-bold shadow-cute-pill">
+                <Radio className="w-3 h-3 text-rose-500 animate-pulse" />
+                <span>STATIC ARCHIVE</span>
               </div>
             </div>
           </div>
 
           {/* Quick links */}
           <div className="md:col-span-3 space-y-2">
-            <div className="text-slate-900 font-display font-bold tracking-wider text-xs">DIARY SECTIONS ✨</div>
+            <div className="text-slate-900 font-display font-bold tracking-wider text-xs">TOPIC CURRICULUM</div>
             <ul className="space-y-1.5 text-slate-600">
-              <li>🌸 Day 1 Roadmap &amp; Foundations</li>
-              <li>🏠 Isolated Homelab Architecture</li>
-              <li>📡 Wireshark &amp; Packet Forensics</li>
-              <li>🛡️ Blue Team Log Analysis</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Day 1 Roadmap &amp; Foundations</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Isolated Homelab Architecture</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Wireshark &amp; Packet Forensics</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Blue Team Log Analysis &amp; SIEM</li>
             </ul>
           </div>
 
           {/* Ethics statement */}
           <div className="md:col-span-4 space-y-2">
-            <div className="text-slate-900 font-display font-bold tracking-wider text-xs">ETHICS &amp; SAFETY 🐾</div>
+            <div className="text-slate-900 font-display font-bold tracking-wider text-xs flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-rose-500" />
+              <span>ETHICS &amp; SAFETY NOTICE</span>
+            </div>
             <p className="text-slate-600 text-xs leading-relaxed font-sans">
-              All exercises documented in this journal are performed strictly in private virtual labs or authorized CTF platforms. Always obey the law and hack ethically dear~ 🎀
+              All exercises documented in this journal are performed strictly in private virtual labs or authorized CTF environments. Strict adherence to legal and ethical cybersecurity frameworks is maintained at all times.
             </p>
           </div>
         </div>
@@ -70,12 +75,10 @@ export const Footer = () => {
         {/* Bottom copyright */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-[11px]">
           <div className="flex items-center gap-1">
-            <span>&copy; {new Date().getFullYear()} 0xSEC. Made with</span>
-            <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-400 inline" />
-            <span>&amp; iced coffee for the cybersecurity community ✨</span>
+            <span>&copy; {new Date().getFullYear()} 0xSEC. Authored with discipline for the cybersecurity learning community.</span>
           </div>
           <div>
-            <span>Powered by Vite, React 19, Tailwind &amp; GitHub Pages</span>
+            <span>Static Deployment &bull; Zero Server Attack Surface &bull; Read-Only</span>
           </div>
         </div>
       </div>

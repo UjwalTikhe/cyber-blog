@@ -3,7 +3,7 @@ import type { Post } from '../types';
 import { renderMarkdown, extractToc, highlightAllCodeBlocks } from '../utils/markdown';
 import { 
   ArrowLeft, Calendar, Clock, Share2, Check, Copy, 
-  ChevronRight, Tag, BookOpen, Lightbulb
+  ChevronRight, Tag, BookOpen, Lightbulb, ShieldCheck
 } from 'lucide-react';
 
 interface PostViewProps {
@@ -76,7 +76,6 @@ export const PostView = ({
     window.scrollTo({ top: 0, behavior: 'instant' });
     highlightAllCodeBlocks();
 
-    // Inject cute copy buttons onto all pre blocks
     const preBlocks = document.querySelectorAll('.post-content pre');
     preBlocks.forEach((pre) => {
       if (pre.querySelector('.code-copy-btn')) return;
@@ -85,15 +84,15 @@ export const PostView = ({
       const textToCopy = codeElement ? codeElement.innerText : (pre as HTMLElement).innerText;
 
       const button = document.createElement('button');
-      button.className = 'code-copy-btn absolute top-3 right-3 px-3 py-1 rounded-full bg-white hover:bg-pink-50 text-[11px] font-sans font-bold text-pink-600 border border-pink-200 flex items-center gap-1 transition-all shadow-sm z-10';
-      button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> copy ✨';
+      button.className = 'code-copy-btn absolute top-3 right-3 px-3 py-1 rounded-full bg-white hover:bg-pink-50 text-[11px] font-sans font-bold text-rose-600 border border-pink-200 flex items-center gap-1 transition-all shadow-sm z-10';
+      button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy';
 
       button.addEventListener('click', () => {
         navigator.clipboard.writeText(textToCopy);
-        button.innerHTML = '<svg class="w-3.5 h-3.5 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> (｡♥‿♥｡) Copied!';
+        button.innerHTML = '<svg class="w-3.5 h-3.5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
         button.classList.add('bg-pink-100');
         setTimeout(() => {
-          button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> copy ✨';
+          button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy';
           button.classList.remove('bg-pink-100');
         }, 2000);
       });
@@ -110,10 +109,10 @@ export const PostView = ({
 
   return (
     <div className="min-h-screen pb-24 bg-gradient-to-b from-pink-50/40 via-white to-pink-50/20">
-      {/* Top Cute Reading Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-[4px] bg-pink-100 z-50">
+      {/* Top Reading Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-[3px] bg-pink-100 z-50">
         <div
-          className="h-full bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 transition-all duration-75"
+          className="h-full bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 transition-all duration-75"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -123,48 +122,48 @@ export const PostView = ({
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-pink-100">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 font-sans font-bold text-xs text-pink-600 hover:text-pink-800 bg-white hover:bg-pink-50 px-4 py-2 rounded-full border border-pink-200 transition-all shadow-cute-pill group"
+            className="flex items-center gap-2 font-sans font-bold text-xs text-rose-600 hover:text-rose-800 bg-white hover:bg-pink-50 px-4 py-2 rounded-full border border-pink-200 transition-all shadow-cute-pill group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>&larr; BACK TO DIARY 🌸</span>
+            <span>&larr; Back to all writeups</span>
           </button>
 
           <div className="flex items-center gap-2 font-sans text-xs font-semibold text-slate-500">
             {post.episode && (
-              <span className="bg-pink-100 text-pink-700 px-2.5 py-0.5 rounded-full font-bold">
-                EPISODE {post.episode < 10 ? `0${post.episode}` : post.episode}
+              <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full font-bold">
+                Episode {post.episode < 10 ? `0${post.episode}` : post.episode}
               </span>
             )}
-            <span>TRANSMISSION:</span>
-            <span className="text-pink-600 font-bold">DECRYPTED ✨</span>
+            <span className="text-slate-400">•</span>
+            <span>Technical Writeup</span>
           </div>
         </div>
 
         {/* Post Hero Header */}
         <header className="mb-10 max-w-4xl space-y-4">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="px-3.5 py-1 rounded-full bg-pink-100 text-pink-700 text-xs font-sans font-bold border border-pink-200">
-              🌸 {post.category}
+            <span className="px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-sans font-bold border border-rose-200">
+              {post.category}
             </span>
-            <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-sans font-bold border border-purple-200">
-              LEVEL: {post.difficulty} 🐾
+            <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-sans font-semibold border border-slate-200">
+              Level: {post.difficulty}
             </span>
             <div className="flex items-center gap-1.5 text-xs font-sans text-slate-500 font-medium">
-              <Calendar className="w-3.5 h-3.5 text-pink-400" />
+              <Calendar className="w-3.5 h-3.5 text-slate-400" />
               <span>{post.date}</span>
             </div>
-            <span>&bull;</span>
+            <span className="text-slate-300">•</span>
             <div className="flex items-center gap-1.5 text-xs font-sans text-slate-500 font-medium">
-              <Clock className="w-3.5 h-3.5 text-pink-400" />
+              <Clock className="w-3.5 h-3.5 text-slate-400" />
               <span>{post.readTime}</span>
             </div>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
             {post.title}
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-sans border-l-4 border-pink-400 pl-4 py-1 bg-pink-50/50 rounded-r-2xl">
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-sans border-l-4 border-rose-400 pl-4 py-1 bg-pink-50/40 rounded-r-2xl">
             {post.excerpt}
           </p>
 
@@ -173,16 +172,16 @@ export const PostView = ({
               <button
                 key={tag}
                 onClick={() => onTagClick(tag)}
-                className="text-xs font-sans font-semibold text-pink-600 hover:text-pink-800 bg-white px-3 py-1 rounded-full border border-pink-200 hover:border-pink-400 transition-colors flex items-center gap-1 shadow-cute-pill"
+                className="text-xs font-sans font-semibold text-rose-600 hover:text-rose-800 bg-white px-3 py-1 rounded-full border border-pink-200 hover:border-pink-400 transition-colors flex items-center gap-1 shadow-cute-pill"
               >
-                <Tag className="w-3 h-3 text-pink-400" />
+                <Tag className="w-3 h-3 text-rose-400" />
                 <span>#{tag}</span>
               </button>
             ))}
           </div>
         </header>
 
-        {/* 16:9 Thumbnail Cover Hero Presentation */}
+        {/* 16:9 Thumbnail Cover Hero */}
         {post.thumbnailUrl && (
           <div className="mb-10 rounded-3xl overflow-hidden border border-pink-200 shadow-cute-card bg-gradient-to-br from-pink-50 via-white to-purple-50">
             <img
@@ -193,19 +192,19 @@ export const PostView = ({
           </div>
         )}
 
-        {/* YouTube Video Embed (if video vlog attached) */}
+        {/* YouTube Video Embed (if companion video exists) */}
         {embedUrl && (
           <div className="mb-10 bg-white border border-pink-200 rounded-3xl p-6 shadow-cute-card space-y-4">
             <div className="flex items-center gap-2 font-display font-bold text-sm text-slate-900">
               <svg className="w-5 h-5 fill-red-600" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
-              <span>WATCH TODAY'S VLOG EPISODE (YOUTUBE) ▶</span>
+              <span>Watch Companion Video Episode (YouTube)</span>
             </div>
             <div className="aspect-video w-full rounded-2xl overflow-hidden border border-pink-100 shadow-sm">
               <iframe
                 src={embedUrl}
-                title="YouTube Video Vlog"
+                title="YouTube Video Walkthrough"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
@@ -214,12 +213,12 @@ export const PostView = ({
           </div>
         )}
 
-        {/* Dedicated Feynman Corner Highlight Box */}
+        {/* Dedicated Feynman Technique Highlight Box */}
         {post.feynmanSummary && (
-          <div className="mb-10 bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border-2 border-pink-200 rounded-3xl p-6 shadow-cute-sm space-y-2">
-            <div className="flex items-center gap-2 font-display font-bold text-sm text-pink-700">
-              <Lightbulb className="w-5 h-5 text-pink-500 fill-pink-300" />
-              <span>THE FEYNMAN CORNER (ELI5 BREAKDOWN) 💡</span>
+          <div className="mb-10 bg-gradient-to-r from-rose-50/80 via-pink-50/60 to-purple-50/80 border border-rose-200 rounded-3xl p-6 shadow-cute-sm space-y-2">
+            <div className="flex items-center gap-2 font-display font-bold text-sm text-rose-800">
+              <Lightbulb className="w-5 h-5 text-rose-500 fill-rose-200" />
+              <span>THE FEYNMAN TECHNIQUE (CORE INSIGHT)</span>
             </div>
             <p className="text-sm text-slate-700 leading-relaxed font-sans font-medium">
               "{post.feynmanSummary}"
@@ -238,34 +237,34 @@ export const PostView = ({
 
             {/* Post End Actions & Share */}
             <div className="mt-14 pt-8 border-t border-pink-100 space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 bg-pink-50/70 border border-pink-200 p-5 rounded-3xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-pink-50/50 border border-pink-200 p-5 rounded-3xl">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-pink-200 flex items-center justify-center text-2xl shadow-cute-pill">
-                    🌸
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-pink-200 flex items-center justify-center text-rose-600 shadow-cute-pill">
+                    <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-sm text-slate-800">END OF TRANSMISSION ✨</div>
-                    <div className="text-xs text-slate-600 font-sans">Thanks for following my cyber vlog &amp; blog series! Share with fellow learners~</div>
+                    <div className="font-display font-bold text-sm text-slate-900">End of Transmission</div>
+                    <div className="text-xs text-slate-500 font-sans">Documented as part of the 100-Day Cybersecurity Roadmap.</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopyLink}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-pink-200 text-xs font-sans font-bold text-slate-700 hover:text-pink-600 hover:border-pink-400 transition-all shadow-cute-pill"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-pink-200 text-xs font-sans font-bold text-slate-700 hover:text-rose-600 hover:border-pink-400 transition-all shadow-cute-pill"
                   >
-                    {copiedLink ? <Check className="w-3.5 h-3.5 text-pink-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedLink ? 'Link Copied! ✨' : 'Copy Link'}</span>
+                    {copiedLink ? <Check className="w-3.5 h-3.5 text-rose-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
                   </button>
 
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-pink-500 text-white text-xs font-sans font-bold hover:bg-pink-600 transition-all shadow-cute-pill"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-rose-500 text-white text-xs font-sans font-bold hover:bg-rose-600 transition-all shadow-cute-pill"
                   >
                     <Share2 className="w-3.5 h-3.5" />
-                    <span>Share 🎀</span>
+                    <span>Share</span>
                   </a>
                 </div>
               </div>
@@ -277,11 +276,11 @@ export const PostView = ({
                     onClick={() => onSelectPost(prevPost)}
                     className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-left transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5"
                   >
-                    <div className="text-[11px] font-sans font-bold text-pink-500 flex items-center gap-1">
+                    <div className="text-[11px] font-sans font-bold text-rose-600 flex items-center gap-1">
                       <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-                      <span>PREVIOUS EPISODE 🌸</span>
+                      <span>Previous Writeup</span>
                     </div>
-                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors mt-1 line-clamp-1">
+                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
                       {prevPost.title}
                     </div>
                   </button>
@@ -292,11 +291,11 @@ export const PostView = ({
                     onClick={() => onSelectPost(nextPost)}
                     className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-right transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5 ml-auto w-full"
                   >
-                    <div className="text-[11px] font-sans font-bold text-pink-500 flex items-center justify-end gap-1">
-                      <span>NEXT EPISODE ✨</span>
+                    <div className="text-[11px] font-sans font-bold text-rose-600 flex items-center justify-end gap-1">
+                      <span>Next Writeup</span>
                       <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
-                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors mt-1 line-clamp-1">
+                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
                       {nextPost.title}
                     </div>
                   </button>
@@ -311,8 +310,8 @@ export const PostView = ({
             {toc.length > 0 && (
               <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card">
                 <div className="flex items-center gap-2 pb-3 mb-3 border-b border-pink-100 font-display font-bold text-xs text-slate-800">
-                  <BookOpen className="w-4 h-4 text-pink-500" />
-                  <span>TABLE OF CONTENTS 🌸</span>
+                  <BookOpen className="w-4 h-4 text-rose-500" />
+                  <span>TABLE OF CONTENTS</span>
                 </div>
                 <nav className="space-y-2 text-xs font-sans font-medium">
                   {toc.map((item) => (
@@ -323,8 +322,8 @@ export const PostView = ({
                         item.level === 3 ? 'pl-4 text-slate-500' : 'text-slate-700'
                       } ${
                         activeHeading === item.id
-                          ? 'text-pink-600 font-bold bg-pink-50 px-2 rounded-lg'
-                          : 'hover:text-pink-600'
+                          ? 'text-rose-600 font-bold bg-rose-50 px-2 rounded-lg'
+                          : 'hover:text-rose-600'
                       }`}
                     >
                       {item.text}
@@ -334,25 +333,25 @@ export const PostView = ({
               </div>
             )}
 
-            {/* Author / Vlogger Bio Card */}
+            {/* Author Bio Card */}
             <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 border border-pink-200 flex items-center justify-center text-3xl shadow-cute-pill">
-                  🐾
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 border border-pink-200 flex items-center justify-center font-display font-bold text-rose-600 text-lg shadow-cute-pill">
+                  0xU
                 </div>
                 <div>
-                  <div className="font-display font-bold text-slate-900 text-base">Cyber Vlogger &bull; Cutie</div>
-                  <div className="text-xs font-sans font-bold text-pink-500">@Journey Day 1 🌸</div>
+                  <div className="font-display font-bold text-slate-900 text-base">Security Researcher</div>
+                  <div className="text-xs font-sans font-bold text-rose-600">@Journey Day 1</div>
                 </div>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Learning in public using the Feynman technique. Documenting every daily breakthrough, building virtual labs, and sharing walkthroughs for YouTube &amp; Blog!
+                Learning defensive and offensive engineering in public using the Feynman technique. Documenting lab walkthroughs, protocol dissections, and certification milestones.
               </p>
 
               <div className="pt-3 border-t border-pink-100 flex items-center justify-between text-[11px] font-sans font-semibold text-slate-500">
-                <span>FORMAT: Daily B-Log &amp; V-Log</span>
-                <span className="text-pink-600">Feynman Method ✨</span>
+                <span>Lab OS: Kali Linux</span>
+                <span className="text-rose-600">100-Day Tracker</span>
               </div>
             </div>
           </aside>
