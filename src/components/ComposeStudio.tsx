@@ -1,93 +1,141 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Post, PostCategory, PostDifficulty } from '../types';
 import { calculateReadTime, renderMarkdown } from '../utils/markdown';
 
 interface ComposeStudioProps {
   isOpen: boolean;
   onClose: () => void;
-  onPublish: (newPost: Post) => void;
+  onPublish: (post: Post, isEdit: boolean) => void;
+  initialPost?: Post | null;
+  suggestedEpisodeNumber: number;
 }
 
-const TEMPLATE_SAMPLE = `# Akte 004: [Investigation Title]
+const DEFAULT_TEMPLATE = `# Akte 001: [Title of Your Discovery]
 
-Brief introduction explaining the target machine, tool, or protocol concept being analyzed today.
-
----
-
-## 1. Environment Setup & Target Specifications
-
-- Attacking System: Kali Linux 2026.x (192.168.56.10)
-- Target System: Metasploitable 2 (192.168.56.101)
-- Primary Tool: Nmap / Wireshark / Burp Suite
+Write a brief, honest opening about what you set out to investigate or build today.
 
 ---
 
-## 2. Reconnaissance & Packet Inspection
+## 1. First Principles Breakdown (Feynman Technique)
+
+Break down the core concept in simple terms, as if explaining to a curious friend who has never touched a terminal. What is the fundamental mechanism at work?
+
+---
+
+## 2. Lab Setup & Hands-on Simulation
+
+Document your exact test environment:
+- Environment: Kali Linux / VM / Docker Container
+- Target IP: 192.168.56.x (Isolated Host-Only Subnet)
+- Tools: Nmap, Wireshark, Python, etc.
 
 \`\`\`bash
-# Run service detection scan
-sudo nmap -sV -sC -p 80,443 192.168.56.101
+# Commands executed during the simulation
 \`\`\`
-
-> [!NOTE]
-> Record observations here. What ports were found open? Any banner versions leaked?
 
 ---
 
-## 3. Vulnerability Analysis & Exploitation
+## 3. Observations & Key Takeaways
 
-\`\`\`bash
-# Exploit command or script execution
-python3 exploit.py --target 192.168.56.101
-\`\`\`
-
-> [!FLAG]
-> Target exploited or test flag obtained: FLAG{sample_flag_hash_here}
-
----
-
-## 4. Blue Team Mitigation & Key Takeaways
-
-1. How to patch this: Update package to latest verified release.
-2. Detection Rule: Inspect web application firewall logs for traversal patterns.
+Record what surprised you, what broke, and what mitigation prevents this vulnerability.
 `;
 
 export const ComposeStudio = ({
   isOpen,
   onClose,
   onPublish,
+  initialPost,
+  suggestedEpisodeNumber,
 }: ComposeStudioProps) => {
+  const isEditing = Boolean(initialPost);
+
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<PostCategory>('CTF & Labs');
+  const [category, setCategory] = useState<PostCategory>('Foundations');
   const [difficulty, setDifficulty] = useState<PostDifficulty>('Beginner');
-  const [tagsStr, setTagsStr] = useState('nmap, wireshark, tryhackme');
+  const [tagsStr, setTagsStr] = useState('foundations, lab-notes, feynman');
   const [excerpt, setExcerpt] = useState('');
-  const [markdown, setMarkdown] = useState(TEMPLATE_SAMPLE);
-  const [episode, setEpisode] = useState<number>(4);
+  const [markdown, setMarkdown] = useState(DEFAULT_TEMPLATE);
+  const [episode, setEpisode] = useState<number>(1);
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [feynmanSummary, setFeynmanSummary] = useState('');
   const [viewMode, setViewMode] = useState<'split' | 'edit' | 'preview'>('split');
   const [copiedMd, setCopiedMd] = useState(false);
-  const [publishedSuccess, setPublishedSuccess] = useState(false);
+
+  // Initialize form when opening or changing initialPost
+  useEffect(() => {
+    if (initialPost) {
+      setTitle(initialPost.title);
+      setCategory(initialPost.category);
+      setDifficulty(initialPost.difficulty);
+      setTagsStr(initialPost.tags.join(', '));
+      setExcerpt(initialPost.excerpt);
+      setMarkdown(initialPost.content);
+      setEpisode(initialPost.akteNumber ?? initialPost.episode ?? 1);
+      setThumbnailUrl(initialPost.thumbnailUrl || '');
+      setYoutubeUrl(initialPost.youtubeUrl || '');
+      setFeynmanSummary(initialPost.feynmanSummary || '');
+    } else {
+      setTitle('');
+      setCategory('Foundations');
+      setDifficulty('Beginner');
+      setTagsStr('foundations, cybersecurity, feynman');
+      setExcerpt('');
+      setMarkdown(DEFAULT_TEMPLATE);
+      setEpisode(suggestedEpisodeNumber > 0 ? suggestedEpisodeNumber : 1);
+      setThumbnailUrl('');
+      setYoutubeUrl('');
+      setFeynmanSummary('');
+    }
+  }, [initialPost, suggestedEpisodeNumber, isOpen]);
 
   // Auto-generate slug
   const slug = useMemo(() => {
-    if (!title.trim()) return 'untitled-log';
-    return title
+    if (initialPost) return initialPost.id;
+    if (!title.trim()) return `akte-${String(episode).padStart(3, '0')}-entry`;
+    const clean = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
-  }, [title]);
+    return `akte-${String(episode).padStart(3, '0')}-${clean}`;
+  }, [title, episode, initialPost]);
 
   const readTime = useMemo(() => calculateReadTime(markdown), [markdown]);
   const previewHtml = useMemo(() => renderMarkdown(markdown), [markdown]);
 
   if (!isOpen) return null;
 
-  const handlePublish = () => {
+  // Handle local image file upload (convert to Base64 Data URL)
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image exceeds 2MB limit. Please choose a smaller image.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setThumbnailUrl(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Generate minimalist editorial SVG plate if author has no custom thumbnail
+  const handleGenerateCover = () => {
+    const epDisplay = String(episode).padStart(3, '0');
+    const safeTitle = (title.trim() || 'Akte Research Dossier')
+      .replace(/[<>&"]/g, '');
+
+    const svg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675"><rect width="1200" height="675" fill="%23f2f0ea"/><rect x="40" y="40" width="1120" height="595" fill="none" stroke="%23dfdbd0" stroke-width="2"/><text x="80" y="110" font-family="monospace" font-size="16" letter-spacing="4" fill="%23881337" font-weight="bold">AKTE 511 // RESEARCH LEDGER</text><text x="80" y="240" font-family="serif" font-size="72" font-weight="bold" fill="%231c1917">Akte ${epDisplay}</text><text x="80" y="320" font-family="serif" font-size="32" fill="%2344403c">${safeTitle.slice(0, 48)}</text><line x1="80" y1="520" x2="1120" y2="520" stroke="%23dfdbd0" stroke-width="1"/><text x="80" y="565" font-family="monospace" font-size="14" fill="%2378716c">DISCIPLINE: ${category.toUpperCase()} // LEVEL: ${difficulty.toUpperCase()}</text><text x="1120" y="565" text-anchor="end" font-family="monospace" font-size="14" fill="%2378716c">AUTEUR VERIFIED</text></svg>`;
+    setThumbnailUrl(svg);
+  };
+
+  const handleSave = () => {
     if (!title.trim()) {
-      alert('Please enter an article title.');
+      alert('Please enter a title for this dossier.');
       return;
     }
 
@@ -96,18 +144,26 @@ export const ComposeStudio = ({
       .map((t) => t.trim().replace(/^#/, ''))
       .filter(Boolean);
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = initialPost?.date || new Date().toISOString().split('T')[0];
 
-    const newPost: Post = {
-      id: slug,
-      akteNumber: Number(episode) || 4,
-      episode: Number(episode) || 4,
+    // If no thumbnail, auto-generate clean editorial plate
+    let finalThumbnail = thumbnailUrl.trim();
+    if (!finalThumbnail) {
+      const epDisplay = String(episode).padStart(3, '0');
+      const safeTitle = title.trim().replace(/[<>&"]/g, '');
+      finalThumbnail = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675"><rect width="1200" height="675" fill="%23f2f0ea"/><rect x="40" y="40" width="1120" height="595" fill="none" stroke="%23dfdbd0" stroke-width="2"/><text x="80" y="110" font-family="monospace" font-size="16" letter-spacing="4" fill="%23881337" font-weight="bold">AKTE 511 // RESEARCH LEDGER</text><text x="80" y="240" font-family="serif" font-size="72" font-weight="bold" fill="%231c1917">Akte ${epDisplay}</text><text x="80" y="320" font-family="serif" font-size="32" fill="%2344403c">${safeTitle.slice(0, 48)}</text><line x1="80" y1="520" x2="1120" y2="520" stroke="%23dfdbd0" stroke-width="1"/><text x="80" y="565" font-family="monospace" font-size="14" fill="%2378716c">DISCIPLINE: ${category.toUpperCase()} // LEVEL: ${difficulty.toUpperCase()}</text><text x="1120" y="565" text-anchor="end" font-family="monospace" font-size="14" fill="%2378716c">AUTEUR VERIFIED</text></svg>`;
+    }
+
+    const postPayload: Post = {
+      id: initialPost?.id || slug,
+      akteNumber: Number(episode) || 1,
+      episode: Number(episode) || 1,
       title: title.trim(),
       date: today,
       category,
       difficulty,
       readTime,
-      thumbnailUrl: thumbnailUrl.trim() || undefined,
+      thumbnailUrl: finalThumbnail,
       youtubeUrl: youtubeUrl.trim() || undefined,
       feynmanSummary: feynmanSummary.trim() || undefined,
       tags: tags.length ? tags : ['cybersecurity'],
@@ -115,55 +171,12 @@ export const ComposeStudio = ({
       content: markdown,
     };
 
-    onPublish(newPost);
-    setPublishedSuccess(true);
-    setTimeout(() => {
-      setPublishedSuccess(false);
-      onClose();
-    }, 1200);
-  };
-
-  const generateFullMarkdownWithFrontmatter = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const tags = tagsStr
-      .split(',')
-      .map((t) => t.trim().replace(/^#/, ''))
-      .filter(Boolean);
-
-    return `---
-title: "${title.replace(/"/g, '\\"') || 'Untitled Writeup'}"
-akteNumber: ${episode}
-date: "${today}"
-category: "${category}"
-difficulty: "${difficulty}"
-readTime: "${readTime}"
-thumbnailUrl: "${thumbnailUrl}"
-youtubeUrl: "${youtubeUrl}"
-feynmanSummary: "${feynmanSummary.replace(/"/g, '\\"')}"
-tags: [${tags.map((t) => `"${t}"`).join(', ')}]
-excerpt: "${excerpt.replace(/"/g, '\\"') || title}"
----
-
-${markdown}
-`;
-  };
-
-  const handleDownloadMd = () => {
-    const content = generateFullMarkdownWithFrontmatter();
-    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${slug || 'article'}.md`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    onPublish(postPayload, isEditing);
+    onClose();
   };
 
   const handleCopyMarkdown = () => {
-    const content = generateFullMarkdownWithFrontmatter();
-    navigator.clipboard.writeText(content);
+    navigator.clipboard.writeText(markdown);
     setCopiedMd(true);
     setTimeout(() => setCopiedMd(false), 2000);
   };
@@ -171,39 +184,42 @@ ${markdown}
   return (
     <div className="fixed inset-0 z-50 bg-ink/50 flex flex-col p-2 sm:p-4">
       <div className="bg-paper border border-paper-border flex flex-col h-full max-w-7xl mx-auto w-full overflow-hidden">
-        {/* Top Studio Bar */}
-        <div className="px-6 py-3 border-b border-paper-border flex items-center justify-between bg-paper-surface">
+        {/* Top Studio Header */}
+        <div className="px-6 py-3 border-b border-paper-border flex flex-wrap items-center justify-between gap-3 bg-paper-surface">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
-              Akte 511 Drafting Studio (Localhost Only)
+            <span className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
+              [ ✦ AUTEUR STUDIO // {isEditing ? `REVISING AKTE ${String(episode).padStart(3, '0')}` : 'PENNING NEW DOSSIER'} ]
             </span>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <button
-              onClick={() => setViewMode('edit')}
-              className={`px-3 py-1 border border-paper-border transition-colors ${
-                viewMode === 'edit' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
-              }`}
-            >
-              Editor
-            </button>
-            <button
-              onClick={() => setViewMode('split')}
-              className={`px-3 py-1 border border-paper-border transition-colors ${
-                viewMode === 'split' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
-              }`}
-            >
-              Split
-            </button>
-            <button
-              onClick={() => setViewMode('preview')}
-              className={`px-3 py-1 border border-paper-border transition-colors ${
-                viewMode === 'preview' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
-              }`}
-            >
-              Preview
-            </button>
+            {/* View Mode Buttons */}
+            <div className="flex items-center border border-paper-border">
+              <button
+                onClick={() => setViewMode('edit')}
+                className={`px-3 py-1 transition-colors ${
+                  viewMode === 'edit' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+                }`}
+              >
+                Editor
+              </button>
+              <button
+                onClick={() => setViewMode('split')}
+                className={`px-3 py-1 transition-colors border-l border-paper-border ${
+                  viewMode === 'split' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+                }`}
+              >
+                Split
+              </button>
+              <button
+                onClick={() => setViewMode('preview')}
+                className={`px-3 py-1 transition-colors border-l border-paper-border ${
+                  viewMode === 'preview' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+                }`}
+              >
+                Preview
+              </button>
+            </div>
 
             <button
               onClick={handleCopyMarkdown}
@@ -213,35 +229,29 @@ ${markdown}
             </button>
 
             <button
-              onClick={handleDownloadMd}
-              className="px-3 py-1 border border-paper-border bg-paper text-ink hover:bg-paper-subtle transition-colors"
+              onClick={handleSave}
+              className="px-4 py-1 bg-crimson text-paper hover:opacity-90 transition-opacity font-bold"
             >
-              Export
-            </button>
-
-            <button
-              onClick={handlePublish}
-              className="px-4 py-1 bg-ink text-paper hover:bg-ink-muted transition-colors font-bold"
-            >
-              {publishedSuccess ? 'Saved' : 'Save Local'}
+              {isEditing ? 'Save Changes' : 'Publish Dossier &rarr;'}
             </button>
 
             <button
               onClick={onClose}
-              className="px-2 py-1 border border-paper-border text-ink-muted hover:text-ink transition-colors ml-1"
+              className="px-2.5 py-1 border border-paper-border text-ink-muted hover:text-ink transition-colors ml-1"
             >
               [X]
             </button>
           </div>
         </div>
 
-        {/* Metadata Configuration Grid */}
+        {/* Metadata Controls */}
         <div className="p-4 border-b border-paper-border bg-paper-subtle grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-mono">
           <div className="lg:col-span-1 space-y-1">
             <label className="text-ink font-bold">AKTE #</label>
             <input
               type="number"
-              placeholder="4"
+              min="1"
+              max="511"
               value={episode}
               onChange={(e) => setEpisode(Number(e.target.value))}
               className="w-full px-2 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none text-center font-bold"
@@ -252,7 +262,7 @@ ${markdown}
             <label className="text-ink font-bold font-sans">TITLE *</label>
             <input
               type="text"
-              placeholder="Akte 004: Password Recovery Internals"
+              placeholder="e.g. Akte 001: The Geometry of Cryptographic Ciphers"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
@@ -260,7 +270,7 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-3 space-y-1">
-            <label className="text-ink font-bold font-sans">CATEGORY</label>
+            <label className="text-ink font-bold font-sans">DISCIPLINE</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as PostCategory)}
@@ -277,7 +287,7 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-3 space-y-1">
-            <label className="text-ink font-bold font-sans">DIFFICULTY</label>
+            <label className="text-ink font-bold font-sans">COMPLEXITY</label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value as PostDifficulty)}
@@ -289,19 +299,40 @@ ${markdown}
             </select>
           </div>
 
+          {/* Thumbnail Controls */}
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-ink font-bold font-sans">THUMBNAIL URL (16:9)</label>
-            <input
-              type="text"
-              placeholder="./thumbnails/thumb-ep4.svg"
-              value={thumbnailUrl}
-              onChange={(e) => setThumbnailUrl(e.target.value)}
-              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono"
-            />
+            <div className="flex items-center justify-between">
+              <label className="text-ink font-bold font-sans">COVER (16:9)</label>
+              <button
+                type="button"
+                onClick={handleGenerateCover}
+                className="text-[10px] text-crimson hover:underline"
+              >
+                [Auto-Generate Plate]
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="URL or use Auto/Upload..."
+                value={thumbnailUrl.startsWith('data:') ? '[Embedded Plate Plate]' : thumbnailUrl}
+                onChange={(e) => setThumbnailUrl(e.target.value)}
+                className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono text-[11px]"
+              />
+              <label className="px-2 py-1.5 border border-paper-border bg-paper hover:bg-paper-surface cursor-pointer text-[10px] shrink-0">
+                <span>Upload</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </div>
 
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-ink font-bold font-sans">YOUTUBE URL (OPTIONAL)</label>
+            <label className="text-ink font-bold font-sans">YOUTUBE VLOG URL (OPTIONAL)</label>
             <input
               type="text"
               placeholder="https://www.youtube.com/watch?v=..."
@@ -312,10 +343,10 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-ink font-bold font-sans">TAGS</label>
+            <label className="text-ink font-bold font-sans">TAGS (COMMA-SEPARATED)</label>
             <input
               type="text"
-              placeholder="hashcat, passwords, linux"
+              placeholder="cryptography, packets, kali"
               value={tagsStr}
               onChange={(e) => setTagsStr(e.target.value)}
               className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono"
@@ -323,10 +354,10 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-6 space-y-1">
-            <label className="text-ink font-bold font-sans">EXCERPT (1-2 SENTENCES)</label>
+            <label className="text-ink font-bold font-sans">EXCERPT (1-2 SENTENCE SYNOPSIS)</label>
             <input
               type="text"
-              placeholder="Brief summary of the test simulation..."
+              placeholder="A brief overview of today's laboratory findings..."
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
@@ -334,10 +365,10 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-6 space-y-1">
-            <label className="text-ink font-bold font-sans">FEYNMAN SUMMARY (ELI5 CORE CONCEPT)</label>
+            <label className="text-ink font-bold font-sans">FEYNMAN SUMMARY (INTUITIVE TAKEAWAY)</label>
             <input
               type="text"
-              placeholder="Explain the concept in simple terms..."
+              placeholder="Explain the core mechanism in simple, accessible language..."
               value={feynmanSummary}
               onChange={(e) => setFeynmanSummary(e.target.value)}
               className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
@@ -349,14 +380,15 @@ ${markdown}
         <div className="flex-1 flex overflow-hidden">
           {(viewMode === 'edit' || viewMode === 'split') && (
             <div className={`flex flex-col border-r border-paper-border ${viewMode === 'split' ? 'w-1/2' : 'w-full'}`}>
-              <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted">
-                Markdown Editor
+              <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted flex items-center justify-between">
+                <span>Markdown Body</span>
+                <span>{readTime} &bull; {markdown.split(/\s+/).filter(Boolean).length} words</span>
               </div>
               <textarea
                 value={markdown}
                 onChange={(e) => setMarkdown(e.target.value)}
                 className="flex-1 w-full p-4 bg-paper font-mono text-xs text-ink focus:outline-none resize-none leading-relaxed"
-                placeholder="Write your article in Markdown..."
+                placeholder="Write your dossier in Markdown..."
               />
             </div>
           )}
@@ -364,7 +396,7 @@ ${markdown}
           {(viewMode === 'preview' || viewMode === 'split') && (
             <div className={`flex flex-col overflow-y-auto bg-paper ${viewMode === 'split' ? 'w-1/2' : 'w-full'}`}>
               <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted">
-                Live Preview
+                Dossier Preview
               </div>
               <div className="p-6">
                 <div

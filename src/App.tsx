@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Post, PostCategory } from './types';
 import { INITIAL_POSTS } from './data/posts';
 import { Navbar } from './components/Navbar';
@@ -6,8 +6,14 @@ import { HeroBanner } from './components/HeroBanner';
 import { PostCard } from './components/PostCard';
 import { PostView } from './components/PostView';
 import { ComposeStudio } from './components/ComposeStudio';
+import { LoginModal } from './components/LoginModal';
+import { DeleteConfirmModal } from './components/DeleteConfirmModal';
+import { ArchiveManagerModal } from './components/ArchiveManagerModal';
 import { LegalModal } from './components/LegalModals';
 import { Footer } from './components/Footer';
+import { isAuthorAuthenticated, logoutAuthor } from './utils/auth';
+
+const STORAGE_KEY = 'akte511_archive_v1';
 
 const CATEGORIES: ('All' | PostCategory)[] = [
   'All',
@@ -21,14 +27,15 @@ const CATEGORIES: ('All' | PostCategory)[] = [
 ];
 
 export function App() {
+  // Load posts strictly from local storage; falls back to INITIAL_POSTS (empty array)
   const [posts, setPosts] = useState<Post[]>(() => {
     try {
-      const saved = localStorage.getItem('cyber_blog_posts');
+      const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        const initialIds = new Set(INITIAL_POSTS.map((p) => p.id));
-        const customOnly = parsed.filter((p: Post) => !initialIds.has(p.id));
-        return [...customOnly, ...INITIAL_POSTS];
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
       }
     } catch (e) {
       console.error('Error loading stored posts', e);
@@ -36,19 +43,62 @@ export function App() {
     return INITIAL_POSTS;
   });
 
+  // Author Authentication State
+  const [isAuthor, setIsAuthor] = useState<boolean>(() => isAuthorAuthenticated());
+
+  // Navigation and Search State
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'All' | PostCategory>('All');
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  // Legal Modal state (TOS & Privacy Policy)
+  // Modals
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [postToDelete, setPostToDelete] = useState<Post | null>(null);
+  const [isArchiveManagerOpen, setIsArchiveManagerOpen] = useState(false);
   const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' }>({
     isOpen: false,
     type: 'terms',
   });
 
-  // Local Compose Studio (localhost dev only)
-  const [isComposeOpen, setIsComposeOpen] = useState(false);
+  // Feedback Toast
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = useCallback((msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage((current) => (current === msg ? null : current));
+    }, 3000);
+  }, []);
+
+  // Save posts to localStorage whenever updated
+  const savePostsToStorage = (updatedPosts: Post[]) => {
+    setPosts(updatedPosts);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPosts));
+    } catch (err) {
+      console.error('Failed to save archive to localStorage', err);
+      showToast('Storage warning: could not write to browser storage.');
+    }
+  };
+
+  // Keyboard shortcut to toggle Author Login: Ctrl+Shift+A or Cmd+Shift+A
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        if (isAuthor) {
+          showToast('Author session currently active.');
+        } else {
+          setIsLoginModalOpen(true);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAuthor, showToast]);
 
   // Deep linking via URL hash
   useEffect(() => {
@@ -77,31 +127,66 @@ export function App() {
     window.location.hash = '';
   };
 
-  const handlePublishPost = (newPost: Post) => {
-    setPosts((prev) => {
-      const updated = [newPost, ...prev];
-      try {
-        localStorage.setItem('cyber_blog_posts', JSON.stringify(updated));
-      } catch (err) {
-        console.error('Failed to cache to localStorage', err);
-      }
-      return updated;
-    });
-
-    handleSelectPost(newPost);
+  // Author CRUD Handlers
+  const handlePublishOrUpdatePost = (postPayload: Post, isEdit: boolean) => {
+    if (isEdit) {
+      const updated = posts.map((p) => (p.id === postPayload.id ? postPayload : p));
+      savePostsToStorage(updated);
+      setSelectedPost(postPayload);
+      showToast(`Akte ${String(postPayload.akteNumber).padStart(3, '0')} updated.`);
+    } else {
+      const updated = [postPayload, ...posts];
+      savePostsToStorage(updated);
+      handleSelectPost(postPayload);
+      showToast(`Akte ${String(postPayload.akteNumber).padStart(3, '0')} published to archive.`);
+    }
+    setEditingPost(null);
   };
 
-  // Filter posts based on search, category, and active tag
+  const handleStartEdit = (post: Post) => {
+    setEditingPost(post);
+    setIsComposeOpen(true);
+  };
+
+  const handleConfirmDelete = (postId: string) => {
+    const target = posts.find((p) => p.id === postId);
+    const updated = posts.filter((p) => p.id !== postId);
+    savePostsToStorage(updated);
+    setPostToDelete(null);
+
+    if (selectedPost?.id === postId) {
+      handleBackToLogs();
+    }
+    const numDisplay = target ? String(target.akteNumber ?? target.episode ?? '').padStart(3, '0') : '';
+    showToast(`Akte ${numDisplay} removed from archive.`);
+  };
+
+  const handleLogout = () => {
+    logoutAuthor();
+    setIsAuthor(false);
+    showToast('Author session locked.');
+  };
+
+  const handleImportArchive = (imported: Post[]) => {
+    savePostsToStorage(imported);
+    showToast(`Archive restored: ${imported.length} entries loaded.`);
+  };
+
+  const handleResetArchive = () => {
+    savePostsToStorage([]);
+    handleBackToLogs();
+    showToast('Archive reset to zero entries.');
+  };
+
+  // Filter posts
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
       if (selectedCategory !== 'All' && post.category !== selectedCategory) {
         return false;
       }
-
       if (activeTag && !post.tags.includes(activeTag)) {
         return false;
       }
-
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesTitle = post.title.toLowerCase().includes(query);
@@ -110,7 +195,6 @@ export function App() {
         const matchesCategory = post.category.toLowerCase().includes(query);
         return matchesTitle || matchesExcerpt || matchesTags || matchesCategory;
       }
-
       return true;
     });
   }, [posts, selectedCategory, activeTag, searchQuery]);
@@ -124,14 +208,30 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-paper text-ink flex flex-col font-sans selection:bg-paper-subtle selection:text-ink">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-16 right-4 z-50 bg-ink text-paper text-xs font-mono px-3.5 py-2 border border-paper-darkBorder shadow-none flex items-center gap-2 animate-in fade-in duration-200">
+          <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Top Navbar */}
       <Navbar
         onHomeClick={handleBackToLogs}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        isAuthor={isAuthor}
+        onLoginClick={() => setIsLoginModalOpen(true)}
+        onLogoutClick={handleLogout}
+        onNewPostClick={() => {
+          setEditingPost(null);
+          setIsComposeOpen(true);
+        }}
+        onOpenArchiveManager={() => setIsArchiveManagerOpen(true)}
       />
 
-      {/* Main View */}
+      {/* Main View Area */}
       <div className="flex-1">
         {selectedPost ? (
           /* Single Article Reader */
@@ -144,9 +244,12 @@ export function App() {
               setActiveTag(tag);
               setSelectedPost(null);
             }}
+            isAuthor={isAuthor}
+            onEditPost={handleStartEdit}
+            onDeletePost={(post) => setPostToDelete(post)}
           />
         ) : (
-          /* Main Blog Feed */
+          /* Main Feed */
           <>
             <HeroBanner
               postCount={posts.length}
@@ -154,77 +257,126 @@ export function App() {
                 const feed = document.getElementById('feed-section');
                 feed?.scrollIntoView({ behavior: 'smooth' });
               }}
+              isAuthor={isAuthor}
+              onNewPostClick={() => {
+                setEditingPost(null);
+                setIsComposeOpen(true);
+              }}
+              onLoginClick={() => setIsLoginModalOpen(true)}
             />
 
-            {/* Filter & Search Ribbon */}
-            <section id="feed-section" className="max-w-6xl mx-auto px-4 pt-10 pb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-border pb-5">
-                {/* Search Bar */}
-                <div className="relative flex-1 max-w-sm">
-                  <input
-                    type="text"
-                    placeholder="Filter articles..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
-                  />
-                  {searchQuery && (
+            {/* Filter Ribbon (shown when posts exist) */}
+            {posts.length > 0 && (
+              <section id="feed-section" className="max-w-6xl mx-auto px-4 pt-10 pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-border pb-5">
+                  {/* Search Bar */}
+                  <div className="relative flex-1 max-w-sm">
+                    <input
+                      type="text"
+                      placeholder="Search dossiers..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink font-mono text-xs"
+                      >
+                        [clear]
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Article count */}
+                  <div className="text-xs font-mono text-ink-muted">
+                    Indexed: <strong className="text-ink font-semibold">{filteredPosts.length}</strong> of {posts.length} dossiers
+                  </div>
+                </div>
+
+                {/* Category Pills Bar */}
+                <div className="flex items-center gap-1.5 overflow-x-auto py-3 scrollbar-none font-mono text-xs">
+                  <span className="text-ink-muted text-[11px] uppercase mr-1">Discipline:</span>
+                  {CATEGORIES.map((cat) => (
                     <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink font-mono text-xs"
+                      key={cat}
+                      onClick={() => {
+                        setSelectedCategory(cat);
+                        setActiveTag(null);
+                      }}
+                      className={`px-2.5 py-1 text-xs transition-colors border ${
+                        selectedCategory === cat && !activeTag
+                          ? 'bg-ink text-paper border-ink'
+                          : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border hover:border-paper-darkBorder'
+                      }`}
                     >
-                      [clear]
+                      {cat}
                     </button>
-                  )}
+                  ))}
                 </div>
 
-                {/* Article count */}
-                <div className="text-xs font-mono text-ink-muted">
-                  Indexed: <strong className="text-ink font-semibold">{filteredPosts.length}</strong> of {posts.length} dossiers
+                {/* Active Tag Filter Indicator */}
+                {activeTag && (
+                  <div className="flex items-center gap-2 py-2 font-mono text-xs text-ink-muted">
+                    <span>Active Tag:</span>
+                    <span className="px-2 py-0.5 border border-paper-border bg-paper-surface text-ink font-bold">
+                      #{activeTag}
+                    </span>
+                    <button
+                      onClick={() => setActiveTag(null)}
+                      className="underline hover:text-ink"
+                    >
+                      [Clear]
+                    </button>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Articles Grid / Empty State */}
+            <main className="max-w-6xl mx-auto px-4 pb-20 pt-4">
+              {posts.length === 0 ? (
+                /* Poetic, pristine empty state */
+                <div className="border border-paper-border bg-paper-surface p-8 sm:p-14 max-w-xl mx-auto text-center space-y-5 my-8">
+                  <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
+                    [ ✦ AKTE 511 // ARCHIVE INITIALIZATION ]
+                  </div>
+
+                  <h2 className="font-serif font-bold text-2xl sm:text-3xl text-ink tracking-tight">
+                    The Archive Begins at Episode 001
+                  </h2>
+
+                  <p className="text-sm text-ink-muted leading-relaxed font-sans max-w-md mx-auto">
+                    No pre-existing dummy data exists in this ledger. Every entry in the 511-dossier series is authored and verified through hands-on laboratory discovery.
+                  </p>
+
+                  <div className="pt-2">
+                    {isAuthor ? (
+                      <button
+                        onClick={() => {
+                          setEditingPost(null);
+                          setIsComposeOpen(true);
+                        }}
+                        className="px-6 py-2.5 bg-crimson text-paper font-mono text-xs font-bold hover:opacity-90 transition-opacity"
+                      >
+                        [ + Pen Episode 001 Now ]
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setIsLoginModalOpen(true)}
+                        className="px-6 py-2 bg-ink text-paper font-mono text-xs font-bold hover:bg-ink-muted transition-colors"
+                      >
+                        [ Author Access &rarr; Sign In to Pen First Entry ]
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="pt-4 border-t border-paper-border text-[11px] font-mono text-ink-muted">
+                    Hot-key shortcut: press <kbd className="border border-paper-border px-1 py-0.5 bg-paper">Ctrl</kbd> + <kbd className="border border-paper-border px-1 py-0.5 bg-paper">Shift</kbd> + <kbd className="border border-paper-border px-1 py-0.5 bg-paper">A</kbd> anytime to open author authentication.
+                  </div>
                 </div>
-              </div>
-
-              {/* Category Pills Bar: Uniform, no rainbow colors, no giant pill radius */}
-              <div className="flex items-center gap-1.5 overflow-x-auto py-3 scrollbar-none font-mono text-xs">
-                <span className="text-ink-muted text-[11px] uppercase mr-1">Discipline:</span>
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => {
-                      setSelectedCategory(cat);
-                      setActiveTag(null);
-                    }}
-                    className={`px-2.5 py-1 text-xs transition-colors border ${
-                      selectedCategory === cat && !activeTag
-                        ? 'bg-ink text-paper border-ink'
-                        : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border hover:border-paper-darkBorder'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-
-              {/* Active Tag Filter Indicator */}
-              {activeTag && (
-                <div className="flex items-center gap-2 py-2 font-mono text-xs text-ink-muted">
-                  <span>Tag:</span>
-                  <span className="px-2 py-0.5 border border-paper-border bg-paper-surface text-ink font-bold">
-                    #{activeTag}
-                  </span>
-                  <button
-                    onClick={() => setActiveTag(null)}
-                    className="underline hover:text-ink"
-                  >
-                    [Clear]
-                  </button>
-                </div>
-              )}
-            </section>
-
-            {/* Articles Grid: 2-column editorial structure, not generic 3-box feature cards */}
-            <main className="max-w-6xl mx-auto px-4 pb-20">
-              {filteredPosts.length > 0 ? (
+              ) : filteredPosts.length > 0 ? (
+                /* Active 2-column editorial grid */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredPosts.map((post) => (
                     <PostCard
@@ -232,14 +384,18 @@ export function App() {
                       post={post}
                       onSelect={handleSelectPost}
                       onTagClick={(tag) => setActiveTag(tag)}
+                      isAuthor={isAuthor}
+                      onEdit={handleStartEdit}
+                      onDelete={(post) => setPostToDelete(post)}
                     />
                   ))}
                 </div>
               ) : (
+                /* Search zero results */
                 <div className="text-center py-16 border border-paper-border bg-paper-surface p-8 max-w-md mx-auto space-y-3 font-sans">
-                  <h3 className="font-serif font-bold text-xl text-ink">No Articles Found</h3>
+                  <h3 className="font-serif font-bold text-xl text-ink">No Records Found</h3>
                   <p className="text-xs text-ink-muted">
-                    No records match "{searchQuery || activeTag}".
+                    No articles match "{searchQuery || activeTag}".
                   </p>
                   <button
                     onClick={() => {
@@ -254,35 +410,76 @@ export function App() {
                 </div>
               )}
 
-              {/* Tag Index */}
-              <div className="mt-14 pt-6 border-t border-paper-border">
-                <div className="mb-3 font-mono text-xs font-bold text-ink uppercase tracking-wider">
-                  Topic Index
+              {/* Tag Index (if tags exist) */}
+              {allTags.length > 0 && (
+                <div className="mt-14 pt-6 border-t border-paper-border">
+                  <div className="mb-3 font-mono text-xs font-bold text-ink uppercase tracking-wider">
+                    Topic Index
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 font-mono text-xs">
+                    {allTags.map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => setActiveTag(tag)}
+                        className={`px-2 py-0.5 border transition-colors ${
+                          activeTag === tag
+                            ? 'bg-ink text-paper border-ink'
+                            : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border'
+                        }`}
+                      >
+                        #{tag}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-1.5 font-mono text-xs">
-                  {allTags.map((tag) => (
-                    <button
-                      key={tag}
-                      onClick={() => setActiveTag(tag)}
-                      className={`px-2 py-0.5 border transition-colors ${
-                        activeTag === tag
-                          ? 'bg-ink text-paper border-ink'
-                          : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border'
-                      }`}
-                    >
-                      #{tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
             </main>
           </>
         )}
       </div>
 
-      {/* Footer with working TOS and Privacy triggers */}
+      {/* Footer with TOS and Privacy triggers */}
       <Footer
         onOpenLegal={(type) => setLegalModal({ isOpen: true, type })}
+      />
+
+      {/* Author Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onLoginSuccess={() => {
+          setIsAuthor(true);
+          showToast('Author credentials verified. Full access active.');
+        }}
+      />
+
+      {/* Author Compose / Edit Studio */}
+      <ComposeStudio
+        isOpen={isComposeOpen}
+        onClose={() => {
+          setIsComposeOpen(false);
+          setEditingPost(null);
+        }}
+        onPublish={handlePublishOrUpdatePost}
+        initialPost={editingPost}
+        suggestedEpisodeNumber={posts.length + 1}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        post={postToDelete}
+        isOpen={Boolean(postToDelete)}
+        onClose={() => setPostToDelete(null)}
+        onConfirmDelete={handleConfirmDelete}
+      />
+
+      {/* Archive Manager (Backup, JSON sync, Passphrase update) */}
+      <ArchiveManagerModal
+        isOpen={isArchiveManagerOpen}
+        onClose={() => setIsArchiveManagerOpen(false)}
+        posts={posts}
+        onImportArchive={handleImportArchive}
+        onResetArchive={handleResetArchive}
       />
 
       {/* Legal Modals (TOS and Privacy Policy) */}
@@ -291,27 +488,6 @@ export function App() {
         type={legalModal.type}
         onClose={() => setLegalModal({ isOpen: false, type: 'terms' })}
       />
-
-      {/* Localhost Development Author Studio (Vite eliminates this completely in production) */}
-      {import.meta.env.DEV && (
-        <>
-          <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2 bg-ink text-paper px-3 py-1 border border-paper-darkBorder text-xs font-mono">
-            <span>[Local Dev]</span>
-            <button
-              onClick={() => setIsComposeOpen(true)}
-              className="underline hover:text-paper-surface ml-1"
-            >
-              + Draft Article
-            </button>
-          </div>
-
-          <ComposeStudio
-            isOpen={isComposeOpen}
-            onClose={() => setIsComposeOpen(false)}
-            onPublish={handlePublishPost}
-          />
-        </>
-      )}
     </div>
   );
 }

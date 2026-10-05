@@ -1,71 +1,78 @@
+import { ArchivalArtifact3D } from './ArchivalArtifact3D';
+
 interface HeroBannerProps {
   postCount: number;
   onExploreClick: () => void;
+  isAuthor: boolean;
+  onNewPostClick: () => void;
+  onLoginClick: () => void;
 }
 
 export const HeroBanner = ({
   postCount,
   onExploreClick,
+  isAuthor,
+  onNewPostClick,
+  onLoginClick,
 }: HeroBannerProps) => {
   return (
     <div className="border-b border-paper-border bg-paper-surface">
-      <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="max-w-6xl mx-auto px-4 py-10 sm:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Main Hero Copy */}
-          <div className="lg:col-span-8 space-y-4">
-            <div className="font-mono text-xs text-ink-muted uppercase tracking-wider">
-              Akte 511 / Technical Security Dossiers
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-center gap-2 font-mono text-xs text-crimson uppercase tracking-wider font-semibold">
+              <span>[ ✦ AKTE 511 ]</span>
+              <span className="text-paper-darkBorder">&bull;</span>
+              <span className="text-ink-muted">A SECURITY RESEARCH CHRONICLE</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-ink tracking-tight leading-[1.12]">
-              Akte 511: Research and Laboratory Records
+            <h1 className="text-3xl sm:text-5xl font-serif font-bold text-ink tracking-tight leading-[1.14]">
+              Akte 511: Research &amp; Laboratory Records
             </h1>
 
-            <p className="text-ink-muted text-base max-w-2xl leading-relaxed font-sans">
-              An immutable technical ledger documenting penetration testing labs, network packet forensics,
-              isolated virtualization architectures, and defensive mitigations structured through first principles and the Feynman Technique.
+            <p className="text-ink-muted text-base max-w-xl leading-relaxed font-sans">
+              An independent, lifelong ledger of 511 technical writeups. Documenting penetration testing simulations, packet forensics, defensive blueprints, and concept explanations via the Feynman Technique.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <button
-                onClick={onExploreClick}
-                className="px-4 py-2 bg-ink text-paper text-xs font-mono font-bold hover:bg-ink-muted transition-colors"
-              >
-                [ Browse Articles ]
-              </button>
+            <div className="flex flex-wrap items-center gap-3 pt-3">
+              {postCount > 0 ? (
+                <button
+                  onClick={onExploreClick}
+                  className="px-4 py-2 bg-ink text-paper text-xs font-mono font-bold hover:bg-ink-muted transition-colors"
+                >
+                  [ Read Archive ({postCount}) ]
+                </button>
+              ) : isAuthor ? (
+                <button
+                  onClick={onNewPostClick}
+                  className="px-4 py-2 bg-crimson text-paper text-xs font-mono font-bold hover:opacity-90 transition-opacity"
+                >
+                  [ + Pen Episode 001 ]
+                </button>
+              ) : (
+                <button
+                  onClick={onLoginClick}
+                  className="px-4 py-2 bg-ink text-paper text-xs font-mono font-bold hover:bg-ink-muted transition-colors"
+                >
+                  [ Author Login &rarr; ]
+                </button>
+              )}
 
               <span className="text-xs font-mono text-ink-muted px-3 py-2 border border-paper-border bg-paper">
-                Verified Lab Telemetry &bull; Educational Research
+                Goal: 511 Original Dossiers &bull; Zero Fluff
               </span>
             </div>
           </div>
 
-          {/* Clean Overview Card */}
-          <div className="lg:col-span-4 p-5 border border-paper-border bg-paper space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-paper-border font-mono text-xs">
-              <span className="font-bold text-ink uppercase tracking-wider">Archive Status</span>
-              <span className="text-crimson font-bold">Active</span>
-            </div>
+          {/* 3D Interactive Archival Monolith Component */}
+          <div className="lg:col-span-5 space-y-3">
+            <ArchivalArtifact3D />
 
-            <div className="space-y-3 font-mono text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-ink-muted">Published Dossiers</span>
-                <span className="font-bold text-ink">{postCount} / 511</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-ink-muted">Scope</span>
-                <span className="text-ink">Red &bull; Blue &bull; Forensics</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-ink-muted">Standard</span>
-                <span className="text-ink">Feynman First Principles</span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-paper-border text-[11px] font-sans text-ink-muted">
-              All procedures conducted in isolated virtual networks.
+            {/* Quick Archival Status */}
+            <div className="px-4 py-2.5 border border-paper-border bg-paper flex items-center justify-between font-mono text-xs text-ink-muted">
+              <span>STATUS: <strong className="text-ink">ACTIVE ARCHIVE</strong></span>
+              <span>INDEX: <strong className="text-crimson font-bold">{String(postCount).padStart(3, '0')} / 511</strong></span>
             </div>
           </div>
         </div>

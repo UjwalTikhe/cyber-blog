@@ -8,6 +8,9 @@ interface PostViewProps {
   onBack: () => void;
   onSelectPost: (post: Post) => void;
   onTagClick: (tag: string) => void;
+  isAuthor?: boolean;
+  onEditPost?: (post: Post) => void;
+  onDeletePost?: (post: Post) => void;
 }
 
 function getYouTubeEmbedUrl(url?: string): string | null {
@@ -22,6 +25,9 @@ export const PostView = ({
   onBack,
   onSelectPost,
   onTagClick,
+  isAuthor = false,
+  onEditPost,
+  onDeletePost,
 }: PostViewProps) => {
   const [copiedLink, setCopiedLink] = useState(false);
   const [activeHeading, setActiveHeading] = useState<string>('');
@@ -99,8 +105,8 @@ export const PostView = ({
   return (
     <div className="min-h-screen pb-24 bg-paper">
       <div className="max-w-4xl mx-auto px-4 pt-8">
-        {/* Navigation Back button */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-paper-border">
+        {/* Navigation & Author Action Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-4 border-b border-paper-border">
           <button
             onClick={onBack}
             className="font-mono text-xs text-ink-muted hover:text-ink transition-colors flex items-center gap-1.5"
@@ -109,19 +115,39 @@ export const PostView = ({
             <span>Back to all dossiers</span>
           </button>
 
-          <div className="flex items-center gap-2 font-mono text-xs text-ink-muted">
-            <span className="font-bold text-ink">
-              {akteDisplay}
-            </span>
-            <span>/</span>
-            <span>Technical Dossier</span>
+          <div className="flex items-center gap-3">
+            {/* Author Edit / Delete buttons */}
+            {isAuthor && (
+              <div className="flex items-center gap-2 font-mono text-xs">
+                <button
+                  onClick={() => onEditPost && onEditPost(post)}
+                  className="px-2.5 py-1 border border-paper-border bg-paper hover:bg-paper-surface text-ink transition-colors"
+                >
+                  Edit Dossier
+                </button>
+                <button
+                  onClick={() => onDeletePost && onDeletePost(post)}
+                  className="px-2.5 py-1 border border-crimson/50 text-crimson hover:bg-crimson hover:text-paper transition-colors"
+                >
+                  Delete Dossier
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 font-mono text-xs text-ink-muted">
+              <span className="font-bold text-ink">
+                {akteDisplay}
+              </span>
+              <span>/</span>
+              <span>Technical Dossier</span>
+            </div>
           </div>
         </div>
 
         {/* Post Header */}
         <header className="mb-10 space-y-4">
           <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-ink-muted">
-            <span className="text-ink font-semibold">
+            <span className="text-crimson font-semibold">
               {post.category}
             </span>
             <span>&bull;</span>
@@ -136,7 +162,7 @@ export const PostView = ({
             {post.title}
           </h1>
 
-          {/* Excerpt with clean uniform border, no colored left stripe */}
+          {/* Excerpt */}
           <div className="p-4 border border-paper-border bg-paper-surface rounded-sm text-base text-ink-muted leading-relaxed font-sans">
             {post.excerpt}
           </div>
@@ -168,8 +194,8 @@ export const PostView = ({
         {/* YouTube Video Embed (if companion video exists) */}
         {embedUrl && (
           <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-3">
-            <div className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
-              [ Companion Video Walkthrough: YouTube ]
+            <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
+              [ ✦ Companion Vlog Walkthrough: YouTube ]
             </div>
             <div className="aspect-video w-full border border-paper-border">
               <iframe
@@ -183,11 +209,11 @@ export const PostView = ({
           </div>
         )}
 
-        {/* Dedicated Feynman Technique Highlight Box: Uniform 1px border, no colored left stripe */}
+        {/* Dedicated Feynman Technique Highlight Box */}
         {post.feynmanSummary && (
           <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-2">
-            <div className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
-              [ Core Concept: First Principles Breakdown ]
+            <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
+              [ ✦ First Principles &amp; Feynman Intuition Breakdown ]
             </div>
             <p className="text-sm text-ink-muted leading-relaxed font-sans">
               "{post.feynmanSummary}"
@@ -291,7 +317,7 @@ export const PostView = ({
             )}
 
             <div className="p-4 border border-paper-border bg-paper-surface font-mono text-xs text-ink-muted space-y-2">
-              <div className="font-bold text-ink uppercase tracking-wider">Akte 511</div>
+              <div className="font-bold text-ink uppercase tracking-wider">Akte 511 Ledger</div>
               <p className="text-[11px] leading-relaxed">
                 Verifiable cybersecurity lab records, packet captures, and defensive blueprints.
               </p>
