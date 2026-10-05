@@ -30,9 +30,9 @@ export const TerminalModal = ({
       command: 'sys.status',
       output: (
         <div className="text-slate-700 space-y-1 font-sans">
-          <p className="text-rose-600 font-bold font-display">SYSTEM CONNECTED: 0xSEC SHELL v2.6</p>
+          <p className="text-rose-600 font-bold font-display">AKTE 511 // RESEARCH ARCHIVE SHELL v3.0</p>
           <p className="text-slate-500 text-xs">
-            Type <span className="text-rose-600 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">help</span> to view commands, or search writeups by keyword.
+            Type <span className="text-rose-600 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">help</span> to view commands, or query dossiers by keyword or ID.
           </p>
         </div>
       ),
@@ -80,13 +80,13 @@ export const TerminalModal = ({
       response = (
         <div className="space-y-1.5 text-slate-700 text-xs font-sans">
           <p className="text-rose-600 font-bold font-display">AVAILABLE COMMANDS:</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">ls / posts</span> : List all available writeups</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">read &lt;id&gt;</span> : Open a writeup by number or slug</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">timeline</span> : Open 100-Day progression roadmap</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">arsenal</span> : View homelab specifications &amp; tools</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">whoami</span> : Print operator background &amp; goals</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">clear</span> : Clear terminal history</p>
-          <p>• <span className="text-purple-600 font-bold font-mono">exit</span> : Close terminal</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">ls / dossiers</span> : List all published dossiers</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">read &lt;id|number&gt;</span> : Open dossier record</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">index</span> : Open Akte 511 master curriculum index</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">arsenal</span> : View homelab specifications &amp; tooling</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">whoami</span> : Display operator and series metadata</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">clear</span> : Clear terminal display</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">exit</span> : Close search terminal</p>
         </div>
       );
     } else if (lower === 'clear') {
@@ -96,10 +96,10 @@ export const TerminalModal = ({
     } else if (lower === 'exit') {
       onClose();
       return;
-    } else if (lower === 'posts' || lower === 'ls') {
+    } else if (lower === 'posts' || lower === 'dossiers' || lower === 'ls') {
       response = (
         <div className="space-y-1.5 text-xs font-sans">
-          <p className="text-rose-600 font-bold font-display">PUBLISHED WRITEUPS ({posts.length}):</p>
+          <p className="text-rose-600 font-bold font-display">PUBLISHED DOSSIERS ({posts.length}):</p>
           {posts.map((p, idx) => (
             <div
               key={p.id}
@@ -109,13 +109,13 @@ export const TerminalModal = ({
               }}
               className="flex items-center justify-between p-2 rounded-xl bg-pink-50/60 hover:bg-pink-100 cursor-pointer text-slate-800 hover:text-rose-700 transition-colors group"
             >
-              <span>[{idx + 1}] {p.title}</span>
-              <span className="text-rose-600 font-bold text-[11px]">read {idx + 1} &rarr;</span>
+              <span className="font-mono text-[11px]">[{String(p.akteNumber ?? idx + 1).padStart(3, '0')}] {p.title}</span>
+              <span className="text-rose-600 font-bold text-[11px]">read &rarr;</span>
             </div>
           ))}
         </div>
       );
-    } else if (lower === 'timeline') {
+    } else if (lower === 'timeline' || lower === 'index') {
       onNavigateTab('timeline');
       onClose();
       return;
@@ -126,10 +126,10 @@ export const TerminalModal = ({
     } else if (lower === 'whoami') {
       response = (
         <div className="space-y-1 text-xs font-sans text-slate-700 border-l-4 border-rose-400 pl-3 py-1 bg-pink-50/60 rounded-r-xl">
-          <p className="text-rose-600 font-bold font-display">OPERATOR: Ujwal Tikhe</p>
-          <p>MISSION: Document 100 days of hands-on security research, lab exercises &amp; blue team defense.</p>
-          <p>TARGETS: CompTIA Security+, eJPT, OSCP</p>
-          <p>LAB: VirtualBox 7.x, Kali Linux, Air-gapped Host-Only subnet</p>
+          <p className="text-rose-600 font-bold font-display">ARCHIVE: Akte 511</p>
+          <p>OPERATOR: Ujwal Tikhe</p>
+          <p>SCOPE: Penetration testing labs, network protocol forensics &amp; blue-team mitigation.</p>
+          <p>ENVIRONMENT: Isolated dual-adapter hypervisor sandbox.</p>
         </div>
       );
     } else if (lower.startsWith('read ') || lower.startsWith('cat ')) {
@@ -148,7 +148,7 @@ export const TerminalModal = ({
         onClose();
         return;
       } else {
-        response = <p className="text-rose-600 text-xs">Error: Post matching "{target}" not found.</p>;
+        response = <p className="text-rose-600 text-xs">Error: Dossier matching "{target}" not found.</p>;
       }
     } else {
       const matches = posts.filter(
@@ -171,8 +171,8 @@ export const TerminalModal = ({
                 }}
                 className="p-2.5 rounded-2xl bg-pink-50/70 border border-pink-200 hover:border-pink-400 cursor-pointer text-slate-800 hover:text-rose-600 flex items-center justify-between"
               >
-                <span className="font-semibold">{m.title}</span>
-                <span className="text-[10px] text-rose-600 font-bold bg-white px-2 py-0.5 rounded-full border border-pink-200">
+                <span className="font-semibold text-xs">{m.title}</span>
+                <span className="text-[10px] text-rose-600 font-mono bg-white px-2 py-0.5 rounded-full border border-pink-200">
                   {m.category}
                 </span>
               </div>
@@ -182,7 +182,7 @@ export const TerminalModal = ({
       } else {
         response = (
           <p className="text-slate-500 text-xs font-sans">
-            Command not recognized. Type <span className="text-rose-600 font-bold">help</span> to view commands.
+            Command not recognized. Type <span className="text-rose-600 font-bold font-mono">help</span> to view commands.
           </p>
         );
       }
@@ -200,13 +200,13 @@ export const TerminalModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
-      <div className="w-full max-w-2xl bg-white border border-pink-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[520px]">
+    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+      <div className="w-full max-w-2xl bg-white border border-pink-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
         {/* Terminal Title Bar */}
         <div className="bg-gradient-to-r from-pink-50 via-white to-pink-50 px-5 py-3 border-b border-pink-100 flex items-center justify-between">
           <div className="flex items-center gap-2 font-display font-bold text-xs text-slate-800">
             <TerminalIcon className="w-4 h-4 text-rose-500" />
-            <span>INTERACTIVE TERMINAL // COMMAND INTERFACE</span>
+            <span className="font-mono">AKTE 511 // COMMAND SEARCH SHELL</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -221,11 +221,11 @@ export const TerminalModal = ({
         </div>
 
         {/* Console Log Area */}
-        <div className="flex-1 p-5 overflow-y-auto font-mono text-xs space-y-4 bg-pink-50/20">
+        <div className="flex-1 p-5 overflow-y-auto font-mono text-xs space-y-4 bg-pink-50/15">
           {history.map((item) => (
             <div key={item.id} className="space-y-1">
               <div className="flex items-center gap-2 text-rose-600 font-bold">
-                <span className="text-purple-600">user@0xsec:~$</span>
+                <span className="text-purple-600">guest@akte511:~$</span>
                 <span>{item.command}</span>
               </div>
               <div className="pl-4">{item.output}</div>
@@ -236,13 +236,13 @@ export const TerminalModal = ({
 
         {/* Input prompt */}
         <form onSubmit={handleCommandSubmit} className="p-3.5 bg-white border-t border-pink-100 flex items-center gap-2">
-          <span className="font-mono text-xs font-bold text-rose-600">user@0xsec:~$</span>
+          <span className="font-mono text-xs font-bold text-rose-600">guest@akte511:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type 'help' or search writeups..."
+            placeholder="Type 'help' or search dossiers..."
             className="flex-1 bg-transparent font-mono text-xs text-slate-800 focus:outline-none placeholder:text-slate-400"
           />
           <button

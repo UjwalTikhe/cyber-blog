@@ -31,6 +31,9 @@ export const PostView = ({
   const [copiedLink, setCopiedLink] = useState(false);
   const [activeHeading, setActiveHeading] = useState<string>('');
 
+  const akteNum = post.akteNumber ?? post.episode ?? 1;
+  const akteDisplay = `AKTE ${String(akteNum).padStart(3, '0')}`;
+
   // Extract table of contents
   const toc = useMemo(() => extractToc(post.content), [post.content]);
 
@@ -125,17 +128,15 @@ export const PostView = ({
             className="flex items-center gap-2 font-sans font-bold text-xs text-rose-600 hover:text-rose-800 bg-white hover:bg-pink-50 px-4 py-2 rounded-full border border-pink-200 transition-all shadow-cute-pill group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>&larr; Back to all writeups</span>
+            <span>&larr; Back to Dossiers</span>
           </button>
 
           <div className="flex items-center gap-2 font-sans text-xs font-semibold text-slate-500">
-            {post.episode && (
-              <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full font-bold">
-                Episode {post.episode < 10 ? `0${post.episode}` : post.episode}
-              </span>
-            )}
+            <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold">
+              {akteDisplay}
+            </span>
             <span className="text-slate-400">•</span>
-            <span>Technical Writeup</span>
+            <span>Technical Dossier</span>
           </div>
         </div>
 
@@ -192,14 +193,14 @@ export const PostView = ({
           </div>
         )}
 
-        {/* YouTube Video Embed (if companion video exists) */}
+        {/* YouTube Video Embed (if companion vlog exists) */}
         {embedUrl && (
           <div className="mb-10 bg-white border border-pink-200 rounded-3xl p-6 shadow-cute-card space-y-4">
             <div className="flex items-center gap-2 font-display font-bold text-sm text-slate-900">
               <svg className="w-5 h-5 fill-red-600" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
-              <span>Watch Companion Video Episode (YouTube)</span>
+              <span>Companion Video Walkthrough (YouTube)</span>
             </div>
             <div className="aspect-video w-full rounded-2xl overflow-hidden border border-pink-100 shadow-sm">
               <iframe
@@ -218,7 +219,7 @@ export const PostView = ({
           <div className="mb-10 bg-gradient-to-r from-rose-50/80 via-pink-50/60 to-purple-50/80 border border-rose-200 rounded-3xl p-6 shadow-cute-sm space-y-2">
             <div className="flex items-center gap-2 font-display font-bold text-sm text-rose-800">
               <Lightbulb className="w-5 h-5 text-rose-500 fill-rose-200" />
-              <span>THE FEYNMAN TECHNIQUE (CORE INSIGHT)</span>
+              <span className="font-mono text-xs uppercase tracking-wide">Core Concept &bull; First Principles Breakdown</span>
             </div>
             <p className="text-sm text-slate-700 leading-relaxed font-sans font-medium">
               "{post.feynmanSummary}"
@@ -243,8 +244,8 @@ export const PostView = ({
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-display font-bold text-sm text-slate-900">End of Transmission</div>
-                    <div className="text-xs text-slate-500 font-sans">Documented as part of the 100-Day Cybersecurity Roadmap.</div>
+                    <div className="font-display font-bold text-sm text-slate-900">End of Dossier Record</div>
+                    <div className="text-xs text-slate-500 font-sans">Akte 511 Technical Investigation Archive.</div>
                   </div>
                 </div>
 
@@ -276,9 +277,9 @@ export const PostView = ({
                     onClick={() => onSelectPost(prevPost)}
                     className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-left transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5"
                   >
-                    <div className="text-[11px] font-sans font-bold text-rose-600 flex items-center gap-1">
+                    <div className="text-[11px] font-mono font-bold text-rose-600 flex items-center gap-1">
                       <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-                      <span>Previous Writeup</span>
+                      <span>Previous Dossier</span>
                     </div>
                     <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
                       {prevPost.title}
@@ -291,8 +292,8 @@ export const PostView = ({
                     onClick={() => onSelectPost(nextPost)}
                     className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-right transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5 ml-auto w-full"
                   >
-                    <div className="text-[11px] font-sans font-bold text-rose-600 flex items-center justify-end gap-1">
-                      <span>Next Writeup</span>
+                    <div className="text-[11px] font-mono font-bold text-rose-600 flex items-center justify-end gap-1">
+                      <span>Next Dossier</span>
                       <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                     <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
@@ -333,25 +334,25 @@ export const PostView = ({
               </div>
             )}
 
-            {/* Author Bio Card */}
+            {/* Author / Project Card */}
             <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 border border-pink-200 flex items-center justify-center font-display font-bold text-rose-600 text-lg shadow-cute-pill">
-                  0xU
+                  511
                 </div>
                 <div>
-                  <div className="font-display font-bold text-slate-900 text-base">Security Researcher</div>
-                  <div className="text-xs font-sans font-bold text-rose-600">@Journey Day 1</div>
+                  <div className="font-display font-bold text-slate-900 text-base">Akte 511</div>
+                  <div className="text-xs font-mono font-bold text-rose-600">Technical Archive</div>
                 </div>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Learning defensive and offensive engineering in public using the Feynman technique. Documenting lab walkthroughs, protocol dissections, and certification milestones.
+                A verified repository of technical investigations, packet captures, and defensive blueprints compiled under the Feynman Technique.
               </p>
 
               <div className="pt-3 border-t border-pink-100 flex items-center justify-between text-[11px] font-sans font-semibold text-slate-500">
-                <span>Lab OS: Kali Linux</span>
-                <span className="text-rose-600">100-Day Tracker</span>
+                <span>Environment: Kali Linux</span>
+                <span className="font-mono text-rose-600">Air-Gapped Lab</span>
               </div>
             </div>
           </aside>

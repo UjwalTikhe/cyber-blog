@@ -2,359 +2,239 @@ import type { Post, JourneyMilestone, ArsenalTool } from '../types';
 
 export const INITIAL_POSTS: Post[] = [
   {
-    id: 'day-1-embarking-on-cybersecurity-roadmap',
+    id: 'akte-001-philosophy-of-proof-of-work',
+    akteNumber: 1,
     episode: 1,
-    title: 'Day 1: Embarking on My Cybersecurity Journey — Roadmap & Philosophy',
+    title: 'Akte 001: The Philosophy of Proof-of-Work in Cybersecurity',
     date: '2026-10-05',
     category: 'Foundations',
     difficulty: 'Beginner',
     readTime: '5 min read',
     thumbnailUrl: './thumbnails/thumb-ep1.svg',
-    feynmanSummary: 'Certifications without hands-on proof of work are meaningless. Documenting my journey using the Feynman Technique forces me to truly understand core cybersecurity protocols instead of just memorizing slides.',
-    tags: ['journey', 'roadmap', 'foundations', 'learning-in-public'],
-    excerpt: 'Why I am committing to documenting every lab, failure, and breakthrough publicly. The 100-day strategy, certification milestones, and my initial tool setup.',
-    content: `# Day 1: Embarking on My Cybersecurity Journey — Roadmap & Philosophy
+    feynmanSummary: 'Theoretical cybersecurity knowledge without verifiable proof-of-work is fragile. Breaking down every protocol and attack vector into reproducible simulations ensures true mastery over memorization.',
+    tags: ['foundations', 'methodology', 'learning-in-public', 'architecture'],
+    excerpt: 'An investigation into verifiable technical competency, disciplined lab logging, and applying the Feynman Technique across 511 technical dossiers.',
+    content: `# Akte 001: The Philosophy of Proof-of-Work in Cybersecurity
 
-Welcome to the inaugural transmission of my cybersecurity logbook. Today marks **Day 1** of a deliberate, multi-month transition into the world of offensive and defensive information security.
+In information security, credentials and certifications represent intent, but **reproducible proof-of-work represents capability**. 
 
-I decided early on that passively reading textbooks or hoarding certification PDF guides wouldn't cut it. In security, **proof of work speaks louder than credentials alone**. This blog is my public ledger: documenting the labs I break, the tools I build, the traffic I dissect, and the lessons I learn along the way.
-
----
-
-## 1. The Core Philosophy: "Learn in Public"
-
-> **"If you cannot explain a vulnerability, network packet, or defensive control in plain English, you do not truly understand it."**
-
-By writing walkthroughs for every substantial lab, I enforce the *Feynman Technique*. Every article here will satisfy three rules:
-1. **Explain the "Why":** Not just running commands, but understanding the underlying protocol or operating system mechanism.
-2. **Include Proof:** Terminal outputs, Wireshark captures, or architecture diagrams.
-3. **Offer Defense & Remediation:** For every exploit explored, detail how blue teams detect and mitigate it.
+Passive reading and memorization of slide decks often dissolve when faced with an active security incident, an unexpected firewall state, or an unstandardized network topography. **Akte 511** is established as an immutable technical ledger: documenting isolated lab simulations, packet-level telemetry, offensive vectors, and blue-team mitigations across 511 case records.
 
 ---
 
-## 2. The 100-Day Strategic Roadmap
+## 1. The Core Method: First Principles & Feynman Breakdown
 
-Here is how I have structured the upcoming 100 days across 4 progressive sprints:
+Every technical record in this series adheres to three core standards:
 
-\`\`\`
-Sprint 1: Foundations (Days 1–25)
-├── Computer Networking (OSI, TCP/IP, DNS, DHCP, Subnetting)
-├── Linux & Bash Command-Line Mastery
-└── Virtualization & Homelab Isolation
-
-Sprint 2: Offensive Recon & Defense Fundamentals (Days 26–50)
-├── Nmap, Wireshark & Packet Dissection
-├── Web Application Security (OWASP Top 10)
-└── TryHackMe Pre-Security & Complete Beginner Paths
-
-Sprint 3: Blue Team Operations & SIEM (Days 51–75)
-├── Security Information and Event Management (Splunk / Elastic)
-├── Active Directory Fundamentals & Attack Vectors (Kerberos, NTLM)
-└── Snort / Suricata Intrusion Detection Rules
-
-Sprint 4: Hands-on Penetration Testing & Capstone (Days 76–100)
-├── HackTheBox Starting Point & Easy Machines
-├── Python Security Automation & Port Scanners
-└── Certification Preparation (CompTIA Security+ / eJPT)
-\`\`\`
+1. **Protocol-Level Understanding:** Rather than blindly executing exploitation frameworks, dissect the underlying protocol mechanism (e.g. TCP flags, RPC handshakes, memory allocations).
+2. **Empirical Evidence:** Walkthroughs require packet captures, raw terminal traces, and verified system logs.
+3. **Defensive Remediation:** An offensive vector is only half-understood until the blue-team detection signature and hardening configuration are fully documented.
 
 ---
 
-## 3. Ground Rules & Ethics Disclaimer
+## 2. Lab Isolation & Operational Security Standards
+
+All investigative procedures in this series follow strict containment protocols:
 
 > [!NOTE]
-> All security exercises, vulnerability analyses, and penetration tests recorded in this log are conducted strictly within **isolated local virtual labs**, sanctioned sandbox environments (TryHackMe, HackTheBox), or authorized systems.
+> All vulnerability assessments, packet inspections, and exploit executions are performed strictly within isolated, non-routable virtual environments or sanctioned lab infrastructure.
 
-* **Never target unauthorized infrastructure.**
-* **Never store live credentials or sensitive operational data on public repositories.**
-* **Always verify host-only virtual network isolation before launching test traffic.**
+* **Dual-NIC Isolation:** Virtual machines conducting active testing are assigned host-only subnets with zero default gateways to public networks.
+* **Ephemeral Snapshots:** Hypervisor states are snapshotted prior to any artifact execution to prevent configuration drift.
+* **Deterministic Logging:** Command invocations and stdout/stderr are preserved for post-mortem analysis.
 
 ---
 
-## 4. Next Steps for Day 2
+## 3. Dossier Trajectory
 
-Tomorrow, I will be setting up my primary battlefield: an isolated **VirtualBox & Kali Linux homelab** with custom Host-Only networking to safely simulate client-server architectures without exposing my home LAN.
-
-*Stay tuned, and feel free to connect with me if you are walking a similar path!*
+The upcoming dossiers establish the foundational infrastructure: configuring a fully segmented hypervisor sandbox, dissecting packet headers at the datalink layer, and constructing customized Python socket monitors.
 `
   },
   {
-    id: 'homelab-setup-virtualbox-kali-pfsense',
+    id: 'akte-002-isolated-hypervisor-sandbox',
+    akteNumber: 2,
     episode: 2,
-    title: 'Day 2: Architecting an Isolated VirtualBox & Kali Homelab',
+    title: 'Akte 002: Architecting an Isolated Hypervisor & Dual-NIC Sandbox',
     date: '2026-10-06',
     category: 'Homelab',
     difficulty: 'Beginner',
     readTime: '7 min read',
     thumbnailUrl: './thumbnails/thumb-ep2.svg',
-    feynmanSummary: 'A safe lab is like a digital submarine with watertight bulkheads: the attacker VM has an outside valve to download tools from the internet, but vulnerable victim machines are locked in an airtight room so malware can never escape into your real house network.',
-    tags: ['homelab', 'virtualbox', 'kali-linux', 'networking', 'security'],
-    excerpt: 'Step-by-step guide to designing a dual-adapter sandbox environment: keeping your attack machine connected for updates while completely isolating vulnerable targets.',
-    content: `# Day 2: Architecting an Isolated VirtualBox & Kali Homelab
+    feynmanSummary: 'A safe lab functions like a containment submarine with isolated airlocks: the auditing machine can reach outside to pull necessary tool updates, but target machines reside in an airtight subnet where packets can never reach physical home devices.',
+    tags: ['homelab', 'virtualbox', 'kali-linux', 'networking', 'isolation'],
+    excerpt: 'Engineering a zero-leakage testing ground: dual-adapter network segmentation, host-only subnets, and hypervisor baseline snapshots.',
+    content: `# Akte 002: Architecting an Isolated Hypervisor & Dual-NIC Sandbox
 
-A safe, reproducible testing ground is the fundamental prerequisite of every cybersecurity practitioner. Practicing with offensive tools like Nmap, Metasploit, or Hydra on your home Wi-Fi network risks crashing your router, triggering ISP alerts, or accidentally exposing your host OS.
+Practicing security auditing tools across consumer networks carries unacceptable risks: broadcast flooding, router instability, and potential exposure of sensitive local traffic. 
 
-Today, I designed and deployed an **air-gapped target subnet** paired with a dual-homed Kali Linux machine.
+This dossier outlines the architecture of an isolated testing environment using **VirtualBox 7.x**, **Kali Linux**, and a dedicated **Host-Only virtual subnet**.
 
 ---
 
-## 1. Network Architecture Diagram
+## 1. Network Topology & Interface Architecture
 
-The goal is simple: Kali needs internet access to download tools and apt packages, but the vulnerable targets (e.g., Metasploitable 2 or Windows 10 victim) must **never** be able to communicate with the outside internet or my physical local network.
+To balance utility with containment, the primary security workstation utilizes dual network interfaces:
 
 \`\`\`
-Physical Host (Windows 11 / 32GB RAM)
-│
-├── [NAT Network: 10.0.2.0/24] ─── (Outbound Internet for Updates)
-│         │
-│     [Adapter 1]
-│   ┌──────────────┐
-│   │  Kali Linux  │ (Attacker VM)
-│   └──────────────┘
-│     [Adapter 2]
-│         │
-└── [Host-Only / Internal: 192.168.56.0/24] ─── (Isolated Private Lab)
-          │
-          ├── [Metasploitable 2 Target: 192.168.56.101]
-          └── [Windows 10 Test Target:  192.168.56.102]
+                    [ Host Physical Wi-Fi / LAN ]
+                                 │
+                     NAT Adapter (enp0s3)
+                  [Internet Access for Updates]
+                                 │
+                   ┌─────────────┴─────────────┐
+                   │    Kali Workstation VM    │
+                   └─────────────┬─────────────┘
+                                 │
+                     Host-Only Adapter (enp0s8)
+                       Subnet: 192.168.56.0/24
+                                 │
+         ┌───────────────────────┴───────────────────────┐
+         │                                               │
+┌─────────────────┐                             ┌─────────────────┐
+│ Target VM 1     │                             │ Target VM 2     │
+│ IP: .101        │                             │ IP: .102        │
+│ Gateway: NONE   │                             │ Gateway: NONE   │
+└─────────────────┘                             └─────────────────┘
 \`\`\`
 
 ---
 
-## 2. Step-by-Step Configuration
+## 2. Interface Configuration Protocol
 
-### Step 2.1: Configuring Kali Network Adapters
-Inside VirtualBox settings for Kali Linux:
-1. **Adapter 1:** Attached to \`NAT\` (Allows web browsing and \`sudo apt update\`).
-2. **Adapter 2:** Attached to \`Host-Only Adapter\` (\`vboxnet0\` or \`VirtualBox Host-Only Ethernet Adapter\`).
-   - Promiscuous Mode: *Allow All* (essential for Wireshark packet captures).
-
-### Step 2.2: Isolating the Target VMs
-For every vulnerable victim VM:
-* Enable **only one adapter**, attached strictly to the same \`Host-Only Adapter\` or \`Internal Network\`.
-* Turn off DHCP if you prefer assigning deterministic static IPs for your targets.
-
----
-
-## 3. Verification & Safety Checks
-
-Once booted, let's verify Kali's routing table:
+In the Kali VM, \`/etc/network/interfaces\` or NetworkManager is configured with deterministic addressing:
 
 \`\`\`bash
-# Check interface assignments
-ip addr show
+# Identify assigned interfaces
+ip -brief address show
 
-# Verify default gateway points to NAT adapter (eth0), NOT the lab subnet
-ip route show
+# Verify Host-Only interface assignment
+sudo ip addr add 192.168.56.10/24 dev eth1
+sudo ip link set eth1 up
 \`\`\`
 
-Expected output:
-\`\`\`text
-default via 10.0.2.1 dev eth0 proto dhcp metric 100 
-10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 
-192.168.56.0/24 dev eth1 proto kernel scope link src 192.168.56.10 
-\`\`\`
-
-Now test connectivity:
-\`\`\`bash
-# 1. Test Internet Outbound
-ping -c 2 1.1.1.1
-# Output: 2 packets transmitted, 2 received, 0% packet loss (PASS)
-
-# 2. Test Target Discovery on Isolated Subnet
-sudo arp-scan --interface=eth1 192.168.56.0/24
-\`\`\`
-
-> [!FLAG]
-> Target Discovered: \`192.168.56.101\` responded with OUI matching VMware/VirtualBox. The target is live and reachable only from Kali.
+> [!NOTE]
+> Target victim machines must never have an active NAT or Bridged interface attached. Verify that \`ip route\` on victim nodes returns no default gateway to avoid unintended outbound connections.
 
 ---
 
-## 4. Snapshot Best Practice
+## 3. Snapshot Baseline Automation
 
-> [!WARNING]
-> Always take a **clean baseline snapshot** of your VM *before* running any exploits or altering configuration files. 
+Before executing testing on target instances, clean state snapshots ensure rapid recovery:
 
-If an exploit corrupts the file system or a service crashes irreversibly, you can revert state within 3 seconds using:
-\`\`\`powershell
-# VirtualBox CLI snapshot restore
-VBoxManage snapshot "Metasploitable2" restore "Clean-Install"
+\`\`\`bash
+# Create baseline snapshot via CLI
+VBoxManage snapshot "Kali-Security-Station" take "Baseline-Clean-v1" --description "Post-update pristine state"
 \`\`\`
-
-Tomorrow, we fire up Nmap and dissect how TCP handshakes look when scanned with different flag combinations!
 `
   },
   {
-    id: 'tryhackme-pre-security-and-nmap-basics',
+    id: 'akte-003-tcp-handshake-packet-forensics',
+    akteNumber: 3,
     episode: 3,
-    title: 'Day 3: Demystifying the TCP 3-Way Handshake & Nmap Scanning Internals',
+    title: 'Akte 003: TCP 3-Way Handshake Internals & Stealth Packet Forensics',
     date: '2026-10-07',
     category: 'Networking',
     difficulty: 'Intermediate',
     readTime: '8 min read',
     thumbnailUrl: './thumbnails/thumb-ep3.svg',
-    feynmanSummary: "TCP is like a polite phone call: 'Hello can you hear me?' (SYN), 'Yes, can you hear me?' (SYN-ACK), 'Yes, connection active!' (ACK). Stealth Nmap scans hang up the phone right before the last sentence with RST so legacy firewalls never log that a connection took place.",
-    tags: ['nmap', 'networking', 'tcp-ip', 'wireshark', 'recon'],
-    excerpt: 'What actually happens at the packet level during an Nmap scan? Comparing TCP Connect (-sT) vs Stealth SYN (-sS) scans through raw Wireshark frames.',
-    content: `# Day 3: Demystifying the TCP 3-Way Handshake & Nmap Scanning Internals
+    feynmanSummary: 'TCP connection establishment operates like certified mail: Sender sends SYN (Hello), Receiver returns SYN-ACK (Heard you, hello back), Sender confirms with ACK (Acknowledged). A stealth scan stops halfway by sending RST instead of final ACK so the target never logs an established session.',
+    tags: ['networking', 'wireshark', 'nmap', 'tcp-ip', 'forensics'],
+    excerpt: 'Analyzing the mechanics of TCP SYN vs Full Connect scanning through raw Wireshark packet captures and intrusion detection signatures.',
+    content: `# Akte 003: TCP 3-Way Handshake Internals & Stealth Packet Forensics
 
-When most people start using Nmap, they blindly memorize commands: \`nmap -sC -sV -p- <target>\`. But what is actually travelling across the wire? How does a port know whether it's open, closed, or filtered?
-
-Today, I inspected Nmap scanning techniques by capturing the raw Ethernet frames in Wireshark.
+Port scanning is the primary phase of network reconnaissance. Understanding the exact transport-layer packet exchanges differentiates a surface-level operator from a disciplined network analyst.
 
 ---
 
-## 1. Refresh: The TCP 3-Way Handshake
+## 1. Transmission Control Protocol: The 3-Way Handshake
 
-Under standard network communication, two machines establish a reliable stream through three distinct packets:
+Every standard TCP stream relies on explicit flag state coordination:
 
 \`\`\`
-Client (Initiator)                 Server (Listener)
-        │                                  │
-        │─── [SYN: Seq = 100] ────────────>│  (1. Client requests connection)
-        │                                  │
-        │<── [SYN-ACK: Seq=500, Ack=101] ──│  (2. Server acknowledges & agrees)
-        │                                  │
-        │─── [ACK: Seq = 101, Ack=501] ───>│  (3. Connection Established!)
-        │                                  │
+Client (Initiator)                       Server (Listener)
+        │                                        │
+        │ ────────────── SYN (Seq=x) ──────────> │ [Port Listening]
+        │                                        │
+        │ <─────── SYN-ACK (Seq=y, Ack=x+1) ──── │
+        │                                        │
+        │ ────────────── ACK (Ack=y+1) ────────> │ [Connection ESTABLISHED]
 \`\`\`
 
 ---
 
-## 2. Full Connect Scan (\`-sT\`) vs. Stealth SYN Scan (\`-sS\`)
+## 2. SYN Stealth Scan (\`nmap -sS\`) vs Full Connect (\`nmap -sT\`)
 
-### Mode A: TCP Connect Scan (\`nmap -sT\`)
-* Performs the complete 3-way handshake.
-* Uses the OS \`connect()\` syscall.
-* **Downside:** Easily logged by application-level firewalls and web servers because the TCP session was fully established.
-
-### Mode B: TCP SYN / Half-Open Scan (\`nmap -sS\`)
-* The de-facto default for root users.
-* Sends \`SYN\`. If the server responds with \`SYN-ACK\` (indicating open port), Nmap immediately responds with a **\`RST\` (Reset)** flag instead of the final \`ACK\`!
-* Because the handshake is never completed, old legacy loggers never record a session.
-
-\`\`\`
-Attacker (Nmap -sS)                 Target Server (Port 80 OPEN)
-        │                                  │
-        │─── [SYN] ───────────────────────>│
-        │<── [SYN-ACK] ────────────────────│  (Port is OPEN!)
-        │─── [RST] ───────────────────────>│  (Tears down connection instantly)
-\`\`\`
-
----
-
-## 3. Hands-on Experiment in the Lab
-
-Let's test this against our lab machine:
+### SYN Stealth Scan Mechanics
+1. Client transmits a \`SYN\` packet to target port 80.
+2. If open, server replies with \`SYN-ACK\`.
+3. Client immediately responds with a \`RST\` (Reset) flag instead of the concluding \`ACK\`.
+4. **Result:** The target OS does not hand the connection to the application layer, preventing connection logging in legacy daemons.
 
 \`\`\`bash
-# 1. Run SYN scan against target HTTP port while capturing packets
-sudo nmap -sS -p 80,443,22 192.168.56.101 --packet-trace
+# Execute privileged half-open SYN scan
+sudo nmap -sS -p 21,22,80,443 -n --packet-trace 192.168.56.101
 \`\`\`
-
-### Terminal Trace Output:
-\`\`\`text
-SENT (0.0410s) TCP 192.168.56.10:48231 > 192.168.56.101:80 S ttl=48 id=25121
-RCVD (0.0414s) TCP 192.168.56.101:80 > 192.168.56.10:48231 SA ttl=64 id=0
-SENT (0.0415s) TCP 192.168.56.10:48231 > 192.168.56.101:80 R ttl=53 id=61823
-
-PORT   STATE SERVICE
-22/tcp open  ssh
-80/tcp open  http
-443/tcp closed https
-\`\`\`
-
-Notice the flags:
-* \`S\` = SYN sent
-* \`SA\` = SYN-ACK received
-* \`R\` = RST sent by Nmap to break the circuit
 
 ---
 
-## 4. Blue Team Defense: How to Detect SYN Port Scans
+## 3. Wireshark Capture Filter & Packet Analysis
 
-How does a modern IDS (like Snort or Suricata) flag this?
+To observe raw frames in real time:
 
-A basic Snort rule checks for a high rate of incoming TCP packets with only the SYN flag set that terminate with RST:
-
-\`\`\`snort
-# Sample Snort rule pattern
-alert tcp any any -> $HOME_NET any (msg:"SCAN Potential Nmap SYN Stealth Scan Detected"; flags:S; threshold:type both, track by_src, count 20, seconds 5; sid:1000001; rev:1;)
+\`\`\`bash
+# Capture exclusively TCP flags on the Host-Only interface
+tshark -i eth1 -Y "tcp.flags.syn == 1" -T fields -e ip.src -e ip.dst -e tcp.dstport -e tcp.flags.str
 \`\`\`
 
-> [!INTEL]
-> Next up: We will deploy an Apache web service and write our first Python port scanner from scratch using the raw \`socket\` module.
+> [!NOTE]
+> Modern intrusion detection systems (Snort, Suricata, Zeek) easily detect high-frequency half-open SYN scans through packet rate anomaly heuristics and incomplete session thresholds.
 `
   }
 ];
 
 export const INITIAL_MILESTONES: JourneyMilestone[] = [
   {
-    day: 1,
-    title: 'Mission Launch & 100-Day Strategy',
-    phase: 'Phase 1: Foundations',
-    status: 'completed',
-    description: 'Set up public portfolio blog, defined roadmap, ethical guidelines, and learning goals.',
-    relatedPostId: 'day-1-embarking-on-cybersecurity-roadmap',
-    dateTarget: 'Day 1'
-  },
-  {
-    day: 2,
-    title: 'Isolated Virtualization & Dual-NIC Sandbox',
-    phase: 'Phase 1: Foundations',
-    status: 'completed',
-    description: 'Configured VirtualBox, Host-Only networking, Kali Linux attacker VM, and snapshot automation.',
-    relatedPostId: 'homelab-setup-virtualbox-kali-pfsense',
-    dateTarget: 'Day 2'
-  },
-  {
-    day: 3,
-    title: 'TCP/IP Internals & Packet-Level Port Scans',
-    phase: 'Phase 1: Foundations',
-    status: 'completed',
-    description: 'Captured SYN vs Connect scans in Wireshark, decoded flag states, and documented IDS signatures.',
-    relatedPostId: 'tryhackme-pre-security-and-nmap-basics',
-    dateTarget: 'Day 3'
-  },
-  {
-    day: 10,
-    title: 'Linux Privilege Escalation Fundamentals',
+    akteRange: 'Akte 001 - 050',
+    title: 'Core Protocols, Systems & Lab Isolation',
     phase: 'Phase 1: Foundations',
     status: 'in-progress',
-    description: 'Investigating SUID bits, sudo permissions, crontab misconfigurations, and LinPEAS enumeration.',
-    dateTarget: 'Target: Day 10'
+    description: 'Computer networking primitives, Linux systems programming, air-gapped virtualization architectures, and packet analysis.',
+    relatedPostId: 'akte-001-philosophy-of-proof-of-work'
   },
   {
-    day: 25,
-    title: 'TryHackMe Pre-Security & Complete Beginner Path',
-    phase: 'Phase 2: Offensive & Defensive Labs',
+    akteRange: 'Akte 051 - 150',
+    title: 'Offensive Reconnaissance & Target Mapping',
+    phase: 'Phase 2: Network & Surface Enumeration',
     status: 'upcoming',
-    description: 'Completing 35+ guided interactive rooms covering Web, Network, and Endpoint security basics.',
-    dateTarget: 'Target: Day 25'
+    description: 'Active/passive network mapping, port scanning internals, service banner extraction, and automated vulnerability scanning.'
   },
   {
-    day: 50,
-    title: 'Active Directory Attack & Defense Homelab',
-    phase: 'Phase 3: Enterprise Security',
+    akteRange: 'Akte 151 - 250',
+    title: 'Web Application Auditing & Vulnerability Mechanics',
+    phase: 'Phase 3: Application Security',
     status: 'upcoming',
-    description: 'Deploying Windows Server 2022 domain controller, BloodHound mapping, and Kerberoasting mitigation.',
-    dateTarget: 'Target: Day 50'
+    description: 'OWASP Top 10 vulnerabilities, authentication bypasses, SQL injection mechanics, and API security auditing.'
   },
   {
-    day: 75,
-    title: 'SIEM Log Ingestion with Splunk & Elastic',
-    phase: 'Phase 3: Enterprise Security',
+    akteRange: 'Akte 251 - 380',
+    title: 'Enterprise Active Directory & Privilege Escalation',
+    phase: 'Phase 4: Enterprise Infrastructure',
     status: 'upcoming',
-    description: 'Analyzing Sysmon event logs, detecting lateral movement, and writing alert correlations.',
-    dateTarget: 'Target: Day 75'
+    description: 'Windows domain controllers, Kerberos ticket manipulation, BloodHound graph analysis, and defensive Group Policy hardening.'
   },
   {
-    day: 100,
-    title: 'Capstone: 10 Rooted HTB Machines & CompTIA Sec+',
-    phase: 'Phase 4: Industry Readiness',
+    akteRange: 'Akte 381 - 460',
+    title: 'Incident Response, SIEM Forensics & Threat Hunting',
+    phase: 'Phase 5: Blue Team Operations',
     status: 'upcoming',
-    description: 'Comprehensive public portfolio showcase of 10 CTF walkthroughs and Security+ certification credential.',
-    dateTarget: 'Target: Day 100'
+    description: 'Splunk and Elastic log pipelines, memory dump analysis with Volatility, and custom Suricata detection rules.'
+  },
+  {
+    akteRange: 'Akte 461 - 511',
+    title: 'Advanced Exploit Mechanics & Defense Architecture',
+    phase: 'Phase 6: Mastery & Synthesis',
+    status: 'upcoming',
+    description: 'Buffer overflow primitives, binary analysis, custom command & control emulation, and comprehensive capstone writeups.'
   }
 ];
 
@@ -362,7 +242,7 @@ export const INITIAL_ARSENAL: ArsenalTool[] = [
   {
     name: 'Kali Linux 2026.x',
     category: 'Virtualization & OS',
-    purpose: 'Primary security auditing & penetration testing workstation',
+    purpose: 'Security auditing & penetration testing workstation',
     status: 'Daily Driver',
     commandExample: 'sudo apt update && sudo apt dist-upgrade'
   },
@@ -383,7 +263,7 @@ export const INITIAL_ARSENAL: ArsenalTool[] = [
   {
     name: 'Nmap (Network Mapper)',
     category: 'Penetration Testing',
-    purpose: 'Host discovery, port scanning, service versioning, and NSE vulnerability scripts',
+    purpose: 'Host discovery, port scanning, service versioning, and NSE scripts',
     status: 'Daily Driver',
     commandExample: 'nmap -sC -sV -O -p- 192.168.56.101 -oN scan.txt'
   },
@@ -395,9 +275,9 @@ export const INITIAL_ARSENAL: ArsenalTool[] = [
     commandExample: 'Proxy running on 127.0.0.1:8080 with CA Certificate imported'
   },
   {
-    name: 'Python 3 (Security Scripts)',
+    name: 'Python 3 (Security Tooling)',
     category: 'Scripting & Automation',
-    purpose: 'Building custom port scanners, banner grabbers, and log parsers',
+    purpose: 'Custom socket monitors, banner grabbers, and log parsers',
     status: 'Currently Studying',
     commandExample: 'python3 -m pip install scapy requests cryptography'
   }

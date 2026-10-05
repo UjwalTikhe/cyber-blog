@@ -1,114 +1,97 @@
-import { ArrowUpRight, BookOpen, ShieldCheck, Terminal, FileEdit } from 'lucide-react';
+import { BookOpen, ShieldCheck, FileText, ArrowRight } from 'lucide-react';
 
 interface HeroBannerProps {
   postCount: number;
   onExploreClick: () => void;
-  onComposeClick: () => void;
-  isOwner?: boolean;
 }
 
 export const HeroBanner = ({
   postCount,
   onExploreClick,
-  onComposeClick,
-  isOwner = false,
 }: HeroBannerProps) => {
   return (
-    <div className="relative border-b border-pink-100 bg-gradient-to-b from-pink-50/60 via-white to-pink-50/20 overflow-hidden">
+    <div className="relative border-b border-pink-100 bg-gradient-to-b from-pink-50/50 via-white to-pink-50/15 overflow-hidden">
       {/* Background polka dots and pastel ambient blur */}
-      <div className="absolute inset-0 bg-cute-dots pointer-events-none opacity-40"></div>
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-pink-200/30 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 right-10 w-96 h-96 bg-purple-200/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute inset-0 bg-cute-dots pointer-events-none opacity-30"></div>
+      <div className="absolute top-0 left-1/3 w-96 h-96 bg-pink-100/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-10 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto px-4 py-12 sm:py-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Main Hero Copy */}
           <div className="lg:col-span-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-pink-200 text-rose-700 font-sans text-xs font-bold shadow-cute-pill">
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-              <span>100 DAYS OF CYBERSECURITY</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-pink-200 text-rose-700 font-sans text-xs font-bold shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+              <span className="tracking-wider">AKTE 511</span>
               <span className="text-pink-300">•</span>
-              <span>DAY 1 ACTIVE</span>
+              <span className="text-slate-600 font-medium">TECHNICAL RESEARCH ARCHIVE</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-              Daily Cybersecurity Journal &amp; <br />
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              Akte 511 <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600">
-                Technical Lab Writeups
+                Security Journal &amp; Dossiers
               </span>
             </h1>
 
             <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed font-sans">
-              An open engineering log recording hands-on penetration testing labs, network packet forensics,
-              isolated homelab architectures, and defensive mitigations using the Feynman Technique.
+              An open engineering archive documenting hands-on penetration testing labs, network packet forensics,
+              isolated virtualization architectures, and defensive mitigations structured through the Feynman Technique.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Clean Action & Badges */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 onClick={onExploreClick}
-                className="px-5 py-3 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-sans text-xs font-bold tracking-wide transition-all flex items-center gap-2 shadow-cute-pill hover:shadow-cute-glow hover:scale-105"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-sans text-xs font-bold tracking-wide transition-all flex items-center gap-2 shadow-cute-pill hover:scale-102"
               >
-                <BookOpen className="w-4 h-4" />
-                <span>EXPLORE WRITEUPS</span>
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>EXPLORE DOSSIERS</span>
+                <ArrowRight className="w-3 h-3 ml-0.5" />
               </button>
 
-              {isOwner && (
-                <button
-                  onClick={onComposeClick}
-                  className="px-5 py-3 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-rose-600 font-sans text-xs font-bold tracking-wide transition-all flex items-center gap-2 shadow-cute-pill hover:scale-105"
-                >
-                  <FileEdit className="w-4 h-4 text-rose-500" />
-                  <span>AUTHOR STUDIO</span>
-                </button>
-              )}
+              <div className="flex items-center gap-2 text-xs font-sans text-slate-500 bg-white/80 px-3.5 py-2 rounded-full border border-pink-100">
+                <ShieldCheck className="w-3.5 h-3.5 text-rose-500" />
+                <span>Isolated Lab Telemetry</span>
+              </div>
             </div>
           </div>
 
-          {/* Telemetry Bento */}
+          {/* Clean Editorial Card */}
           <div className="lg:col-span-4">
-            <div className="bg-white/95 border border-pink-200 rounded-3xl p-6 shadow-cute-card backdrop-blur-sm space-y-4">
+            <div className="bg-white/95 border border-pink-200/90 rounded-3xl p-6 shadow-cute-card backdrop-blur-sm space-y-4">
               <div className="flex items-center justify-between border-b border-pink-100 pb-3">
-                <div className="flex items-center gap-2 font-display font-bold text-sm text-slate-800">
-                  <Terminal className="w-4 h-4 text-rose-500" />
-                  <span>JOURNEY TELEMETRY</span>
+                <div className="flex items-center gap-2 font-display font-bold text-xs text-slate-800">
+                  <FileText className="w-4 h-4 text-rose-500" />
+                  <span>DOSSIER STATUS</span>
                 </div>
-                <span className="font-sans text-[11px] font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-                  ONLINE
+                <span className="font-mono text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                  ACTIVE ARCHIVE
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-2xl bg-pink-50/60 border border-pink-100">
-                  <div className="text-[10px] font-bold text-rose-600 uppercase tracking-wider">Writeups</div>
-                  <div className="text-2xl font-bold font-display text-slate-900 mt-0.5">{postCount}</div>
-                  <div className="text-[10px] text-rose-600 flex items-center gap-1 mt-1 font-sans font-medium">
-                    <ArrowUpRight className="w-3 h-3" /> Published
+              <div className="space-y-3">
+                <div className="p-3 rounded-2xl bg-pink-50/50 border border-pink-100/80 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-slate-500 font-bold">Published Files</div>
+                    <div className="text-2xl font-bold font-display text-slate-900 mt-0.5">{postCount}</div>
                   </div>
+                  <span className="text-[11px] font-mono text-rose-600 bg-white px-2.5 py-1 rounded-full border border-pink-200">
+                    Akte #001 - #511
+                  </span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100">
-                  <div className="text-[10px] font-bold text-purple-600 uppercase tracking-wider">Current Day</div>
-                  <div className="text-2xl font-bold font-display text-purple-700 mt-0.5">Day 1</div>
-                  <div className="text-[10px] text-purple-600 font-sans font-medium mt-1">Foundations</div>
-                </div>
-
-                <div className="p-3.5 rounded-2xl bg-sky-50/60 border border-sky-100">
-                  <div className="text-[10px] font-bold text-sky-600 uppercase tracking-wider">Homelab</div>
-                  <div className="text-xs font-bold font-display text-sky-800 mt-1">VirtualBox + Kali</div>
-                  <div className="text-[10px] text-sky-600 font-sans font-medium mt-0.5">Isolated Subnet</div>
-                </div>
-
-                <div className="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-100">
-                  <div className="text-[10px] font-bold text-rose-600 uppercase tracking-wider">Target Goal</div>
-                  <div className="text-xs font-bold font-display text-rose-800 mt-1">Sec+ &bull; OSCP</div>
-                  <div className="text-[10px] text-rose-600 font-sans font-medium mt-0.5">In Progress</div>
+                <div className="p-3 rounded-2xl bg-purple-50/40 border border-purple-100/80 space-y-1">
+                  <div className="text-[10px] font-mono uppercase text-purple-700 font-bold">Core Standard</div>
+                  <p className="text-xs text-slate-700 font-sans leading-relaxed">
+                    First-principles comprehension with verifiable packet captures, reproduction steps, and defensive signatures.
+                  </p>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-pink-100 text-[11px] font-sans font-medium text-slate-500 flex items-center justify-between">
-                <span>Strictly authorized labs &amp; sandboxes</span>
-                <ShieldCheck className="w-4 h-4 text-rose-500" />
+              <div className="pt-2 border-t border-pink-100 text-[11px] font-sans text-slate-500 flex items-center justify-between">
+                <span>Sanctioned Labs &amp; Subnets</span>
+                <span className="font-mono text-[10px] text-slate-400">0xSEC / AKTE</span>
               </div>
             </div>
           </div>

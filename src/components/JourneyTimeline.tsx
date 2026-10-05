@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { JourneyMilestone, Post } from '../types';
-import { ArrowRight, Target } from 'lucide-react';
+import { ArrowRight, Layers } from 'lucide-react';
 
 interface JourneyTimelineProps {
   milestones: JourneyMilestone[];
@@ -20,41 +20,24 @@ export const JourneyTimeline = ({
     return m.status === filter;
   });
 
-  const completedCount = milestones.filter((m) => m.status === 'completed').length;
-  const progressPercent = Math.round((completedCount / milestones.length) * 100);
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center max-w-2xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-sans text-xs font-bold shadow-cute-pill">
-          <Target className="w-3.5 h-3.5" />
-          <span>ROADMAP // 100-DAY CYBERSECURITY PROGRESSION</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-sans text-xs font-bold shadow-sm">
+          <Layers className="w-3.5 h-3.5" />
+          <span className="font-mono text-[11px] uppercase tracking-wider">AKTE 511 // MASTER INDEX</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight">
-          The 100-Day Progression
+          Curriculum Index
         </h1>
-        <p className="text-sm text-slate-600 font-sans">
-          Tracking every milestone from networking fundamentals to enterprise Active Directory penetration testing and industry certifications.
+        <p className="text-sm text-slate-600 font-sans leading-relaxed">
+          Structured progression framework spanning 511 documented technical dossiers: from protocol primitives to enterprise attack surfaces and forensic engineering.
         </p>
-
-        {/* Progress bar */}
-        <div className="pt-4 max-w-md mx-auto">
-          <div className="flex justify-between text-xs font-sans font-bold mb-2">
-            <span className="text-slate-600">Roadmap Progress</span>
-            <span className="text-rose-600">{completedCount} of {milestones.length} Milestones ({progressPercent}%)</span>
-          </div>
-          <div className="w-full h-3 rounded-full bg-pink-100 border border-pink-200 overflow-hidden p-0.5">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 transition-all duration-500 shadow-sm"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
 
         {/* Filter buttons */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
-          {(['all', 'completed', 'in-progress', 'upcoming'] as const).map((status) => (
+          {(['all', 'in-progress', 'upcoming'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilter(status)}
@@ -64,41 +47,40 @@ export const JourneyTimeline = ({
                   : 'bg-white text-slate-600 border border-pink-200 hover:border-pink-300 hover:bg-pink-50'
               }`}
             >
-              {status === 'all' && 'All Milestones'}
-              {status === 'completed' && 'Completed'}
-              {status === 'in-progress' && 'In Progress'}
-              {status === 'upcoming' && 'Upcoming'}
+              {status === 'all' && 'All Phases'}
+              {status === 'in-progress' && 'Active Phase'}
+              {status === 'upcoming' && 'Upcoming Phases'}
             </button>
           ))}
         </div>
       </div>
 
       {/* Timeline items list */}
-      <div className="relative border-l-2 border-pink-200 ml-4 sm:ml-32 space-y-8">
-        {filtered.map((milestone) => {
+      <div className="relative border-l-2 border-pink-200 ml-4 sm:ml-36 space-y-8">
+        {filtered.map((milestone, idx) => {
           const linkedPost = milestone.relatedPostId
             ? posts.find((p) => p.id === milestone.relatedPostId)
             : null;
 
           return (
-            <div key={milestone.day} className="relative pl-6 sm:pl-8 group">
+            <div key={milestone.akteRange || idx} className="relative pl-6 sm:pl-8 group">
               {/* Dot on line */}
               <div
                 className={`absolute -left-[11px] top-1.5 w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center text-[10px] ${
                   milestone.status === 'completed'
                     ? 'bg-rose-500 border-white text-white shadow-[0_0_12px_rgba(244,63,94,0.6)]'
                     : milestone.status === 'in-progress'
-                    ? 'bg-purple-500 border-white text-white animate-pulse shadow-[0_0_12px_rgba(168,85,247,0.6)]'
+                    ? 'bg-rose-500 border-white text-white animate-pulse shadow-[0_0_12px_rgba(244,63,94,0.6)]'
                     : 'bg-white border-pink-200'
                 }`}
               >
                 {milestone.status === 'completed' ? '✓' : ''}
               </div>
 
-              {/* Day label on left (desktop) */}
-              <div className="hidden sm:block absolute -left-32 top-1 w-24 text-right">
-                <span className="font-display font-bold text-xs text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-                  DAY {milestone.day}
+              {/* Akte range label on left (desktop) */}
+              <div className="hidden sm:block absolute -left-36 top-1 w-28 text-right">
+                <span className="font-mono font-bold text-[11px] text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                  {milestone.akteRange}
                 </span>
               </div>
 
@@ -106,8 +88,8 @@ export const JourneyTimeline = ({
               <div className="bg-white border border-pink-100 group-hover:border-pink-300 rounded-3xl p-6 shadow-cute-sm hover:shadow-cute-card transition-all space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="sm:hidden font-display font-bold text-xs text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-                      DAY {milestone.day}
+                    <span className="sm:hidden font-mono font-bold text-xs text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      {milestone.akteRange}
                     </span>
                     <span className="text-[11px] font-sans font-bold text-slate-500 uppercase tracking-wider">
                       {milestone.phase}
@@ -115,17 +97,13 @@ export const JourneyTimeline = ({
                   </div>
 
                   <span
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-sans font-bold border ${
-                      milestone.status === 'completed'
+                    className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-sans font-bold border ${
+                      milestone.status === 'in-progress'
                         ? 'text-rose-700 bg-rose-50 border-rose-200'
-                        : milestone.status === 'in-progress'
-                        ? 'text-purple-700 bg-purple-50 border-purple-200'
                         : 'text-slate-600 bg-slate-50 border-slate-200'
                     }`}
                   >
-                    {milestone.status === 'completed' && <span>Completed</span>}
-                    {milestone.status === 'in-progress' && <span>In Progress</span>}
-                    {milestone.status === 'upcoming' && <span>Planned</span>}
+                    {milestone.status === 'in-progress' ? 'Active' : 'Planned'}
                   </span>
                 </div>
 
@@ -143,7 +121,7 @@ export const JourneyTimeline = ({
                       onClick={() => onSelectPost(linkedPost)}
                       className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3.5 py-1.5 rounded-full border border-rose-200 transition-all shadow-cute-pill"
                     >
-                      <span>Read Log: {linkedPost.title}</span>
+                      <span>Open Dossier: {linkedPost.title}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

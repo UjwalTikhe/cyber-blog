@@ -10,7 +10,8 @@ export type PostCategory =
 export type PostDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface Post {
-  id: string; // url slug e.g. 'day-1-embarking-on-cybersecurity'
+  id: string; // url slug e.g. 'akte-001-philosophy-of-proof-of-work'
+  akteNumber: number; // 1 to 511
   title: string;
   date: string;
   category: PostCategory;
@@ -20,21 +21,19 @@ export interface Post {
   excerpt: string;
   content: string; // Full markdown
   author?: string;
-  isCustom?: boolean; // added via the live composer
-  episode?: number; // e.g. Ep. 01
   thumbnailUrl?: string; // 16:9 thumbnail image URL
-  youtubeUrl?: string; // Optional YouTube vlog video URL or ID
-  feynmanSummary?: string; // ELI5 / simple breakdown
+  youtubeUrl?: string; // Optional YouTube companion vlog video URL or ID
+  feynmanSummary?: string; // Core concept breakdown
+  episode?: number; // legacy alias for akteNumber
 }
 
 export interface JourneyMilestone {
-  day: number;
+  akteRange: string; // e.g. "Akte 001 - 025"
   title: string;
   phase: string;
   status: 'completed' | 'in-progress' | 'upcoming';
   description: string;
   relatedPostId?: string;
-  dateTarget?: string;
 }
 
 export interface ArsenalTool {

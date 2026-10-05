@@ -10,7 +10,7 @@ import { ArsenalView } from './components/ArsenalView';
 import { ComposeStudio } from './components/ComposeStudio';
 import { TerminalModal } from './components/TerminalModal';
 import { Footer } from './components/Footer';
-import { Search, Filter, Tag, X, PlusCircle, SearchX } from 'lucide-react';
+import { Search, Filter, Tag, X, SearchX, Plus } from 'lucide-react';
 
 const CATEGORIES: ('All' | PostCategory)[] = [
   'All',
@@ -24,7 +24,7 @@ const CATEGORIES: ('All' | PostCategory)[] = [
 ];
 
 const categoryLabels: Record<'All' | PostCategory, string> = {
-  'All': 'All Topics',
+  'All': 'All Dossiers',
   'Foundations': 'Foundations',
   'Homelab': 'Homelab',
   'CTF & Labs': 'CTF & Labs',
@@ -35,19 +35,6 @@ const categoryLabels: Record<'All' | PostCategory, string> = {
 };
 
 export function App() {
-  // Author check: In local development, the user is the owner.
-  // On production, visitors have read-only access.
-  // The owner can unlock author studio locally, or with '?author=1' or '#author' if needed.
-  const isOwner = useMemo(() => {
-    if (import.meta.env.DEV) return true;
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('author') === '1' || window.location.hash === '#author') return true;
-      if (localStorage.getItem('is_blog_author') === 'true') return true;
-    }
-    return false;
-  }, []);
-
   // Posts state initialized from localStorage + defaults
   const [posts, setPosts] = useState<Post[]>(() => {
     try {
@@ -85,14 +72,12 @@ export function App() {
     const handleHash = () => {
       const hash = window.location.hash.replace(/^#/, '');
       if (hash) {
-        if (hash === 'timeline') {
+        if (hash === 'timeline' || hash === 'index') {
           setCurrentTab('timeline');
           setSelectedPost(null);
         } else if (hash === 'arsenal') {
           setCurrentTab('arsenal');
           setSelectedPost(null);
-        } else if (hash === 'author') {
-          // Author mode shortcut
         } else {
           const found = posts.find((p) => p.id === hash);
           if (found) {
@@ -119,7 +104,7 @@ export function App() {
     window.location.hash = '';
   };
 
-  // Add new post from Compose Studio
+  // Add new post from Local Developer Studio (only executable locally in dev)
   const handlePublishPost = (newPost: Post) => {
     setPosts((prev) => {
       const updated = [newPost, ...prev];
@@ -174,16 +159,14 @@ export function App() {
           setCurrentTab(tab);
           setSelectedPost(null);
         }}
-        onOpenCompose={() => setIsComposeOpen(true)}
         onOpenTerminal={() => setIsTerminalOpen(true)}
         onHomeClick={handleBackToLogs}
-        isOwner={isOwner}
       />
 
       {/* Main View Router */}
       <div className="flex-1">
         {selectedPost ? (
-          /* Single Article Reader */
+          /* Single Dossier Reader */
           <PostView
             post={selectedPost}
             allPosts={posts}
@@ -195,17 +178,17 @@ export function App() {
             }}
           />
         ) : currentTab === 'timeline' ? (
-          /* 100-Day Roadmap */
+          /* Akte 511 Master Index */
           <JourneyTimeline
             milestones={milestones}
             posts={posts}
             onSelectPost={handleSelectPost}
           />
         ) : currentTab === 'arsenal' ? (
-          /* Tools & Homelab Specs */
+          /* Lab Specs & Tooling */
           <ArsenalView arsenal={arsenal} />
         ) : (
-          /* Main Feed & Logs */
+          /* Main Feed & Dossiers */
           <>
             <HeroBanner
               postCount={posts.length}
@@ -213,8 +196,6 @@ export function App() {
                 const feed = document.getElementById('feed-section');
                 feed?.scrollIntoView({ behavior: 'smooth' });
               }}
-              onComposeClick={() => setIsComposeOpen(true)}
-              isOwner={isOwner}
             />
 
             {/* Filter & Search Ribbon */}
@@ -225,7 +206,7 @@ export function App() {
                   <Search className="w-4 h-4 text-pink-400 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Search writeups by tool, concept, or tag..."
+                    placeholder="Search dossiers by protocol, tool, or keyword..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-11 pr-10 py-2.5 rounded-full bg-white border border-pink-200 focus:border-rose-400 text-xs font-sans text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all shadow-cute-pill"
@@ -240,20 +221,11 @@ export function App() {
                   )}
                 </div>
 
-                {/* Filter info & Owner Compose Trigger */}
+                {/* Filter info */}
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-sans text-slate-500 font-medium">
-                    Showing <strong className="text-rose-600 font-bold">{filteredPosts.length}</strong> writeups
+                    Archived: <strong className="text-rose-600 font-bold">{filteredPosts.length}</strong> dossiers
                   </span>
-                  {isOwner && (
-                    <button
-                      onClick={() => setIsComposeOpen(true)}
-                      className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-rose-600 transition-all shadow-cute-pill hover:scale-105"
-                    >
-                      <PlusCircle className="w-3.5 h-3.5 text-rose-500" />
-                      <span>New Writeup</span>
-                    </button>
-                  )}
                 </div>
               </div>
 
@@ -261,7 +233,7 @@ export function App() {
               <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none">
                 <span className="text-[11px] font-sans font-bold text-slate-400 flex items-center gap-1 mr-1">
                   <Filter className="w-3 h-3 text-pink-400" />
-                  <span>FILTER:</span>
+                  <span>DISCIPLINE:</span>
                 </span>
                 {CATEGORIES.map((cat) => (
                   <button
@@ -319,9 +291,9 @@ export function App() {
                   <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-200 text-rose-500 flex items-center justify-center mx-auto">
                     <SearchX className="w-6 h-6" />
                   </div>
-                  <h3 className="font-display font-bold text-xl text-slate-900">No Writeups Found</h3>
+                  <h3 className="font-display font-bold text-xl text-slate-900">No Dossiers Found</h3>
                   <p className="text-xs text-slate-600 font-sans">
-                    No articles match "{searchQuery || activeTag}". Try clearing the search filter or browsing other categories.
+                    No records match "{searchQuery || activeTag}". Try clearing the search query or exploring other categories.
                   </p>
                   <button
                     onClick={() => {
@@ -340,7 +312,7 @@ export function App() {
               <div className="mt-16 pt-8 border-t border-pink-100">
                 <div className="flex items-center gap-2 mb-4 font-display font-bold text-xs text-slate-700">
                   <Tag className="w-3.5 h-3.5 text-rose-500" />
-                  <span>KNOWLEDGE TOPIC CLUSTER</span>
+                  <span className="font-mono text-[11px] uppercase tracking-wider">TOPIC CLUSTERS</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {allTags.map((tag) => (
@@ -366,14 +338,30 @@ export function App() {
       {/* Footer */}
       <Footer />
 
-      {/* Compose Studio Modal */}
-      <ComposeStudio
-        isOpen={isComposeOpen}
-        onClose={() => setIsComposeOpen(false)}
-        onPublish={handlePublishPost}
-      />
+      {/* Local Development Author Studio - ONLY enabled and rendered when running locally with 'npm run dev' */}
+      {import.meta.env.DEV && (
+        <>
+          <div className="fixed bottom-5 right-5 z-40 flex items-center gap-2 bg-slate-900/90 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full shadow-2xl border border-slate-700 text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[11px] text-slate-300">Localhost</span>
+            <button
+              onClick={() => setIsComposeOpen(true)}
+              className="ml-1 px-3 py-1 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold text-[11px] flex items-center gap-1 transition-all"
+            >
+              <Plus className="w-3 h-3" />
+              <span>Draft Akte</span>
+            </button>
+          </div>
 
-      {/* Interactive Cyber Terminal Modal */}
+          <ComposeStudio
+            isOpen={isComposeOpen}
+            onClose={() => setIsComposeOpen(false)}
+            onPublish={handlePublishPost}
+          />
+        </>
+      )}
+
+      {/* Interactive Command Search Shell Modal */}
       <TerminalModal
         isOpen={isTerminalOpen}
         onClose={() => setIsTerminalOpen(false)}

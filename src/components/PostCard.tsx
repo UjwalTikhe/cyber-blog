@@ -24,6 +24,9 @@ const difficultyStyles: Record<PostDifficulty, string> = {
 };
 
 export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
+  const akteNum = post.akteNumber ?? post.episode ?? 1;
+  const akteDisplay = `AKTE ${String(akteNum).padStart(3, '0')}`;
+
   return (
     <article
       onClick={() => onSelect(post)}
@@ -44,21 +47,19 @@ export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
               {post.category}
             </span>
             <div className="font-display font-bold text-sm text-slate-800">
-              Episode {post.episode ? (post.episode < 10 ? `0${post.episode}` : post.episode) : '01'}
+              {akteDisplay}
             </div>
           </div>
         )}
 
-        {/* Floating Episode Sticker */}
+        {/* Floating Akte Badge & Vlog Indicator */}
         <div className="absolute top-3 left-3 flex items-center gap-2">
-          {post.episode && (
-            <span className="px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white font-sans text-[11px] font-bold tracking-wider shadow-sm">
-              EPISODE {post.episode < 10 ? `0${post.episode}` : post.episode}
-            </span>
-          )}
+          <span className="px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white font-mono text-[10px] font-bold tracking-wider shadow-sm">
+            {akteDisplay}
+          </span>
 
           {post.youtubeUrl && (
-            <span className="px-2.5 py-1 rounded-full bg-red-600/90 backdrop-blur-md text-white font-sans text-[10px] font-bold flex items-center gap-1 shadow-sm">
+            <span className="px-2.5 py-1 rounded-full bg-rose-600/90 backdrop-blur-md text-white font-sans text-[10px] font-bold flex items-center gap-1 shadow-sm">
               <Play className="w-3 h-3 fill-current" />
               <span>VLOG</span>
             </span>
@@ -66,7 +67,7 @@ export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
         </div>
 
         <div className="absolute bottom-3 right-3">
-          <span className="px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-md text-slate-700 text-[10px] font-sans font-semibold shadow-sm">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-md text-slate-700 text-[10px] font-mono shadow-sm">
             {post.readTime}
           </span>
         </div>
@@ -116,7 +117,7 @@ export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
             <div className="p-3 rounded-2xl bg-rose-50/60 border border-rose-100 text-[11px] font-sans text-rose-900 flex items-start gap-2">
               <Lightbulb className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
               <div className="line-clamp-2 leading-relaxed">
-                <strong className="font-bold text-rose-700">Feynman Summary: </strong>
+                <strong className="font-bold text-rose-700 font-mono text-[10px] uppercase">Core Concept: </strong>
                 {post.feynmanSummary}
               </div>
             </div>
@@ -141,7 +142,7 @@ export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
           </div>
 
           <div className="flex items-center gap-1 font-sans text-xs font-bold text-rose-600 group-hover:translate-x-1 transition-transform ml-auto">
-            <span>Read Writeup</span>
+            <span>Open Dossier</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </div>
         </div>

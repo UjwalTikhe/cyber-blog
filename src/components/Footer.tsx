@@ -11,13 +11,13 @@ export const Footer = () => {
               <div className="w-6 h-6 rounded-lg bg-pink-100 border border-pink-200 flex items-center justify-center text-rose-500">
                 <Shield className="w-3.5 h-3.5" />
               </div>
-              <span>0xSEC // SECURITY JOURNAL</span>
-              <span className="text-[11px] text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 font-semibold">
-                100-DAY JOURNAL
+              <span className="font-extrabold tracking-tight">AKTE 511</span>
+              <span className="text-[10px] font-mono text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 font-bold">
+                511 DOSSIERS
               </span>
             </div>
             <p className="text-slate-600 text-xs leading-relaxed font-sans max-w-sm">
-              Documenting practical offensive security, network forensics, and incident response with reproducible step-by-step writeups. Every walkthrough reflects isolated virtual labs and defensive blue-team mitigations.
+              An open security engineering archive documenting offensive tests, transport-layer packet dissections, isolated virtualization architectures, and defensive mitigations.
             </p>
             <div className="flex items-center gap-3 pt-1">
               <a
@@ -53,10 +53,10 @@ export const Footer = () => {
           <div className="md:col-span-3 space-y-2">
             <div className="text-slate-900 font-display font-bold tracking-wider text-xs">TOPIC CURRICULUM</div>
             <ul className="space-y-1.5 text-slate-600">
-              <li className="hover:text-rose-600 cursor-default transition-colors">Day 1 Roadmap &amp; Foundations</li>
-              <li className="hover:text-rose-600 cursor-default transition-colors">Isolated Homelab Architecture</li>
-              <li className="hover:text-rose-600 cursor-default transition-colors">Wireshark &amp; Packet Forensics</li>
-              <li className="hover:text-rose-600 cursor-default transition-colors">Blue Team Log Analysis &amp; SIEM</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Protocol Analysis &amp; Foundations</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Isolated Hypervisor Sandboxing</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Transport Layer Packet Forensics</li>
+              <li className="hover:text-rose-600 cursor-default transition-colors">Enterprise Defenses &amp; Hardening</li>
             </ul>
           </div>
 
@@ -67,7 +67,7 @@ export const Footer = () => {
               <span>ETHICS &amp; SAFETY NOTICE</span>
             </div>
             <p className="text-slate-600 text-xs leading-relaxed font-sans">
-              All exercises documented in this journal are performed strictly in private virtual labs or authorized CTF environments. Strict adherence to legal and ethical cybersecurity frameworks is maintained at all times.
+              All exercises documented in this archive are performed strictly within isolated private virtual subnets or authorized laboratory environments. Complete adherence to legal frameworks is maintained at all times.
             </p>
           </div>
         </div>
@@ -75,10 +75,10 @@ export const Footer = () => {
         {/* Bottom copyright */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-[11px]">
           <div className="flex items-center gap-1">
-            <span>&copy; {new Date().getFullYear()} 0xSEC. Authored with discipline for the cybersecurity learning community.</span>
+            <span>&copy; {new Date().getFullYear()} Akte 511. Authored by Ujwal Tikhe.</span>
           </div>
           <div>
-            <span>Static Deployment &bull; Zero Server Attack Surface &bull; Read-Only</span>
+            <span>Static Distribution &bull; Immutable Records &bull; Read-Only</span>
           </div>
         </div>
       </div>

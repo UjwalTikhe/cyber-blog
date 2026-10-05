@@ -108,7 +108,8 @@ export const ComposeStudio = ({
 
     const newPost: Post = {
       id: slug,
-      episode: Number(episode) || undefined,
+      akteNumber: Number(episode) || 4,
+      episode: Number(episode) || 4,
       title: title.trim(),
       date: today,
       category,
@@ -120,7 +121,6 @@ export const ComposeStudio = ({
       tags: tags.length ? tags : ['cybersecurity'],
       excerpt: excerpt.trim() || title.trim(),
       content: markdown,
-      isCustom: true,
     };
 
     onPublish(newPost);
@@ -187,13 +187,13 @@ ${markdown}
             </div>
             <div>
               <div className="font-display font-bold text-base text-slate-900 flex items-center gap-2">
-                <span>AUTHOR STUDIO</span>
-                <span className="text-[11px] font-sans font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-                  MARKDOWN COMPOSER
+                <span>AKTE 511 DRAFTING STUDIO</span>
+                <span className="text-[10px] font-mono font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                  DEV MODE ONLY
                 </span>
               </div>
               <div className="text-xs font-sans text-slate-500 font-medium">
-                Write in Markdown &bull; Live Preview &bull; Export to .md or publish to local state
+                Write in Markdown &bull; Live Preview &bull; Export to .md or copy code
               </div>
             </div>
           </div>
@@ -252,12 +252,12 @@ ${markdown}
               {publishedSuccess ? (
                 <>
                   <Check className="w-3.5 h-3.5" />
-                  <span>Published!</span>
+                  <span>Saved!</span>
                 </>
               ) : (
                 <>
                   <Save className="w-3.5 h-3.5" />
-                  <span>Save to Blog</span>
+                  <span>Save Local</span>
                 </>
               )}
             </button>
@@ -274,7 +274,7 @@ ${markdown}
         {/* Metadata Configuration Ribbon */}
         <div className="p-5 border-b border-pink-100 bg-pink-50/30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-sans">
           <div className="lg:col-span-1 space-y-1">
-            <label className="text-slate-600 font-bold">EPISODE #</label>
+            <label className="text-slate-600 font-bold font-mono">AKTE #</label>
             <input
               type="number"
               placeholder="4"
@@ -285,10 +285,10 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-5 space-y-1">
-            <label className="text-slate-600 font-bold">WRITEUP TITLE *</label>
+            <label className="text-slate-600 font-bold">DOSSIER TITLE *</label>
             <input
               type="text"
-              placeholder="e.g. Day 4: Password Cracking with Hashcat"
+              placeholder="e.g. Akte 004: Password Cracking with Hashcat"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
