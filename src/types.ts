@@ -24,22 +24,5 @@ export interface Post {
   thumbnailUrl?: string; // 16:9 thumbnail image URL
   youtubeUrl?: string; // Optional YouTube companion vlog video URL or ID
   feynmanSummary?: string; // Core concept breakdown
-  episode?: number; // legacy alias for akteNumber
-}
-
-export interface JourneyMilestone {
-  akteRange: string; // e.g. "Akte 001 - 025"
-  title: string;
-  phase: string;
-  status: 'completed' | 'in-progress' | 'upcoming';
-  description: string;
-  relatedPostId?: string;
-}
-
-export interface ArsenalTool {
-  name: string;
-  category: 'Virtualization & OS' | 'Network Analysis' | 'Security Monitoring' | 'Penetration Testing' | 'Scripting & Automation';
-  purpose: string;
-  status: 'Daily Driver' | 'Active Lab' | 'Currently Studying';
-  commandExample?: string;
+  episode?: number; // legacy alias
 }

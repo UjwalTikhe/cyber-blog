@@ -1,4 +1,4 @@
-import type { Post, JourneyMilestone, ArsenalTool } from '../types';
+import type { Post } from '../types';
 
 export const INITIAL_POSTS: Post[] = [
   {
@@ -189,96 +189,5 @@ tshark -i eth1 -Y "tcp.flags.syn == 1" -T fields -e ip.src -e ip.dst -e tcp.dstp
 > [!NOTE]
 > Modern intrusion detection systems (Snort, Suricata, Zeek) easily detect high-frequency half-open SYN scans through packet rate anomaly heuristics and incomplete session thresholds.
 `
-  }
-];
-
-export const INITIAL_MILESTONES: JourneyMilestone[] = [
-  {
-    akteRange: 'Akte 001 - 050',
-    title: 'Core Protocols, Systems & Lab Isolation',
-    phase: 'Phase 1: Foundations',
-    status: 'in-progress',
-    description: 'Computer networking primitives, Linux systems programming, air-gapped virtualization architectures, and packet analysis.',
-    relatedPostId: 'akte-001-philosophy-of-proof-of-work'
-  },
-  {
-    akteRange: 'Akte 051 - 150',
-    title: 'Offensive Reconnaissance & Target Mapping',
-    phase: 'Phase 2: Network & Surface Enumeration',
-    status: 'upcoming',
-    description: 'Active/passive network mapping, port scanning internals, service banner extraction, and automated vulnerability scanning.'
-  },
-  {
-    akteRange: 'Akte 151 - 250',
-    title: 'Web Application Auditing & Vulnerability Mechanics',
-    phase: 'Phase 3: Application Security',
-    status: 'upcoming',
-    description: 'OWASP Top 10 vulnerabilities, authentication bypasses, SQL injection mechanics, and API security auditing.'
-  },
-  {
-    akteRange: 'Akte 251 - 380',
-    title: 'Enterprise Active Directory & Privilege Escalation',
-    phase: 'Phase 4: Enterprise Infrastructure',
-    status: 'upcoming',
-    description: 'Windows domain controllers, Kerberos ticket manipulation, BloodHound graph analysis, and defensive Group Policy hardening.'
-  },
-  {
-    akteRange: 'Akte 381 - 460',
-    title: 'Incident Response, SIEM Forensics & Threat Hunting',
-    phase: 'Phase 5: Blue Team Operations',
-    status: 'upcoming',
-    description: 'Splunk and Elastic log pipelines, memory dump analysis with Volatility, and custom Suricata detection rules.'
-  },
-  {
-    akteRange: 'Akte 461 - 511',
-    title: 'Advanced Exploit Mechanics & Defense Architecture',
-    phase: 'Phase 6: Mastery & Synthesis',
-    status: 'upcoming',
-    description: 'Buffer overflow primitives, binary analysis, custom command & control emulation, and comprehensive capstone writeups.'
-  }
-];
-
-export const INITIAL_ARSENAL: ArsenalTool[] = [
-  {
-    name: 'Kali Linux 2026.x',
-    category: 'Virtualization & OS',
-    purpose: 'Security auditing & penetration testing workstation',
-    status: 'Daily Driver',
-    commandExample: 'sudo apt update && sudo apt dist-upgrade'
-  },
-  {
-    name: 'Oracle VM VirtualBox',
-    category: 'Virtualization & OS',
-    purpose: 'Type-2 hypervisor hosting air-gapped lab subnets and victim targets',
-    status: 'Daily Driver',
-    commandExample: 'VBoxManage list runningvms'
-  },
-  {
-    name: 'Wireshark & Tshark',
-    category: 'Network Analysis',
-    purpose: 'Deep packet inspection and protocol header dissection',
-    status: 'Active Lab',
-    commandExample: 'tshark -i eth1 -Y "tcp.flags.syn==1 and tcp.flags.ack==0"'
-  },
-  {
-    name: 'Nmap (Network Mapper)',
-    category: 'Penetration Testing',
-    purpose: 'Host discovery, port scanning, service versioning, and NSE scripts',
-    status: 'Daily Driver',
-    commandExample: 'nmap -sC -sV -O -p- 192.168.56.101 -oN scan.txt'
-  },
-  {
-    name: 'Burp Suite Community',
-    category: 'Penetration Testing',
-    purpose: 'HTTP proxy for intercepting and manipulating web application requests',
-    status: 'Active Lab',
-    commandExample: 'Proxy running on 127.0.0.1:8080 with CA Certificate imported'
-  },
-  {
-    name: 'Python 3 (Security Tooling)',
-    category: 'Scripting & Automation',
-    purpose: 'Custom socket monitors, banner grabbers, and log parsers',
-    status: 'Currently Studying',
-    commandExample: 'python3 -m pip install scapy requests cryptography'
   }
 ];
