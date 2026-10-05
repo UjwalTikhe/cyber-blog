@@ -43,7 +43,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4 selection:bg-paper-subtle">
+    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4 selection:bg-paper-border">
       <div className="bg-paper border border-paper-border max-w-md w-full p-6 sm:p-8 space-y-6 animate-in fade-in duration-200">
         {/* Header */}
         <div className="space-y-1.5 border-b border-paper-border pb-4">
@@ -88,7 +88,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
                 if (error) setError(null);
               }}
               placeholder="Enter authorization key..."
-              className="w-full px-3 py-2 bg-paper-surface border border-paper-border text-sm font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
+              className="w-full px-3 py-2 bg-paper border border-paper-border text-sm font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
             />
             {error && (
               <div className="text-[11px] font-mono text-crimson pt-1">
@@ -98,7 +98,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps)
           </div>
 
           {/* First run hint */}
-          <div className="p-3 border border-paper-border bg-paper-subtle text-[11px] font-mono text-ink-muted space-y-1">
+          <div className="p-3 border border-paper-border bg-paper text-[11px] font-mono text-ink-muted space-y-1">
             <div className="font-bold text-ink">FIRST-TIME SETUP NOTICE</div>
             <p>
               Default master key: <code className="bg-paper px-1.5 py-0.2 border border-paper-border text-ink font-bold">akte511</code>

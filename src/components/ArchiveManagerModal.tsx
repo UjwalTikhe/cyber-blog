@@ -128,7 +128,7 @@ export const ArchiveManagerModal = ({
 
         {activeTab === 'sync' ? (
           <div className="space-y-4 font-mono text-xs">
-            <div className="p-3 border border-paper-border bg-paper-surface space-y-2">
+            <div className="p-3 border border-paper-border bg-paper space-y-2">
               <div className="font-bold text-ink">CURRENT LOCAL LEDGER: {posts.length} ENTRIES</div>
               <p className="text-ink-muted text-[11px] leading-relaxed font-sans">
                 Articles you compose are instantly stored in your browser's persistent storage. You can export a verifiable backup at any moment.
@@ -139,14 +139,14 @@ export const ArchiveManagerModal = ({
               {/* Export Button */}
               <button
                 onClick={handleExportJson}
-                className="p-3 border border-paper-border bg-paper hover:bg-paper-surface hover:border-paper-darkBorder text-left space-y-1 transition-colors"
+                className="p-3 border border-paper-border bg-paper hover:bg-paper hover:border-paper-darkBorder text-left space-y-1 transition-colors"
               >
                 <div className="font-bold text-ink">&darr; Export Archive (.json)</div>
                 <div className="text-[10px] text-ink-muted">Download entire article ledger for safe keeping.</div>
               </button>
 
               {/* Import Button */}
-              <label className="p-3 border border-paper-border bg-paper hover:bg-paper-surface hover:border-paper-darkBorder text-left space-y-1 transition-colors cursor-pointer block">
+              <label className="p-3 border border-paper-border bg-paper hover:bg-paper hover:border-paper-darkBorder text-left space-y-1 transition-colors cursor-pointer block">
                 <div className="font-bold text-ink">&uarr; Import Archive (.json)</div>
                 <div className="text-[10px] text-ink-muted">Restore records from a previously exported file.</div>
                 <input
@@ -186,7 +186,7 @@ export const ArchiveManagerModal = ({
                 value={currentPass}
                 onChange={(e) => setCurrentPass(e.target.value)}
                 placeholder="Current authorization key..."
-                className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-ink focus:outline-none"
+                className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none"
               />
             </div>
 
@@ -197,7 +197,7 @@ export const ArchiveManagerModal = ({
                 value={newPass}
                 onChange={(e) => setNewPass(e.target.value)}
                 placeholder="New secret key (min 4 characters)..."
-                className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-ink focus:outline-none"
+                className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none"
               />
             </div>
 

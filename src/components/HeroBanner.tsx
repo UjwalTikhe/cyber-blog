@@ -16,7 +16,7 @@ export const HeroBanner = ({
   onLoginClick,
 }: HeroBannerProps) => {
   return (
-    <div className="border-b border-paper-border bg-paper-surface">
+    <div className="border-b border-paper-border bg-paper">
       <div className="max-w-6xl mx-auto px-4 py-10 sm:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Main Hero Copy */}

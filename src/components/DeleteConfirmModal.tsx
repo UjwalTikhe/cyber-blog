@@ -49,7 +49,7 @@ export const DeleteConfirmModal = ({
         </div>
 
         {/* Target post summary card */}
-        <div className="p-3 border border-paper-border bg-paper-surface space-y-1 font-mono text-xs">
+        <div className="p-3 border border-paper-border bg-paper space-y-1 font-mono text-xs">
           <div className="text-crimson font-bold">{akteDisplay}</div>
           <div className="text-ink font-semibold line-clamp-1">{post.title}</div>
           <div className="text-ink-muted text-[11px]">{post.category} &bull; {post.date}</div>

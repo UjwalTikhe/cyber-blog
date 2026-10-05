@@ -247,7 +247,7 @@ export const ArchivalArtifact3D = () => {
 
   return (
     <div
-      className="relative flex flex-col items-center justify-center p-3 border border-paper-border bg-paper-blush select-none transition-colors"
+      className="relative flex flex-col items-center justify-center p-3 border border-paper-border bg-paper select-none transition-colors"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       title="Click and drag to rotate the 3D cryptographic artifact. Double-click to reset view."
@@ -259,7 +259,7 @@ export const ArchivalArtifact3D = () => {
       />
 
       {/* Tactile Status Bar */}
-      <div className="w-full pt-2.5 mt-1 border-t border-paper-blushBorder flex items-center justify-between text-[11px] font-mono text-ink-muted">
+      <div className="w-full pt-2.5 mt-1 border-t border-paper-border flex items-center justify-between text-[11px] font-mono text-ink-muted">
         <span className="flex items-center gap-1.5">
           <span className={`w-1.5 h-1.5 rounded-full ${isInteracting ? 'bg-crimson animate-ping' : 'bg-crimson/60'}`} />
           <span className="font-semibold text-ink">3D CYPHER MATRIX</span>

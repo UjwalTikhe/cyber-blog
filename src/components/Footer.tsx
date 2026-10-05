@@ -4,7 +4,7 @@ interface FooterProps {
 
 export const Footer = ({ onOpenLegal }: FooterProps) => {
   return (
-    <footer className="w-full border-t border-paper-border bg-paper-surface py-10 text-ink-muted text-xs font-mono">
+    <footer className="w-full border-t border-paper-border bg-paper py-10 text-ink-muted text-xs font-mono">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-paper-border">
           {/* Brand info */}

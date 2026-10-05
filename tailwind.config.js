@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ONE UNIFIED BACKGROUND FOR THE ENTIRE WEBSITE
         paper: {
-          DEFAULT: '#faf7f2', // Warm porcelain ivory
-          surface: '#f4ede4', // Soft linen alabaster
-          subtle: '#ebe2d5', // Delicate warm taupe
-          blush: '#fbf5f2', // Gentle whisper of rose-linen
-          border: '#ddd3c4', // Refined hairline border
-          blushBorder: '#e8d5ce', // Delicate soft rose-taupe border
+          DEFAULT: '#faf7f2', // The single unified background everywhere
+          surface: '#faf7f2', // Unified to exact same color
+          subtle: '#faf7f2',  // Unified to exact same color
+          blush: '#faf7f2',   // Unified to exact same color
+          border: '#ddd3c4',  // Clean 1px hairline border
+          blushBorder: '#ddd3c4',
           darkBorder: '#bfb3a2',
         },
         ink: {
@@ -24,8 +25,8 @@ export default {
         crimson: {
           DEFAULT: '#8b263e', // Deep velvet rosewood / antique crimson
           muted: '#a33d54', // Muted dusty rose accent
-          soft: '#f7ebed', // Delicate blush background
-          subtle: '#fdf7f8',
+          soft: '#faf7f2',  // Unified
+          subtle: '#faf7f2', // Unified
         }
       },
       fontFamily: {
@@ -62,7 +63,7 @@ export default {
             },
             code: {
               color: '#221e1f',
-              backgroundColor: '#f4ede4',
+              backgroundColor: '#faf7f2',
               padding: '0.15rem 0.35rem',
               borderRadius: '2px',
               fontWeight: '500',
@@ -95,7 +96,7 @@ export default {
               borderColor: '#ddd3c4',
               borderWidth: '1px',
               color: '#554e4c',
-              backgroundColor: '#fbf5f2',
+              backgroundColor: '#faf7f2',
               padding: '1rem 1.25rem',
               borderRadius: '2px',
               fontStyle: 'normal',

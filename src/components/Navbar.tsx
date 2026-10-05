@@ -20,14 +20,14 @@ export const Navbar = ({
   onOpenArchiveManager,
 }: NavbarProps) => {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-paper-border bg-paper/95 backdrop-blur-none">
+    <header className="sticky top-0 z-40 w-full border-b border-paper-border bg-paper">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
         {/* Brand */}
         <button
           onClick={onHomeClick}
           className="flex items-center gap-2.5 text-left shrink-0"
         >
-          <div className="w-7 h-7 border border-paper-border bg-paper-surface flex items-center justify-center font-mono text-xs font-bold text-ink">
+          <div className="w-7 h-7 border border-paper-border bg-paper flex items-center justify-center font-mono text-xs font-bold text-ink">
             511
           </div>
           <div>
@@ -47,7 +47,7 @@ export const Navbar = ({
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full px-2.5 py-1 bg-paper-surface border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
+              className="w-full px-2.5 py-1 bg-paper border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
             />
             {searchQuery && (
               <button
@@ -62,7 +62,7 @@ export const Navbar = ({
           {/* Author Session Actions */}
           {isAuthor ? (
             <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-xs">
-              <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-crimson font-bold px-2 py-0.5 border border-crimson/30 bg-paper-surface">
+              <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-crimson font-bold px-2 py-0.5 border border-crimson/30 bg-paper">
                 <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
                 <span>Author</span>
               </span>
@@ -77,7 +77,7 @@ export const Navbar = ({
 
               <button
                 onClick={onOpenArchiveManager}
-                className="px-2 py-1 border border-paper-border bg-paper-surface text-ink hover:border-paper-darkBorder transition-colors hidden sm:inline-block"
+                className="px-2 py-1 border border-paper-border bg-paper text-ink hover:border-paper-darkBorder transition-colors hidden sm:inline-block"
                 title="Archive Backup & Passphrase Settings"
               >
                 Sync
@@ -94,7 +94,7 @@ export const Navbar = ({
           ) : (
             <button
               onClick={onLoginClick}
-              className="font-mono text-xs px-2.5 py-1 border border-paper-border bg-paper-surface text-ink-muted hover:text-ink hover:border-paper-darkBorder transition-colors"
+              className="font-mono text-xs px-2.5 py-1 border border-paper-border bg-paper text-ink-muted hover:text-ink hover:border-paper-darkBorder transition-colors"
               title="Author Login (Akte 511 Studio)"
             >
               [ ✦ Author ]
@@ -106,7 +106,7 @@ export const Navbar = ({
             href="https://github.com/UjwalTikhe/cyber-blog"
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-xs text-ink-muted hover:text-ink px-2 py-1 border border-paper-border bg-paper-surface transition-colors hidden sm:block"
+            className="font-mono text-xs text-ink-muted hover:text-ink px-2 py-1 border border-paper-border bg-paper transition-colors hidden sm:block"
             title="GitHub Repository"
           >
             Repo

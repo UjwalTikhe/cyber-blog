@@ -207,7 +207,7 @@ export function App() {
   }, [posts]);
 
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col font-sans selection:bg-paper-subtle selection:text-ink">
+    <div className="min-h-screen bg-paper text-ink flex flex-col font-sans selection:bg-paper-border selection:text-ink">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 right-4 z-50 bg-ink text-paper text-xs font-mono px-3.5 py-2 border border-paper-darkBorder shadow-none flex items-center gap-2 animate-in fade-in duration-200">
@@ -276,7 +276,7 @@ export function App() {
                       placeholder="Search dossiers..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
+                      className="w-full px-3 py-1.5 bg-paper border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
                     />
                     {searchQuery && (
                       <button
@@ -307,7 +307,7 @@ export function App() {
                       className={`px-2.5 py-1 text-xs transition-colors border ${
                         selectedCategory === cat && !activeTag
                           ? 'bg-ink text-paper border-ink'
-                          : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border hover:border-paper-darkBorder'
+                          : 'bg-paper text-ink-muted hover:text-ink border-paper-border hover:border-paper-darkBorder'
                       }`}
                     >
                       {cat}
@@ -319,7 +319,7 @@ export function App() {
                 {activeTag && (
                   <div className="flex items-center gap-2 py-2 font-mono text-xs text-ink-muted">
                     <span>Active Tag:</span>
-                    <span className="px-2 py-0.5 border border-paper-border bg-paper-surface text-ink font-bold">
+                    <span className="px-2 py-0.5 border border-paper-border bg-paper text-ink font-bold">
                       #{activeTag}
                     </span>
                     <button
@@ -337,7 +337,7 @@ export function App() {
             <main className="max-w-6xl mx-auto px-4 pb-20 pt-4">
               {posts.length === 0 ? (
                 /* Poetic, pristine empty state */
-                <div className="border border-paper-blushBorder bg-paper-blush p-8 sm:p-14 max-w-xl mx-auto text-center space-y-5 my-8">
+                <div className="border border-paper-border bg-paper p-8 sm:p-14 max-w-xl mx-auto text-center space-y-5 my-8">
                   <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider flex items-center justify-center gap-1.5">
                     <span>✦</span>
                     <span>AKTE 511 // AUTEUR JOURNAL INITIALIZATION</span>
@@ -393,7 +393,7 @@ export function App() {
                 </div>
               ) : (
                 /* Search zero results */
-                <div className="text-center py-16 border border-paper-border bg-paper-surface p-8 max-w-md mx-auto space-y-3 font-sans">
+                <div className="text-center py-16 border border-paper-border bg-paper p-8 max-w-md mx-auto space-y-3 font-sans">
                   <h3 className="font-serif font-bold text-xl text-ink">No Records Found</h3>
                   <p className="text-xs text-ink-muted">
                     No articles match "{searchQuery || activeTag}".
@@ -425,7 +425,7 @@ export function App() {
                         className={`px-2 py-0.5 border transition-colors ${
                           activeTag === tag
                             ? 'bg-ink text-paper border-ink'
-                            : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border'
+                            : 'bg-paper text-ink-muted hover:text-ink border-paper-border'
                         }`}
                       >
                         #{tag}

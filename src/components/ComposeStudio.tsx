@@ -271,7 +271,7 @@ export const ComposeStudio = ({
     >
       <div className="bg-paper border border-paper-border flex flex-col h-full max-w-7xl mx-auto w-full overflow-hidden shadow-none">
         {/* Top Studio Bar */}
-        <div className="px-5 py-3 border-b border-paper-border flex flex-wrap items-center justify-between gap-3 bg-paper-surface">
+        <div className="px-5 py-3 border-b border-paper-border flex flex-wrap items-center justify-between gap-3 bg-paper">
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs font-bold text-crimson uppercase tracking-wider flex items-center gap-1.5">
               <span>✦</span>
@@ -314,7 +314,7 @@ export const ComposeStudio = ({
             <button
               type="button"
               onClick={handleCopyMarkdown}
-              className="px-3 py-1 border border-paper-border bg-paper text-ink hover:bg-paper-surface transition-colors"
+              className="px-3 py-1 border border-paper-border bg-paper text-ink hover:bg-paper transition-colors"
               title="Copy raw markdown to clipboard"
             >
               {copiedMd ? 'Copied ✧' : 'Copy .md'}
@@ -351,7 +351,7 @@ export const ComposeStudio = ({
         )}
 
         {/* Metadata Configuration Grid */}
-        <div className="p-4 border-b border-paper-border bg-paper-blush grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-mono">
+        <div className="p-4 border-b border-paper-border bg-paper grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-mono">
           <div className="lg:col-span-1 space-y-1">
             <label className="text-ink font-bold">AKTE #</label>
             <input
@@ -429,7 +429,7 @@ export const ComposeStudio = ({
                 onChange={(e) => setThumbnailUrl(e.target.value)}
                 className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none focus:border-crimson font-mono text-[11px]"
               />
-              <label className="px-2 py-1.5 border border-paper-border bg-paper hover:bg-paper-surface cursor-pointer text-[10px] shrink-0 text-ink">
+              <label className="px-2 py-1.5 border border-paper-border bg-paper hover:bg-paper cursor-pointer text-[10px] shrink-0 text-ink">
                 <span>Upload</span>
                 <input
                   type="file"
@@ -492,7 +492,7 @@ export const ComposeStudio = ({
             <div className={`flex flex-col border-r border-paper-border ${viewMode === 'split' ? 'w-1/2' : 'w-full'}`}>
               <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted flex items-center justify-between">
                 <span>Markdown Body</span>
-                <span>{readTime} &bull; {wordCount} words &bull; <kbd className="border border-paper-border px-1 py-0.2 bg-paper-surface">Ctrl+Enter</kbd> to save</span>
+                <span>{readTime} &bull; {wordCount} words &bull; <kbd className="border border-paper-border px-1 py-0.2 bg-paper">Ctrl+Enter</kbd> to save</span>
               </div>
               <textarea
                 value={markdown}

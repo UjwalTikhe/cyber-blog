@@ -23,11 +23,11 @@ export const PostCard = ({
   return (
     <article
       onClick={() => onSelect(post)}
-      className="group bg-paper-blush/60 hover:bg-paper-surface border border-paper-blushBorder hover:border-paper-darkBorder rounded-sm transition-colors cursor-pointer flex flex-col justify-between relative"
+      className="group bg-paper hover:bg-paper border border-paper-border hover:border-paper-darkBorder rounded-sm transition-colors cursor-pointer flex flex-col justify-between relative"
     >
       {/* 16:9 Thumbnail Frame */}
       {post.thumbnailUrl && (
-        <div className="relative aspect-video w-full overflow-hidden border-b border-paper-border bg-paper-subtle">
+        <div className="relative aspect-video w-full overflow-hidden border-b border-paper-border bg-paper">
           <img
             src={post.thumbnailUrl}
             alt={post.title}

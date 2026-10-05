@@ -121,7 +121,7 @@ export const PostView = ({
               <div className="flex items-center gap-2 font-mono text-xs">
                 <button
                   onClick={() => onEditPost && onEditPost(post)}
-                  className="px-2.5 py-1 border border-paper-border bg-paper hover:bg-paper-surface text-ink transition-colors"
+                  className="px-2.5 py-1 border border-paper-border bg-paper hover:bg-paper text-ink transition-colors"
                 >
                   Edit Dossier
                 </button>
@@ -163,7 +163,7 @@ export const PostView = ({
           </h1>
 
           {/* Excerpt */}
-          <div className="p-4 border border-paper-border bg-paper-surface rounded-sm text-base text-ink-muted leading-relaxed font-sans">
+          <div className="p-4 border border-paper-border bg-paper rounded-sm text-base text-ink-muted leading-relaxed font-sans">
             {post.excerpt}
           </div>
 
@@ -182,7 +182,7 @@ export const PostView = ({
 
         {/* 16:9 Thumbnail Cover Hero */}
         {post.thumbnailUrl && (
-          <div className="mb-10 border border-paper-border bg-paper-surface">
+          <div className="mb-10 border border-paper-border bg-paper">
             <img
               src={post.thumbnailUrl}
               alt={post.title}
@@ -193,7 +193,7 @@ export const PostView = ({
 
         {/* YouTube Video Embed (if companion video exists) */}
         {embedUrl && (
-          <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-3">
+          <div className="mb-10 p-5 border border-paper-border bg-paper space-y-3">
             <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
               [ ✦ Companion Vlog Walkthrough: YouTube ]
             </div>
@@ -211,7 +211,7 @@ export const PostView = ({
 
         {/* Dedicated Feynman Technique Highlight Box */}
         {post.feynmanSummary && (
-          <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-2">
+          <div className="mb-10 p-5 border border-paper-border bg-paper space-y-2">
             <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
               [ ✦ First Principles &amp; Feynman Intuition Breakdown ]
             </div>
@@ -224,7 +224,7 @@ export const PostView = ({
         {/* Main Content Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Article Body */}
-          <main className="lg:col-span-8 p-6 sm:p-8 border border-paper-border bg-paper-surface">
+          <main className="lg:col-span-8 p-6 sm:p-8 border border-paper-border bg-paper">
             <div
               className="post-content prose max-w-none prose-headings:font-serif prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg prose-p:leading-relaxed prose-p:text-ink prose-li:text-ink"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
@@ -240,7 +240,7 @@ export const PostView = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopyLink}
-                    className="font-mono text-xs px-3 py-1 border border-paper-border bg-paper-surface text-ink hover:border-paper-darkBorder transition-colors"
+                    className="font-mono text-xs px-3 py-1 border border-paper-border bg-paper text-ink hover:border-paper-darkBorder transition-colors"
                   >
                     {copiedLink ? 'Link Copied' : 'Copy Link'}
                   </button>
@@ -292,7 +292,7 @@ export const PostView = ({
           {/* Sidebar: Table of Contents */}
           <aside className="lg:col-span-4 space-y-4">
             {toc.length > 0 && (
-              <div className="p-4 border border-paper-border bg-paper-surface">
+              <div className="p-4 border border-paper-border bg-paper">
                 <div className="pb-2 mb-3 border-b border-paper-border font-mono text-xs font-bold text-ink uppercase tracking-wider">
                   Contents
                 </div>
@@ -316,7 +316,7 @@ export const PostView = ({
               </div>
             )}
 
-            <div className="p-4 border border-paper-border bg-paper-surface font-mono text-xs text-ink-muted space-y-2">
+            <div className="p-4 border border-paper-border bg-paper font-mono text-xs text-ink-muted space-y-2">
               <div className="font-bold text-ink uppercase tracking-wider">Akte 511 Ledger</div>
               <p className="text-[11px] leading-relaxed">
                 Verifiable cybersecurity lab records, packet captures, and defensive blueprints.
