@@ -1,10 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import type { Post } from '../types';
 import { renderMarkdown, extractToc, highlightAllCodeBlocks } from '../utils/markdown';
-import { 
-  ArrowLeft, Calendar, Clock, Share2, Check, Copy, 
-  ChevronRight, Tag, BookOpen, Lightbulb, ShieldCheck
-} from 'lucide-react';
 
 interface PostViewProps {
   post: Post;
@@ -27,7 +23,6 @@ export const PostView = ({
   onSelectPost,
   onTagClick,
 }: PostViewProps) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
   const [activeHeading, setActiveHeading] = useState<string>('');
 
@@ -48,16 +43,9 @@ export const PostView = ({
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
-  // Track scroll progress and active heading
+  // Track active heading
   useEffect(() => {
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        const currentProgress = (window.scrollY / totalHeight) * 100;
-        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
-      }
-
-      // Check active heading
       const headingElements = toc.map((item) => document.getElementById(item.id)).filter(Boolean);
       for (const el of headingElements) {
         if (el) {
@@ -87,17 +75,15 @@ export const PostView = ({
       const textToCopy = codeElement ? codeElement.innerText : (pre as HTMLElement).innerText;
 
       const button = document.createElement('button');
-      button.className = 'code-copy-btn absolute top-3 right-3 px-3 py-1 rounded-full bg-white hover:bg-pink-50 text-[11px] font-sans font-bold text-rose-600 border border-pink-200 flex items-center gap-1 transition-all shadow-sm z-10';
-      button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy';
+      button.className = 'code-copy-btn absolute top-2.5 right-2.5 px-2 py-0.5 bg-paper border border-paper-border text-[11px] font-mono text-ink-muted hover:text-ink transition-colors';
+      button.innerText = 'Copy';
 
       button.addEventListener('click', () => {
         navigator.clipboard.writeText(textToCopy);
-        button.innerHTML = '<svg class="w-3.5 h-3.5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
-        button.classList.add('bg-pink-100');
+        button.innerText = 'Copied';
         setTimeout(() => {
-          button.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy';
-          button.classList.remove('bg-pink-100');
-        }, 2000);
+          button.innerText = 'Copy';
+        }, 1500);
       });
 
       pre.appendChild(button);
@@ -111,72 +97,58 @@ export const PostView = ({
   };
 
   return (
-    <div className="min-h-screen pb-24 bg-gradient-to-b from-pink-50/40 via-white to-pink-50/20">
-      {/* Top Reading Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-[3px] bg-pink-100 z-50">
-        <div
-          className="h-full bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 transition-all duration-75"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 pt-8">
+    <div className="min-h-screen pb-24 bg-paper">
+      <div className="max-w-4xl mx-auto px-4 pt-8">
         {/* Navigation Back button */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-pink-100">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-paper-border">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 font-sans font-bold text-xs text-rose-600 hover:text-rose-800 bg-white hover:bg-pink-50 px-4 py-2 rounded-full border border-pink-200 transition-all shadow-cute-pill group"
+            className="font-mono text-xs text-ink-muted hover:text-ink transition-colors flex items-center gap-1.5"
           >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>&larr; Back to Dossiers</span>
+            <span>&larr;</span>
+            <span>Back to all dossiers</span>
           </button>
 
-          <div className="flex items-center gap-2 font-sans text-xs font-semibold text-slate-500">
-            <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold">
+          <div className="flex items-center gap-2 font-mono text-xs text-ink-muted">
+            <span className="font-bold text-ink">
               {akteDisplay}
             </span>
-            <span className="text-slate-400">•</span>
+            <span>/</span>
             <span>Technical Dossier</span>
           </div>
         </div>
 
-        {/* Post Hero Header */}
-        <header className="mb-10 max-w-4xl space-y-4">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <span className="px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-sans font-bold border border-rose-200">
+        {/* Post Header */}
+        <header className="mb-10 space-y-4">
+          <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-ink-muted">
+            <span className="text-ink font-semibold">
               {post.category}
             </span>
-            <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-sans font-semibold border border-slate-200">
-              Level: {post.difficulty}
-            </span>
-            <div className="flex items-center gap-1.5 text-xs font-sans text-slate-500 font-medium">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
-              <span>{post.date}</span>
-            </div>
-            <span className="text-slate-300">•</span>
-            <div className="flex items-center gap-1.5 text-xs font-sans text-slate-500 font-medium">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
-              <span>{post.readTime}</span>
-            </div>
+            <span>&bull;</span>
+            <span>Level: {post.difficulty}</span>
+            <span>&bull;</span>
+            <span>{post.date}</span>
+            <span>&bull;</span>
+            <span>{post.readTime}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-ink tracking-tight leading-tight">
             {post.title}
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-sans border-l-4 border-rose-400 pl-4 py-1 bg-pink-50/40 rounded-r-2xl">
+          {/* Excerpt with clean uniform border, no colored left stripe */}
+          <div className="p-4 border border-paper-border bg-paper-surface rounded-sm text-base text-ink-muted leading-relaxed font-sans">
             {post.excerpt}
-          </p>
+          </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
             {post.tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => onTagClick(tag)}
-                className="text-xs font-sans font-semibold text-rose-600 hover:text-rose-800 bg-white px-3 py-1 rounded-full border border-pink-200 hover:border-pink-400 transition-colors flex items-center gap-1 shadow-cute-pill"
+                className="font-mono text-xs text-ink-muted hover:text-ink px-2 py-0.5 border border-paper-border bg-paper transition-colors"
               >
-                <Tag className="w-3 h-3 text-rose-400" />
-                <span>#{tag}</span>
+                #{tag}
               </button>
             ))}
           </div>
@@ -184,7 +156,7 @@ export const PostView = ({
 
         {/* 16:9 Thumbnail Cover Hero */}
         {post.thumbnailUrl && (
-          <div className="mb-10 rounded-3xl overflow-hidden border border-pink-200 shadow-cute-card bg-gradient-to-br from-pink-50 via-white to-purple-50">
+          <div className="mb-10 border border-paper-border bg-paper-surface">
             <img
               src={post.thumbnailUrl}
               alt={post.title}
@@ -193,16 +165,13 @@ export const PostView = ({
           </div>
         )}
 
-        {/* YouTube Video Embed (if companion vlog exists) */}
+        {/* YouTube Video Embed (if companion video exists) */}
         {embedUrl && (
-          <div className="mb-10 bg-white border border-pink-200 rounded-3xl p-6 shadow-cute-card space-y-4">
-            <div className="flex items-center gap-2 font-display font-bold text-sm text-slate-900">
-              <svg className="w-5 h-5 fill-red-600" viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-              </svg>
-              <span>Companion Video Walkthrough (YouTube)</span>
+          <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-3">
+            <div className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
+              [ Companion Video Walkthrough: YouTube ]
             </div>
-            <div className="aspect-video w-full rounded-2xl overflow-hidden border border-pink-100 shadow-sm">
+            <div className="aspect-video w-full border border-paper-border">
               <iframe
                 src={embedUrl}
                 title="YouTube Video Walkthrough"
@@ -214,74 +183,64 @@ export const PostView = ({
           </div>
         )}
 
-        {/* Dedicated Feynman Technique Highlight Box */}
+        {/* Dedicated Feynman Technique Highlight Box: Uniform 1px border, no colored left stripe */}
         {post.feynmanSummary && (
-          <div className="mb-10 bg-gradient-to-r from-rose-50/80 via-pink-50/60 to-purple-50/80 border border-rose-200 rounded-3xl p-6 shadow-cute-sm space-y-2">
-            <div className="flex items-center gap-2 font-display font-bold text-sm text-rose-800">
-              <Lightbulb className="w-5 h-5 text-rose-500 fill-rose-200" />
-              <span className="font-mono text-xs uppercase tracking-wide">Core Concept &bull; First Principles Breakdown</span>
+          <div className="mb-10 p-5 border border-paper-border bg-paper-surface space-y-2">
+            <div className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
+              [ Core Concept: First Principles Breakdown ]
             </div>
-            <p className="text-sm text-slate-700 leading-relaxed font-sans font-medium">
+            <p className="text-sm text-ink-muted leading-relaxed font-sans">
               "{post.feynmanSummary}"
             </p>
           </div>
         )}
 
-        {/* Main Content Grid: Article Body + Table of Contents Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {/* Main Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Article Body */}
-          <main className="lg:col-span-8 bg-white border border-pink-100 rounded-3xl p-6 sm:p-10 shadow-cute-card">
+          <main className="lg:col-span-8 p-6 sm:p-8 border border-paper-border bg-paper-surface">
             <div
-              className="post-content prose max-w-none prose-headings:font-display prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-p:leading-relaxed prose-p:text-slate-700 prose-li:text-slate-700 prose-pre:relative"
+              className="post-content prose max-w-none prose-headings:font-serif prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg prose-p:leading-relaxed prose-p:text-ink prose-li:text-ink"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
 
             {/* Post End Actions & Share */}
-            <div className="mt-14 pt-8 border-t border-pink-100 space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 bg-pink-50/50 border border-pink-200 p-5 rounded-3xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-pink-200 flex items-center justify-center text-rose-600 shadow-cute-pill">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <div className="font-display font-bold text-sm text-slate-900">End of Dossier Record</div>
-                    <div className="text-xs text-slate-500 font-sans">Akte 511 Technical Investigation Archive.</div>
-                  </div>
+            <div className="mt-12 pt-6 border-t border-paper-border space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-4 border border-paper-border bg-paper">
+                <div className="font-mono text-xs text-ink-muted">
+                  End of Dossier Record &bull; Akte 511
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopyLink}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-pink-200 text-xs font-sans font-bold text-slate-700 hover:text-rose-600 hover:border-pink-400 transition-all shadow-cute-pill"
+                    className="font-mono text-xs px-3 py-1 border border-paper-border bg-paper-surface text-ink hover:border-paper-darkBorder transition-colors"
                   >
-                    {copiedLink ? <Check className="w-3.5 h-3.5 text-rose-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
+                    {copiedLink ? 'Link Copied' : 'Copy Link'}
                   </button>
 
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-rose-500 text-white text-xs font-sans font-bold hover:bg-rose-600 transition-all shadow-cute-pill"
+                    className="font-mono text-xs px-3 py-1 border border-ink bg-ink text-paper transition-colors"
                   >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Share</span>
+                    Share
                   </a>
                 </div>
               </div>
 
               {/* Prev / Next Article Navigation */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 {prevPost ? (
                   <button
                     onClick={() => onSelectPost(prevPost)}
-                    className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-left transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5"
+                    className="p-4 border border-paper-border bg-paper hover:border-paper-darkBorder text-left transition-colors"
                   >
-                    <div className="text-[11px] font-mono font-bold text-rose-600 flex items-center gap-1">
-                      <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-                      <span>Previous Dossier</span>
+                    <div className="font-mono text-[11px] text-ink-muted">
+                      &larr; Previous Dossier
                     </div>
-                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
+                    <div className="font-serif font-bold text-sm text-ink mt-1 line-clamp-1">
                       {prevPost.title}
                     </div>
                   </button>
@@ -290,13 +249,12 @@ export const PostView = ({
                 {nextPost ? (
                   <button
                     onClick={() => onSelectPost(nextPost)}
-                    className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-right transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5 ml-auto w-full"
+                    className="p-4 border border-paper-border bg-paper hover:border-paper-darkBorder text-right transition-colors ml-auto w-full"
                   >
-                    <div className="text-[11px] font-mono font-bold text-rose-600 flex items-center justify-end gap-1">
-                      <span>Next Dossier</span>
-                      <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    <div className="font-mono text-[11px] text-ink-muted">
+                      Next Dossier &rarr;
                     </div>
-                    <div className="text-sm font-display font-bold text-slate-900 group-hover:text-rose-600 transition-colors mt-1 line-clamp-1">
+                    <div className="font-serif font-bold text-sm text-ink mt-1 line-clamp-1">
                       {nextPost.title}
                     </div>
                   </button>
@@ -305,26 +263,24 @@ export const PostView = ({
             </div>
           </main>
 
-          {/* Sticky Sidebar: Table of Contents & Author Card */}
-          <aside className="lg:col-span-4 sticky top-24 space-y-6">
-            {/* Table of Contents */}
+          {/* Sidebar: Table of Contents */}
+          <aside className="lg:col-span-4 space-y-4">
             {toc.length > 0 && (
-              <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card">
-                <div className="flex items-center gap-2 pb-3 mb-3 border-b border-pink-100 font-display font-bold text-xs text-slate-800">
-                  <BookOpen className="w-4 h-4 text-rose-500" />
-                  <span>TABLE OF CONTENTS</span>
+              <div className="p-4 border border-paper-border bg-paper-surface">
+                <div className="pb-2 mb-3 border-b border-paper-border font-mono text-xs font-bold text-ink uppercase tracking-wider">
+                  Contents
                 </div>
-                <nav className="space-y-2 text-xs font-sans font-medium">
+                <nav className="space-y-1.5 text-xs font-sans">
                   {toc.map((item) => (
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className={`block py-1 transition-colors ${
-                        item.level === 3 ? 'pl-4 text-slate-500' : 'text-slate-700'
+                      className={`block py-0.5 transition-colors ${
+                        item.level === 3 ? 'pl-3 text-ink-muted' : 'text-ink'
                       } ${
                         activeHeading === item.id
-                          ? 'text-rose-600 font-bold bg-rose-50 px-2 rounded-lg'
-                          : 'hover:text-rose-600'
+                          ? 'font-bold text-crimson'
+                          : 'hover:text-ink'
                       }`}
                     >
                       {item.text}
@@ -334,25 +290,13 @@ export const PostView = ({
               </div>
             )}
 
-            {/* Author / Project Card */}
-            <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 border border-pink-200 flex items-center justify-center font-display font-bold text-rose-600 text-lg shadow-cute-pill">
-                  511
-                </div>
-                <div>
-                  <div className="font-display font-bold text-slate-900 text-base">Akte 511</div>
-                  <div className="text-xs font-mono font-bold text-rose-600">Technical Archive</div>
-                </div>
-              </div>
-
-              <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                A verified repository of technical investigations, packet captures, and defensive blueprints compiled under the Feynman Technique.
+            <div className="p-4 border border-paper-border bg-paper-surface font-mono text-xs text-ink-muted space-y-2">
+              <div className="font-bold text-ink uppercase tracking-wider">Akte 511</div>
+              <p className="text-[11px] leading-relaxed">
+                Verifiable cybersecurity lab records, packet captures, and defensive blueprints.
               </p>
-
-              <div className="pt-3 border-t border-pink-100 flex items-center justify-between text-[11px] font-sans font-semibold text-slate-500">
-                <span>Environment: Kali Linux</span>
-                <span className="font-mono text-rose-600">Air-Gapped Lab</span>
+              <div className="pt-2 border-t border-paper-border text-[10px]">
+                Host: VirtualBox 7.x &bull; Kali Linux
               </div>
             </div>
           </aside>

@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { Post, PostCategory, PostDifficulty } from '../types';
 import { calculateReadTime, renderMarkdown } from '../utils/markdown';
-import { X, Download, Copy, Save, Check, Shield } from 'lucide-react';
 
 interface ComposeStudioProps {
   isOpen: boolean;
@@ -9,7 +8,7 @@ interface ComposeStudioProps {
   onPublish: (newPost: Post) => void;
 }
 
-const TEMPLATE_SAMPLE = `# Day 4: [Title of Security Lab or Investigation]
+const TEMPLATE_SAMPLE = `# Akte 004: [Investigation Title]
 
 Brief introduction explaining the target machine, tool, or protocol concept being analyzed today.
 
@@ -17,9 +16,9 @@ Brief introduction explaining the target machine, tool, or protocol concept bein
 
 ## 1. Environment Setup & Target Specifications
 
-- **Attacking System:** Kali Linux 2026.x (\`192.168.56.10\`)
-- **Target System:** Metasploitable 2 (\`192.168.56.101\`)
-- **Primary Tool:** Nmap / Wireshark / Burp Suite
+- Attacking System: Kali Linux 2026.x (192.168.56.10)
+- Target System: Metasploitable 2 (192.168.56.101)
+- Primary Tool: Nmap / Wireshark / Burp Suite
 
 ---
 
@@ -43,14 +42,14 @@ python3 exploit.py --target 192.168.56.101
 \`\`\`
 
 > [!FLAG]
-> Target exploited or test flag obtained: \`FLAG{sample_flag_hash_here}\`
+> Target exploited or test flag obtained: FLAG{sample_flag_hash_here}
 
 ---
 
 ## 4. Blue Team Mitigation & Key Takeaways
 
-1. **How to patch this:** Update package to latest verified release.
-2. **Detection Rule:** Inspect web application firewall logs for traversal patterns.
+1. How to patch this: Update package to latest verified release.
+2. Detection Rule: Inspect web application firewall logs for traversal patterns.
 `;
 
 export const ComposeStudio = ({
@@ -81,17 +80,10 @@ export const ComposeStudio = ({
       .replace(/(^-|-$)/g, '');
   }, [title]);
 
-  // Auto-calculate read time
   const readTime = useMemo(() => calculateReadTime(markdown), [markdown]);
-
-  // Preview HTML
   const previewHtml = useMemo(() => renderMarkdown(markdown), [markdown]);
 
   if (!isOpen) return null;
-
-  const insertSnippet = (snippet: string) => {
-    setMarkdown((prev) => prev + '\n' + snippet + '\n');
-  };
 
   const handlePublish = () => {
     if (!title.trim()) {
@@ -140,7 +132,7 @@ export const ComposeStudio = ({
 
     return `---
 title: "${title.replace(/"/g, '\\"') || 'Untitled Writeup'}"
-episode: ${episode}
+akteNumber: ${episode}
 date: "${today}"
 category: "${category}"
 difficulty: "${difficulty}"
@@ -177,130 +169,102 @@ ${markdown}
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex flex-col p-2 sm:p-4 animate-in fade-in duration-200">
-      <div className="bg-white border border-pink-200 rounded-3xl flex flex-col h-full max-w-7xl mx-auto w-full shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-ink/50 flex flex-col p-2 sm:p-4">
+      <div className="bg-paper border border-paper-border flex flex-col h-full max-w-7xl mx-auto w-full overflow-hidden">
         {/* Top Studio Bar */}
-        <div className="px-6 py-4 border-b border-pink-100 flex items-center justify-between bg-gradient-to-r from-pink-50/80 via-white to-pink-50/80">
+        <div className="px-6 py-3 border-b border-paper-border flex items-center justify-between bg-paper-surface">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shadow-cute-pill">
-              <Shield className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="font-display font-bold text-base text-slate-900 flex items-center gap-2">
-                <span>AKTE 511 DRAFTING STUDIO</span>
-                <span className="text-[10px] font-mono font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
-                  DEV MODE ONLY
-                </span>
-              </div>
-              <div className="text-xs font-sans text-slate-500 font-medium">
-                Write in Markdown &bull; Live Preview &bull; Export to .md or copy code
-              </div>
-            </div>
+            <span className="font-mono text-xs font-bold text-ink uppercase tracking-wider">
+              Akte 511 Drafting Studio (Localhost Only)
+            </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* View Mode Switches */}
-            <div className="hidden md:flex bg-pink-50 p-1 rounded-full border border-pink-200 text-xs font-sans font-bold">
-              <button
-                onClick={() => setViewMode('edit')}
-                className={`px-3 py-1 rounded-full transition-all ${
-                  viewMode === 'edit' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Editor Only
-              </button>
-              <button
-                onClick={() => setViewMode('split')}
-                className={`px-3 py-1 rounded-full transition-all ${
-                  viewMode === 'split' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Split Preview
-              </button>
-              <button
-                onClick={() => setViewMode('preview')}
-                className={`px-3 py-1 rounded-full transition-all ${
-                  viewMode === 'preview' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Live Preview
-              </button>
-            </div>
+          <div className="flex items-center gap-2 font-mono text-xs">
+            <button
+              onClick={() => setViewMode('edit')}
+              className={`px-3 py-1 border border-paper-border transition-colors ${
+                viewMode === 'edit' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+              }`}
+            >
+              Editor
+            </button>
+            <button
+              onClick={() => setViewMode('split')}
+              className={`px-3 py-1 border border-paper-border transition-colors ${
+                viewMode === 'split' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+              }`}
+            >
+              Split
+            </button>
+            <button
+              onClick={() => setViewMode('preview')}
+              className={`px-3 py-1 border border-paper-border transition-colors ${
+                viewMode === 'preview' ? 'bg-ink text-paper' : 'bg-paper text-ink hover:bg-paper-subtle'
+              }`}
+            >
+              Preview
+            </button>
 
             <button
               onClick={handleCopyMarkdown}
-              className="px-3.5 py-2 rounded-full bg-white border border-pink-200 text-xs font-sans font-bold text-slate-700 hover:text-rose-600 transition-colors flex items-center gap-1.5 shadow-cute-pill"
-              title="Copy markdown with frontmatter"
+              className="px-3 py-1 border border-paper-border bg-paper text-ink hover:bg-paper-subtle transition-colors"
             >
-              {copiedMd ? <Check className="w-3.5 h-3.5 text-rose-600" /> : <Copy className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{copiedMd ? 'Copied!' : 'Copy .md'}</span>
+              {copiedMd ? 'Copied' : 'Copy .md'}
             </button>
 
             <button
               onClick={handleDownloadMd}
-              className="px-3.5 py-2 rounded-full bg-white border border-pink-200 text-xs font-sans font-bold text-slate-700 hover:text-rose-600 transition-colors flex items-center gap-1.5 shadow-cute-pill"
-              title="Download as clean .md file for repository"
+              className="px-3 py-1 border border-paper-border bg-paper text-ink hover:bg-paper-subtle transition-colors"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Export .md</span>
+              Export
             </button>
 
             <button
               onClick={handlePublish}
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-sans text-xs font-bold transition-all flex items-center gap-1.5 shadow-cute-pill hover:scale-105"
+              className="px-4 py-1 bg-ink text-paper hover:bg-ink-muted transition-colors font-bold"
             >
-              {publishedSuccess ? (
-                <>
-                  <Check className="w-3.5 h-3.5" />
-                  <span>Saved!</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-3.5 h-3.5" />
-                  <span>Save Local</span>
-                </>
-              )}
+              {publishedSuccess ? 'Saved' : 'Save Local'}
             </button>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-pink-100 text-slate-400 hover:text-slate-700 transition-colors ml-1"
+              className="px-2 py-1 border border-paper-border text-ink-muted hover:text-ink transition-colors ml-1"
             >
-              <X className="w-5 h-5" />
+              [X]
             </button>
           </div>
         </div>
 
-        {/* Metadata Configuration Ribbon */}
-        <div className="p-5 border-b border-pink-100 bg-pink-50/30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-sans">
+        {/* Metadata Configuration Grid */}
+        <div className="p-4 border-b border-paper-border bg-paper-subtle grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-mono">
           <div className="lg:col-span-1 space-y-1">
-            <label className="text-slate-600 font-bold font-mono">AKTE #</label>
+            <label className="text-ink font-bold">AKTE #</label>
             <input
               type="number"
               placeholder="4"
               value={episode}
               onChange={(e) => setEpisode(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm font-bold text-center"
+              className="w-full px-2 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none text-center font-bold"
             />
           </div>
 
           <div className="lg:col-span-5 space-y-1">
-            <label className="text-slate-600 font-bold">DOSSIER TITLE *</label>
+            <label className="text-ink font-bold font-sans">TITLE *</label>
             <input
               type="text"
-              placeholder="e.g. Akte 004: Password Cracking with Hashcat"
+              placeholder="Akte 004: Password Recovery Internals"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
             />
           </div>
 
           <div className="lg:col-span-3 space-y-1">
-            <label className="text-slate-600 font-bold">CATEGORY</label>
+            <label className="text-ink font-bold font-sans">CATEGORY</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as PostCategory)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-2 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
             >
               <option value="Foundations">Foundations</option>
               <option value="Homelab">Homelab</option>
@@ -313,11 +277,11 @@ ${markdown}
           </div>
 
           <div className="lg:col-span-3 space-y-1">
-            <label className="text-slate-600 font-bold">DIFFICULTY</label>
+            <label className="text-ink font-bold font-sans">DIFFICULTY</label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value as PostDifficulty)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-2 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
             >
               <option value="Beginner">Beginner</option>
               <option value="Intermediate">Intermediate</option>
@@ -325,136 +289,89 @@ ${markdown}
             </select>
           </div>
 
-          {/* Row 2: Thumbnail & YouTube */}
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-slate-600 font-bold">THUMBNAIL IMAGE URL (16:9)</label>
+            <label className="text-ink font-bold font-sans">THUMBNAIL URL (16:9)</label>
             <input
               type="text"
-              placeholder="https://... or ./thumbnails/thumb-ep4.svg"
+              placeholder="./thumbnails/thumb-ep4.svg"
               value={thumbnailUrl}
               onChange={(e) => setThumbnailUrl(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono"
             />
           </div>
 
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-slate-600 font-bold">YOUTUBE VLOG URL (OPTIONAL)</label>
+            <label className="text-ink font-bold font-sans">YOUTUBE URL (OPTIONAL)</label>
             <input
               type="text"
               placeholder="https://www.youtube.com/watch?v=..."
               value={youtubeUrl}
               onChange={(e) => setYoutubeUrl(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono"
             />
           </div>
 
           <div className="lg:col-span-4 space-y-1">
-            <label className="text-slate-600 font-bold">TAGS (COMMA SEPARATED)</label>
+            <label className="text-ink font-bold font-sans">TAGS</label>
             <input
               type="text"
-              placeholder="nmap, wireshark, tryhackme"
+              placeholder="hashcat, passwords, linux"
               value={tagsStr}
               onChange={(e) => setTagsStr(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-mono"
             />
           </div>
 
-          {/* Row 3: Excerpt & Feynman Technique */}
           <div className="lg:col-span-6 space-y-1">
-            <label className="text-slate-600 font-bold">EXCERPT / BRIEF SUMMARY</label>
+            <label className="text-ink font-bold font-sans">EXCERPT (1-2 SENTENCES)</label>
             <input
               type="text"
-              placeholder="A brief 1-2 sentence description shown on the blog card."
+              placeholder="Brief summary of the test simulation..."
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
             />
           </div>
 
           <div className="lg:col-span-6 space-y-1">
-            <label className="text-slate-600 font-bold">THE FEYNMAN TECHNIQUE (CORE INSIGHT / ELI5)</label>
+            <label className="text-ink font-bold font-sans">FEYNMAN SUMMARY (ELI5 CORE CONCEPT)</label>
             <input
               type="text"
-              placeholder="Explain the core concept in 1-2 simple sentences."
+              placeholder="Explain the concept in simple terms..."
               value={feynmanSummary}
               onChange={(e) => setFeynmanSummary(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-rose-500 shadow-sm"
+              className="w-full px-3 py-1.5 bg-paper border border-paper-border text-ink focus:outline-none font-sans"
             />
           </div>
         </div>
 
-        {/* Quick Snippet Insert Toolbar */}
-        <div className="px-6 py-2.5 border-b border-pink-100 bg-white flex flex-wrap items-center gap-2 text-xs font-sans font-bold">
-          <span className="text-slate-400 text-[11px] mr-1">SNIPPETS:</span>
-          <button
-            onClick={() => insertSnippet('## New Section Header')}
-            className="px-3 py-1 rounded-full bg-pink-50 hover:bg-pink-100 text-rose-700 border border-pink-200 transition-colors"
-          >
-            Heading
-          </button>
-          <button
-            onClick={() => insertSnippet('```bash\n# Enter bash commands here\n```')}
-            className="px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition-colors"
-          >
-            `bash` Code
-          </button>
-          <button
-            onClick={() => insertSnippet('> [!FLAG]\n> Target exploited or test flag obtained: FLAG{...}')}
-            className="px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-colors"
-          >
-            Flag Alert
-          </button>
-          <button
-            onClick={() => insertSnippet('> [!NOTE]\n> Key protocol observation or packet behavior.')}
-            className="px-3 py-1 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 transition-colors"
-          >
-            Protocol Note
-          </button>
-          <button
-            onClick={() => insertSnippet('> [!WARNING]\n> Lab safety reminder: keep virtual network adapters isolated.')}
-            className="px-3 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 transition-colors"
-          >
-            Caution
-          </button>
-          <button
-            onClick={() => insertSnippet('> [!INTEL]\n> Blue team defensive mitigation & detection rule.')}
-            className="px-3 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition-colors"
-          >
-            Defense Rule
-          </button>
-        </div>
-
-        {/* Main Work Area: Split Editor & Preview */}
+        {/* Editor & Preview Panes */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Editor Pane */}
           {(viewMode === 'edit' || viewMode === 'split') && (
-            <div className={`flex-1 flex flex-col border-r border-pink-100 ${viewMode === 'edit' ? 'w-full' : 'w-1/2'}`}>
-              <div className="bg-pink-50/50 px-6 py-2 text-[11px] font-sans font-bold text-slate-500 border-b border-pink-100 flex justify-between items-center">
-                <span>MARKDOWN SOURCE</span>
-                <span>{readTime} &bull; {markdown.trim().split(/\s+/).length} words</span>
+            <div className={`flex flex-col border-r border-paper-border ${viewMode === 'split' ? 'w-1/2' : 'w-full'}`}>
+              <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted">
+                Markdown Editor
               </div>
               <textarea
                 value={markdown}
                 onChange={(e) => setMarkdown(e.target.value)}
-                placeholder="Write your writeup in Markdown..."
-                className="flex-1 w-full p-6 bg-white text-slate-800 font-mono text-sm resize-none focus:outline-none selection:bg-pink-100 leading-relaxed"
-                spellCheck={false}
+                className="flex-1 w-full p-4 bg-paper font-mono text-xs text-ink focus:outline-none resize-none leading-relaxed"
+                placeholder="Write your article in Markdown..."
               />
             </div>
           )}
 
-          {/* Preview Pane */}
           {(viewMode === 'preview' || viewMode === 'split') && (
-            <div className={`flex-1 flex flex-col overflow-y-auto bg-pink-50/20 p-6 ${viewMode === 'preview' ? 'w-full' : 'w-1/2'}`}>
-              <div className="mb-4 pb-2 border-b border-pink-100 text-[11px] font-sans font-bold text-slate-500 flex items-center justify-between">
-                <span>LIVE PREVIEW</span>
-                <span className="text-rose-600 font-bold">{title || 'Untitled Writeup'}</span>
+            <div className={`flex flex-col overflow-y-auto bg-paper ${viewMode === 'split' ? 'w-1/2' : 'w-full'}`}>
+              <div className="px-4 py-2 border-b border-paper-border bg-paper text-[11px] font-mono text-ink-muted">
+                Live Preview
               </div>
-
-              <div
-                className="prose max-w-none text-sm leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: previewHtml }}
-              />
+              <div className="p-6">
+                <div
+                  className="prose max-w-none prose-headings:font-serif prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:leading-relaxed prose-p:text-ink prose-li:text-ink"
+                  dangerouslySetInnerHTML={{ __html: previewHtml }}
+                />
+              </div>
             </div>
           )}
         </div>

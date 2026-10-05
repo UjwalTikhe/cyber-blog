@@ -6,8 +6,8 @@ import { HeroBanner } from './components/HeroBanner';
 import { PostCard } from './components/PostCard';
 import { PostView } from './components/PostView';
 import { ComposeStudio } from './components/ComposeStudio';
+import { LegalModal } from './components/LegalModals';
 import { Footer } from './components/Footer';
-import { Search, Filter, Tag, X, SearchX, Plus } from 'lucide-react';
 
 const CATEGORIES: ('All' | PostCategory)[] = [
   'All',
@@ -20,19 +20,7 @@ const CATEGORIES: ('All' | PostCategory)[] = [
   'Tools & Scripts',
 ];
 
-const categoryLabels: Record<'All' | PostCategory, string> = {
-  'All': 'All Articles',
-  'Foundations': 'Foundations',
-  'Homelab': 'Homelab',
-  'CTF & Labs': 'CTF & Labs',
-  'Networking': 'Networking',
-  'Blue Team': 'Blue Team',
-  'Red Team': 'Red Team',
-  'Tools & Scripts': 'Tools & Scripts',
-};
-
 export function App() {
-  // Posts state initialized from localStorage + defaults
   const [posts, setPosts] = useState<Post[]>(() => {
     try {
       const saved = localStorage.getItem('cyber_blog_posts');
@@ -48,13 +36,16 @@ export function App() {
     return INITIAL_POSTS;
   });
 
-  // Selected article reader
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-
-  // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'All' | PostCategory>('All');
   const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  // Legal Modal state (TOS & Privacy Policy)
+  const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'terms' | 'privacy' }>({
+    isOpen: false,
+    type: 'terms',
+  });
 
   // Local Compose Studio (localhost dev only)
   const [isComposeOpen, setIsComposeOpen] = useState(false);
@@ -86,7 +77,6 @@ export function App() {
     window.location.hash = '';
   };
 
-  // Add new post from Local Developer Studio (only available on localhost)
   const handlePublishPost = (newPost: Post) => {
     setPosts((prev) => {
       const updated = [newPost, ...prev];
@@ -125,7 +115,7 @@ export function App() {
     });
   }, [posts, selectedCategory, activeTag, searchQuery]);
 
-  // All unique tags for tag cloud
+  // Unique tags
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
     posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
@@ -133,7 +123,7 @@ export function App() {
   }, [posts]);
 
   return (
-    <div className="min-h-screen bg-[#faf7f9] text-[#1e1b4b] flex flex-col font-sans selection:bg-rose-200 selection:text-rose-900">
+    <div className="min-h-screen bg-paper text-ink flex flex-col font-sans selection:bg-paper-subtle selection:text-ink">
       {/* Top Navbar */}
       <Navbar
         onHomeClick={handleBackToLogs}
@@ -168,41 +158,35 @@ export function App() {
 
             {/* Filter & Search Ribbon */}
             <section id="feed-section" className="max-w-6xl mx-auto px-4 pt-10 pb-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-pink-100 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-border pb-5">
                 {/* Search Bar */}
-                <div className="relative flex-1 max-w-md">
-                  <Search className="w-4 h-4 text-pink-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                <div className="relative flex-1 max-w-sm">
                   <input
                     type="text"
-                    placeholder="Search articles by tool, concept, or tag..."
+                    placeholder="Filter articles..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-11 pr-10 py-2.5 rounded-full bg-white border border-pink-200 focus:border-rose-400 text-xs font-sans text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all shadow-cute-pill"
+                    className="w-full px-3 py-1.5 bg-paper-surface border border-paper-border text-xs font-mono text-ink placeholder:text-ink-light focus:outline-none focus:border-paper-darkBorder transition-colors"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink font-mono text-xs"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      [clear]
                     </button>
                   )}
                 </div>
 
                 {/* Article count */}
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-sans text-slate-500 font-medium">
-                    Showing <strong className="text-rose-600 font-bold">{filteredPosts.length}</strong> of {posts.length} articles
-                  </span>
+                <div className="text-xs font-mono text-ink-muted">
+                  Indexed: <strong className="text-ink font-semibold">{filteredPosts.length}</strong> of {posts.length} dossiers
                 </div>
               </div>
 
-              {/* Category Pills Bar */}
-              <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none">
-                <span className="text-[11px] font-sans font-bold text-slate-400 flex items-center gap-1 mr-1">
-                  <Filter className="w-3 h-3 text-pink-400" />
-                  <span>CATEGORY:</span>
-                </span>
+              {/* Category Pills Bar: Uniform, no rainbow colors, no giant pill radius */}
+              <div className="flex items-center gap-1.5 overflow-x-auto py-3 scrollbar-none font-mono text-xs">
+                <span className="text-ink-muted text-[11px] uppercase mr-1">Discipline:</span>
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat}
@@ -210,41 +194,38 @@ export function App() {
                       setSelectedCategory(cat);
                       setActiveTag(null);
                     }}
-                    className={`px-4 py-1.5 rounded-full text-xs font-sans font-bold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 text-xs transition-colors border ${
                       selectedCategory === cat && !activeTag
-                        ? 'bg-rose-500 text-white shadow-cute-pill'
-                        : 'bg-white text-slate-600 hover:text-rose-600 hover:bg-pink-50 border border-pink-200'
+                        ? 'bg-ink text-paper border-ink'
+                        : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border hover:border-paper-darkBorder'
                     }`}
                   >
-                    {categoryLabels[cat]}
+                    {cat}
                   </button>
                 ))}
               </div>
 
               {/* Active Tag Filter Indicator */}
               {activeTag && (
-                <div className="flex items-center gap-2 py-2">
-                  <span className="text-xs font-sans text-slate-500 font-medium">Filtering by tag:</span>
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-sans font-bold border border-rose-200">
+                <div className="flex items-center gap-2 py-2 font-mono text-xs text-ink-muted">
+                  <span>Tag:</span>
+                  <span className="px-2 py-0.5 border border-paper-border bg-paper-surface text-ink font-bold">
                     #{activeTag}
-                    <button onClick={() => setActiveTag(null)} className="hover:text-rose-900 ml-1">
-                      <X className="w-3 h-3" />
-                    </button>
                   </span>
                   <button
                     onClick={() => setActiveTag(null)}
-                    className="text-xs font-sans font-medium text-rose-500 hover:underline"
+                    className="underline hover:text-ink"
                   >
-                    Clear tag
+                    [Clear]
                   </button>
                 </div>
               )}
             </section>
 
-            {/* Articles Grid */}
+            {/* Articles Grid: 2-column editorial structure, not generic 3-box feature cards */}
             <main className="max-w-6xl mx-auto px-4 pb-20">
               {filteredPosts.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredPosts.map((post) => (
                     <PostCard
                       key={post.id}
@@ -255,13 +236,10 @@ export function App() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-16 bg-white border border-pink-200 rounded-3xl p-8 max-w-lg mx-auto space-y-4 shadow-cute-card">
-                  <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-200 text-rose-500 flex items-center justify-center mx-auto">
-                    <SearchX className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-display font-bold text-xl text-slate-900">No Articles Found</h3>
-                  <p className="text-xs text-slate-600 font-sans">
-                    No articles match "{searchQuery || activeTag}". Try clearing the search query or exploring other categories.
+                <div className="text-center py-16 border border-paper-border bg-paper-surface p-8 max-w-md mx-auto space-y-3 font-sans">
+                  <h3 className="font-serif font-bold text-xl text-ink">No Articles Found</h3>
+                  <p className="text-xs text-ink-muted">
+                    No records match "{searchQuery || activeTag}".
                   </p>
                   <button
                     onClick={() => {
@@ -269,28 +247,27 @@ export function App() {
                       setSelectedCategory('All');
                       setActiveTag(null);
                     }}
-                    className="px-5 py-2.5 rounded-full bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-rose-600 hover:bg-pink-100 transition-colors shadow-cute-pill"
+                    className="font-mono text-xs px-3 py-1.5 border border-paper-border bg-paper hover:border-paper-darkBorder transition-colors"
                   >
-                    Reset All Filters
+                    Reset Filter
                   </button>
                 </div>
               )}
 
-              {/* Tag Cloud Overview */}
-              <div className="mt-16 pt-8 border-t border-pink-100">
-                <div className="flex items-center gap-2 mb-4 font-display font-bold text-xs text-slate-700">
-                  <Tag className="w-3.5 h-3.5 text-rose-500" />
-                  <span className="font-mono text-[11px] uppercase tracking-wider">TOPIC TAGS</span>
+              {/* Tag Index */}
+              <div className="mt-14 pt-6 border-t border-paper-border">
+                <div className="mb-3 font-mono text-xs font-bold text-ink uppercase tracking-wider">
+                  Topic Index
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 font-mono text-xs">
                   {allTags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => setActiveTag(tag)}
-                      className={`text-xs font-sans font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
+                      className={`px-2 py-0.5 border transition-colors ${
                         activeTag === tag
-                          ? 'bg-rose-500 text-white font-bold border-rose-500 shadow-cute-pill'
-                          : 'bg-white text-slate-600 hover:text-rose-600 hover:bg-pink-50 border-pink-200 shadow-sm'
+                          ? 'bg-ink text-paper border-ink'
+                          : 'bg-paper-surface text-ink-muted hover:text-ink border-paper-border'
                       }`}
                     >
                       #{tag}
@@ -303,21 +280,28 @@ export function App() {
         )}
       </div>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer with working TOS and Privacy triggers */}
+      <Footer
+        onOpenLegal={(type) => setLegalModal({ isOpen: true, type })}
+      />
+
+      {/* Legal Modals (TOS and Privacy Policy) */}
+      <LegalModal
+        isOpen={legalModal.isOpen}
+        type={legalModal.type}
+        onClose={() => setLegalModal({ isOpen: false, type: 'terms' })}
+      />
 
       {/* Localhost Development Author Studio (Vite eliminates this completely in production) */}
       {import.meta.env.DEV && (
         <>
-          <div className="fixed bottom-5 right-5 z-40 flex items-center gap-2 bg-slate-900/90 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full shadow-2xl border border-slate-700 text-xs font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] text-slate-300">Local Dev</span>
+          <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2 bg-ink text-paper px-3 py-1 border border-paper-darkBorder text-xs font-mono">
+            <span>[Local Dev]</span>
             <button
               onClick={() => setIsComposeOpen(true)}
-              className="ml-1 px-3 py-1 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold text-[11px] flex items-center gap-1 transition-all"
+              className="underline hover:text-paper-surface ml-1"
             >
-              <Plus className="w-3 h-3" />
-              <span>Draft Article</span>
+              + Draft Article
             </button>
           </div>
 

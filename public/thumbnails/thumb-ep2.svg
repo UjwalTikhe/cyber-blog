@@ -1,56 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
-  <defs>
-    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff7ed" />
-      <stop offset="50%" stop-color="#fff1f2" />
-      <stop offset="100%" stop-color="#fdf4ff" />
-    </linearGradient>
-    <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#ea580c" flood-opacity="0.10" />
-    </filter>
-  </defs>
+  <rect width="1280" height="720" fill="#f2f1eb" />
+  <rect x="32" y="32" width="1216" height="656" fill="none" stroke="#d4d1c7" stroke-width="1.5" />
 
-  <rect width="1280" height="720" fill="url(#bg2)" />
+  <line x1="32" y1="96" x2="1248" y2="96" stroke="#d4d1c7" stroke-width="1.5" />
+  <text x="64" y="74" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#1c1917" letter-spacing="3">AKTE 511 / CASE FILE: #002</text>
+  <text x="1216" y="74" font-family="Courier New, monospace" font-size="13" font-weight="normal" fill="#78716c" text-anchor="end">SERIES 511 / RECORD #002</text>
 
-  <g filter="url(#shadow2)">
-    <rect x="100" y="90" width="1080" height="540" rx="32" fill="#ffffff" stroke="#fed7aa" stroke-width="2" />
-    <rect x="100" y="90" width="1080" height="64" rx="32" fill="#fff7ed" />
-    <circle cx="145" cy="122" r="7" fill="#fb7185" />
-    <circle cx="168" cy="122" r="7" fill="#fbbf24" />
-    <circle cx="191" cy="122" r="7" fill="#34d399" />
-    <text x="640" y="128" font-family="JetBrains Mono, monospace" font-weight="700" font-size="13" fill="#ea580c" text-anchor="middle" letter-spacing="2">AKTE 511 // HOMELAB ARCHITECTURE &bull; AKTE #002</text>
-  </g>
+  <rect x="64" y="160" width="140" height="34" fill="#1c1917" />
+  <text x="134" y="182" font-family="Courier New, monospace" font-size="13" font-weight="bold" fill="#f2f1eb" text-anchor="middle" letter-spacing="1.5">AKTE 002</text>
 
-  <rect x="160" y="195" width="160" height="42" rx="21" fill="#ea580c" />
-  <text x="240" y="222" font-family="JetBrains Mono, monospace" font-weight="800" font-size="15" fill="#ffffff" text-anchor="middle" letter-spacing="1">AKTE 002</text>
+  <rect x="220" y="160" width="140" height="34" fill="none" stroke="#1c1917" stroke-width="1" />
+  <text x="290" y="182" font-family="Courier New, monospace" font-size="12" font-weight="bold" fill="#1c1917" text-anchor="middle">HOMELAB</text>
 
-  <rect x="335" y="195" width="220" height="42" rx="21" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5" />
-  <text x="445" y="222" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14" fill="#ea580c" text-anchor="middle" letter-spacing="0.5">ISOLATED SANDBOX</text>
-
-  <text x="160" y="325" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="56" fill="#0f172a" letter-spacing="-1">
+  <text x="64" y="290" font-family="Georgia, serif" font-size="58" font-weight="bold" fill="#1c1917" letter-spacing="-1">
     Architecting an Isolated
   </text>
-  <text x="160" y="395" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="56" fill="#ea580c" letter-spacing="-1">
+  <text x="64" y="360" font-family="Georgia, serif" font-size="58" font-weight="bold" fill="#881337" letter-spacing="-1">
     Hypervisor Sandbox
   </text>
 
-  <text x="160" y="460" font-family="Plus Jakarta Sans, sans-serif" font-weight="600" font-size="22" fill="#64748b">
-    Dual-NIC Segmentation &bull; Zero Host Leakage &bull; Snapshot Recovery
+  <text x="64" y="430" font-family="sans-serif" font-size="20" font-weight="normal" fill="#57534e">
+    Dual-adapter network segmentation, host-only subnets, and baseline recovery.
   </text>
 
-  <rect x="160" y="515" width="220" height="36" rx="18" fill="#fefce8" stroke="#fef08a" stroke-width="1.5" />
-  <text x="270" y="538" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" fill="#ca8a04" text-anchor="middle">AIR-GAPPED SUBNET</text>
+  <line x1="64" y1="520" x2="1216" y2="520" stroke="#d4d1c7" stroke-width="1.5" />
 
-  <rect x="395" y="515" width="200" height="36" rx="18" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" />
-  <text x="495" y="538" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" fill="#16a34a" text-anchor="middle">SAFE SIMULATION</text>
+  <text x="64" y="565" font-family="Courier New, monospace" font-size="12" fill="#78716c">HYPERVISOR</text>
+  <text x="64" y="590" font-family="Courier New, monospace" font-size="15" font-weight="bold" fill="#1c1917">VirtualBox 7.x</text>
 
-  <g transform="translate(940, 260)">
-    <circle cx="80" cy="80" r="100" fill="#fff7ed" stroke="#fed7aa" stroke-width="2.5" />
-    <rect x="40" y="45" width="80" height="22" rx="5" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5" />
-    <circle cx="52" cy="56" r="3" fill="#ea580c" />
-    <rect x="40" y="73" width="80" height="22" rx="5" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5" />
-    <circle cx="52" cy="84" r="3" fill="#ea580c" />
-    <rect x="40" y="101" width="80" height="22" rx="5" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5" />
-    <circle cx="52" cy="112" r="3" fill="#ea580c" />
+  <text x="360" y="565" font-family="Courier New, monospace" font-size="12" fill="#78716c">TOPOLOGY</text>
+  <text x="360" y="590" font-family="Courier New, monospace" font-size="15" font-weight="bold" fill="#1c1917">Dual-NIC / Air-Gapped</text>
+
+  <text x="660" y="565" font-family="Courier New, monospace" font-size="12" fill="#78716c">PRIMARY SUBNET</text>
+  <text x="660" y="590" font-family="Courier New, monospace" font-size="15" font-weight="bold" fill="#1c1917">192.168.56.0/24</text>
+
+  <g transform="translate(1000, 200)">
+    <rect x="0" y="0" width="180" height="240" fill="none" stroke="#d4d1c7" stroke-width="1.5" />
+    <line x1="0" y1="40" x2="180" y2="40" stroke="#d4d1c7" stroke-width="1" />
+    <text x="90" y="26" font-family="Courier New, monospace" font-size="11" fill="#78716c" text-anchor="middle">FILE 002</text>
+    <text x="90" y="140" font-family="Georgia, serif" font-size="44" font-weight="bold" fill="#1c1917" text-anchor="middle">VBOX</text>
+    <text x="90" y="195" font-family="Courier New, monospace" font-size="11" fill="#881337" text-anchor="middle">CONTAINED</text>
   </g>
 </svg>
