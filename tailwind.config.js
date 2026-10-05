@@ -8,20 +8,24 @@ export default {
     extend: {
       colors: {
         paper: {
-          DEFAULT: '#f7f6f2',
-          surface: '#eeede7',
-          subtle: '#e7e5df',
-          border: '#d8d6ce',
-          darkBorder: '#b8b5ac',
+          DEFAULT: '#faf7f2', // Warm porcelain ivory
+          surface: '#f4ede4', // Soft linen alabaster
+          subtle: '#ebe2d5', // Delicate warm taupe
+          blush: '#fbf5f2', // Gentle whisper of rose-linen
+          border: '#ddd3c4', // Refined hairline border
+          blushBorder: '#e8d5ce', // Delicate soft rose-taupe border
+          darkBorder: '#bfb3a2',
         },
         ink: {
-          DEFAULT: '#1c1917',
-          muted: '#68645e',
-          light: '#a8a29e',
+          DEFAULT: '#221e1f', // Deep warm espresso charcoal ink
+          muted: '#69605d', // Soft warm graphite
+          light: '#9d938f',
         },
         crimson: {
-          DEFAULT: '#881337',
-          subtle: '#fff1f2',
+          DEFAULT: '#8b263e', // Deep velvet rosewood / antique crimson
+          muted: '#a33d54', // Muted dusty rose accent
+          soft: '#f7ebed', // Delicate blush background
+          subtle: '#fdf7f8',
         }
       },
       fontFamily: {
@@ -36,33 +40,33 @@ export default {
         DEFAULT: '2px',
         sm: '2px',
         md: '4px',
-        lg: '6px',
+        lg: '4px',
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: '100%',
-            color: '#1c1917',
+            color: '#221e1f',
             a: {
-              color: '#881337',
+              color: '#8b263e',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
               fontWeight: '500',
               '&:hover': {
-                color: '#1c1917',
+                color: '#221e1f',
               },
             },
             strong: {
-              color: '#1c1917',
+              color: '#221e1f',
               fontWeight: '600',
             },
             code: {
-              color: '#1c1917',
-              backgroundColor: '#eeede7',
+              color: '#221e1f',
+              backgroundColor: '#f4ede4',
               padding: '0.15rem 0.35rem',
               borderRadius: '2px',
               fontWeight: '500',
-              border: '1px solid #d8d6ce',
+              border: '1px solid #ddd3c4',
             },
             'code::before': {
               content: '""',
@@ -71,33 +75,33 @@ export default {
               content: '""',
             },
             h1: {
-              color: '#1c1917',
+              color: '#221e1f',
               fontFamily: '"Newsreader", Georgia, serif',
               fontWeight: '600',
               letterSpacing: '-0.01em',
             },
             h2: {
-              color: '#1c1917',
+              color: '#221e1f',
               fontFamily: '"Newsreader", Georgia, serif',
               fontWeight: '600',
               letterSpacing: '-0.01em',
             },
             h3: {
-              color: '#1c1917',
+              color: '#221e1f',
               fontFamily: '"Newsreader", Georgia, serif',
               fontWeight: '600',
             },
             blockquote: {
-              borderColor: '#d8d6ce',
+              borderColor: '#ddd3c4',
               borderWidth: '1px',
-              color: '#57534e',
-              backgroundColor: '#eeede7',
+              color: '#554e4c',
+              backgroundColor: '#fbf5f2',
               padding: '1rem 1.25rem',
               borderRadius: '2px',
               fontStyle: 'normal',
             },
             hr: {
-              borderColor: '#d8d6ce',
+              borderColor: '#ddd3c4',
             },
           },
         },

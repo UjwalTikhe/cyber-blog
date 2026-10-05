@@ -69,10 +69,10 @@ export const HeroBanner = ({
           <div className="lg:col-span-5 space-y-3">
             <ArchivalArtifact3D />
 
-            {/* Quick Archival Status */}
+            {/* Quick Archival Status (Golden Rule 4: Design dialogs to yield closure) */}
             <div className="px-4 py-2.5 border border-paper-border bg-paper flex items-center justify-between font-mono text-xs text-ink-muted">
-              <span>STATUS: <strong className="text-ink">ACTIVE ARCHIVE</strong></span>
-              <span>INDEX: <strong className="text-crimson font-bold">{String(postCount).padStart(3, '0')} / 511</strong></span>
+              <span>STATUS: <strong className="text-ink">ACTIVE JOURNAL</strong></span>
+              <span>INDEX: <strong className="text-crimson font-bold">{String(postCount).padStart(3, '0')} / 511</strong> <span className="text-[10px]">({((postCount / 511) * 100).toFixed(1)}%)</span></span>
             </div>
           </div>
         </div>

@@ -337,17 +337,18 @@ export function App() {
             <main className="max-w-6xl mx-auto px-4 pb-20 pt-4">
               {posts.length === 0 ? (
                 /* Poetic, pristine empty state */
-                <div className="border border-paper-border bg-paper-surface p-8 sm:p-14 max-w-xl mx-auto text-center space-y-5 my-8">
-                  <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider">
-                    [ ✦ AKTE 511 // ARCHIVE INITIALIZATION ]
+                <div className="border border-paper-blushBorder bg-paper-blush p-8 sm:p-14 max-w-xl mx-auto text-center space-y-5 my-8">
+                  <div className="font-mono text-xs font-bold text-crimson uppercase tracking-wider flex items-center justify-center gap-1.5">
+                    <span>✦</span>
+                    <span>AKTE 511 // AUTEUR JOURNAL INITIALIZATION</span>
                   </div>
 
                   <h2 className="font-serif font-bold text-2xl sm:text-3xl text-ink tracking-tight">
-                    The Archive Begins at Episode 001
+                    The Journal Begins at Episode 001
                   </h2>
 
                   <p className="text-sm text-ink-muted leading-relaxed font-sans max-w-md mx-auto">
-                    No pre-existing dummy data exists in this ledger. Every entry in the 511-dossier series is authored and verified through hands-on laboratory discovery.
+                    The personal archive is prepared and waiting for its first record. Every cybersecurity journey begins with a curious mind, an open terminal, and verifiable proof-of-work.
                   </p>
 
                   <div className="pt-2">

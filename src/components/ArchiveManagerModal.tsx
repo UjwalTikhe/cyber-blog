@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Post } from '../types';
 import { updatePassphrase } from '../utils/auth';
 
@@ -23,6 +23,16 @@ export const ArchiveManagerModal = ({
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [passMsg, setPassMsg] = useState<{ text: string; isError: boolean } | null>(null);
+
+  // Golden Rule 2 & 6: Keyboard shortcut Esc to dismiss modal
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

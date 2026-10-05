@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { Post } from '../types';
 
 interface DeleteConfirmModalProps {
@@ -13,13 +14,27 @@ export const DeleteConfirmModal = ({
   onClose,
   onConfirmDelete,
 }: DeleteConfirmModalProps) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !post) return null;
 
   const akteNum = post.akteNumber ?? post.episode ?? 1;
   const akteDisplay = `AKTE ${String(akteNum).padStart(3, '0')}`;
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="delete-dialog-title"
+    >
       <div className="bg-paper border border-paper-border max-w-md w-full p-6 sm:p-8 space-y-5 animate-in fade-in duration-200">
         <div className="space-y-2 border-b border-paper-border pb-4">
           <div className="font-mono text-[11px] font-bold text-crimson uppercase tracking-wider">

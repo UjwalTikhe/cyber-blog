@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 interface LegalModalProps {
   isOpen: boolean;
   type: 'terms' | 'privacy';
@@ -5,6 +7,15 @@ interface LegalModalProps {
 }
 
 export const LegalModal = ({ isOpen, type, onClose }: LegalModalProps) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
