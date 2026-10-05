@@ -64,6 +64,10 @@ export const ComposeStudio = ({
   const [tagsStr, setTagsStr] = useState('tryhackme, linux, recon, cute');
   const [excerpt, setExcerpt] = useState('');
   const [markdown, setMarkdown] = useState(TEMPLATE_SAMPLE);
+  const [episode, setEpisode] = useState<number>(4);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [feynmanSummary, setFeynmanSummary] = useState('');
   const [viewMode, setViewMode] = useState<'split' | 'edit' | 'preview'>('split');
   const [copiedMd, setCopiedMd] = useState(false);
   const [publishedSuccess, setPublishedSuccess] = useState(false);
@@ -104,11 +108,15 @@ export const ComposeStudio = ({
 
     const newPost: Post = {
       id: slug,
+      episode: Number(episode) || undefined,
       title: title.trim(),
       date: today,
       category,
       difficulty,
       readTime,
+      thumbnailUrl: thumbnailUrl.trim() || undefined,
+      youtubeUrl: youtubeUrl.trim() || undefined,
+      feynmanSummary: feynmanSummary.trim() || undefined,
       tags: tags.length ? tags : ['cybersecurity', 'kawaii'],
       excerpt: excerpt.trim() || title.trim(),
       content: markdown,
@@ -132,10 +140,14 @@ export const ComposeStudio = ({
 
     return `---
 title: "${title.replace(/"/g, '\\"') || 'Untitled Writeup'}"
+episode: ${episode}
 date: "${today}"
 category: "${category}"
 difficulty: "${difficulty}"
 readTime: "${readTime}"
+thumbnailUrl: "${thumbnailUrl}"
+youtubeUrl: "${youtubeUrl}"
+feynmanSummary: "${feynmanSummary.replace(/"/g, '\\"')}"
 tags: [${tags.map((t) => `"${t}"`).join(', ')}]
 excerpt: "${excerpt.replace(/"/g, '\\"') || title}"
 ---
@@ -261,7 +273,18 @@ ${markdown}
 
         {/* Metadata Configuration Ribbon */}
         <div className="p-5 border-b border-pink-100 bg-pink-50/30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs font-sans">
-          <div className="lg:col-span-4 space-y-1">
+          <div className="lg:col-span-1 space-y-1">
+            <label className="text-slate-600 font-bold">EPISODE #</label>
+            <input
+              type="number"
+              placeholder="4"
+              value={episode}
+              onChange={(e) => setEpisode(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-pink-500 shadow-sm font-bold text-center"
+            />
+          </div>
+
+          <div className="lg:col-span-5 space-y-1">
             <label className="text-slate-600 font-bold">WRITEUP TITLE *</label>
             <input
               type="text"
@@ -272,7 +295,7 @@ ${markdown}
             />
           </div>
 
-          <div className="lg:col-span-2 space-y-1">
+          <div className="lg:col-span-3 space-y-1">
             <label className="text-slate-600 font-bold">CATEGORY</label>
             <select
               value={category}
@@ -289,7 +312,7 @@ ${markdown}
             </select>
           </div>
 
-          <div className="lg:col-span-2 space-y-1">
+          <div className="lg:col-span-3 space-y-1">
             <label className="text-slate-600 font-bold">DIFFICULTY</label>
             <select
               value={difficulty}
@@ -300,6 +323,29 @@ ${markdown}
               <option value="Intermediate">🎀 Intermediate</option>
               <option value="Advanced">🔥 Advanced</option>
             </select>
+          </div>
+
+          {/* Row 2: Thumbnail & YouTube */}
+          <div className="lg:col-span-4 space-y-1">
+            <label className="text-slate-600 font-bold">THUMBNAIL IMAGE URL (16:9) 🖼️</label>
+            <input
+              type="text"
+              placeholder="https://... or ./thumbnails/my-thumb.png"
+              value={thumbnailUrl}
+              onChange={(e) => setThumbnailUrl(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-pink-500 shadow-sm"
+            />
+          </div>
+
+          <div className="lg:col-span-4 space-y-1">
+            <label className="text-slate-600 font-bold">YOUTUBE VLOG URL (OPTIONAL) ▶</label>
+            <input
+              type="text"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-pink-500 shadow-sm"
+            />
           </div>
 
           <div className="lg:col-span-4 space-y-1">
@@ -313,13 +359,25 @@ ${markdown}
             />
           </div>
 
-          <div className="lg:col-span-12 space-y-1">
+          {/* Row 3: Excerpt & Feynman Technique */}
+          <div className="lg:col-span-6 space-y-1">
             <label className="text-slate-600 font-bold">EXCERPT / BRIEF SUMMARY</label>
             <input
               type="text"
               placeholder="A brief 1-2 sentence description shown on the cute blog card~"
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-pink-500 shadow-sm"
+            />
+          </div>
+
+          <div className="lg:col-span-6 space-y-1">
+            <label className="text-slate-600 font-bold">THE FEYNMAN TECHNIQUE (ELI5 BREAKDOWN) 💡</label>
+            <input
+              type="text"
+              placeholder="Explain what you learned today so simply that a 5-year-old would get it~"
+              value={feynmanSummary}
+              onChange={(e) => setFeynmanSummary(e.target.value)}
               className="w-full px-3.5 py-2 rounded-2xl bg-white border border-pink-200 text-slate-800 focus:outline-none focus:border-pink-500 shadow-sm"
             />
           </div>

@@ -3,7 +3,7 @@ import type { Post } from '../types';
 import { renderMarkdown, extractToc, highlightAllCodeBlocks } from '../utils/markdown';
 import { 
   ArrowLeft, Calendar, Clock, Share2, Check, Copy, 
-  ChevronRight, Tag, BookOpen
+  ChevronRight, Tag, BookOpen, Lightbulb
 } from 'lucide-react';
 
 interface PostViewProps {
@@ -12,6 +12,12 @@ interface PostViewProps {
   onBack: () => void;
   onSelectPost: (post: Post) => void;
   onTagClick: (tag: string) => void;
+}
+
+function getYouTubeEmbedUrl(url?: string): string | null {
+  if (!url) return null;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  return match ? `https://www.youtube-nocookie.com/embed/${match[1]}` : null;
 }
 
 export const PostView = ({
@@ -30,6 +36,9 @@ export const PostView = ({
 
   // Render markdown to HTML
   const htmlContent = useMemo(() => renderMarkdown(post.content), [post.content]);
+
+  // YouTube embed url
+  const embedUrl = useMemo(() => getYouTubeEmbedUrl(post.youtubeUrl), [post.youtubeUrl]);
 
   // Find previous and next posts
   const currentIndex = allPosts.findIndex((p) => p.id === post.id);
@@ -121,10 +130,13 @@ export const PostView = ({
           </button>
 
           <div className="flex items-center gap-2 font-sans text-xs font-semibold text-slate-500">
+            {post.episode && (
+              <span className="bg-pink-100 text-pink-700 px-2.5 py-0.5 rounded-full font-bold">
+                EPISODE {post.episode < 10 ? `0${post.episode}` : post.episode}
+              </span>
+            )}
             <span>TRANSMISSION:</span>
             <span className="text-pink-600 font-bold">DECRYPTED ✨</span>
-            <span className="text-pink-300">•</span>
-            <span>DAY 1 LOG</span>
           </div>
         </div>
 
@@ -170,6 +182,51 @@ export const PostView = ({
           </div>
         </header>
 
+        {/* 16:9 Thumbnail Cover Hero Presentation */}
+        {post.thumbnailUrl && (
+          <div className="mb-10 rounded-3xl overflow-hidden border border-pink-200 shadow-cute-card bg-gradient-to-br from-pink-50 via-white to-purple-50">
+            <img
+              src={post.thumbnailUrl}
+              alt={post.title}
+              className="w-full aspect-video object-cover"
+            />
+          </div>
+        )}
+
+        {/* YouTube Video Embed (if video vlog attached) */}
+        {embedUrl && (
+          <div className="mb-10 bg-white border border-pink-200 rounded-3xl p-6 shadow-cute-card space-y-4">
+            <div className="flex items-center gap-2 font-display font-bold text-sm text-slate-900">
+              <svg className="w-5 h-5 fill-red-600" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              <span>WATCH TODAY'S VLOG EPISODE (YOUTUBE) ▶</span>
+            </div>
+            <div className="aspect-video w-full rounded-2xl overflow-hidden border border-pink-100 shadow-sm">
+              <iframe
+                src={embedUrl}
+                title="YouTube Video Vlog"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Dedicated Feynman Corner Highlight Box */}
+        {post.feynmanSummary && (
+          <div className="mb-10 bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border-2 border-pink-200 rounded-3xl p-6 shadow-cute-sm space-y-2">
+            <div className="flex items-center gap-2 font-display font-bold text-sm text-pink-700">
+              <Lightbulb className="w-5 h-5 text-pink-500 fill-pink-300" />
+              <span>THE FEYNMAN CORNER (ELI5 BREAKDOWN) 💡</span>
+            </div>
+            <p className="text-sm text-slate-700 leading-relaxed font-sans font-medium">
+              "{post.feynmanSummary}"
+            </p>
+          </div>
+        )}
+
         {/* Main Content Grid: Article Body + Table of Contents Sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Article Body */}
@@ -188,7 +245,7 @@ export const PostView = ({
                   </div>
                   <div>
                     <div className="font-display font-bold text-sm text-slate-800">END OF TRANSMISSION ✨</div>
-                    <div className="text-xs text-slate-600 font-sans">Thanks for reading my lab notes! Save or share with friends~</div>
+                    <div className="text-xs text-slate-600 font-sans">Thanks for following my cyber vlog &amp; blog series! Share with fellow learners~</div>
                   </div>
                 </div>
 
@@ -222,7 +279,7 @@ export const PostView = ({
                   >
                     <div className="text-[11px] font-sans font-bold text-pink-500 flex items-center gap-1">
                       <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-                      <span>PREVIOUS WRITEUP 🌸</span>
+                      <span>PREVIOUS EPISODE 🌸</span>
                     </div>
                     <div className="text-sm font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors mt-1 line-clamp-1">
                       {prevPost.title}
@@ -236,7 +293,7 @@ export const PostView = ({
                     className="p-5 rounded-3xl bg-white border border-pink-100 hover:border-pink-300 text-right transition-all group shadow-cute-sm hover:shadow-cute-card hover:-translate-y-0.5 ml-auto w-full"
                   >
                     <div className="text-[11px] font-sans font-bold text-pink-500 flex items-center justify-end gap-1">
-                      <span>NEXT WRITEUP ✨</span>
+                      <span>NEXT EPISODE ✨</span>
                       <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </div>
                     <div className="text-sm font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors mt-1 line-clamp-1">
@@ -277,25 +334,25 @@ export const PostView = ({
               </div>
             )}
 
-            {/* Author / Operator Bio Card */}
+            {/* Author / Vlogger Bio Card */}
             <div className="bg-white border border-pink-100 rounded-3xl p-6 shadow-cute-card space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 border border-pink-200 flex items-center justify-center text-3xl shadow-cute-pill">
                   🐾
                 </div>
                 <div>
-                  <div className="font-display font-bold text-slate-900 text-base">Security Cutie</div>
+                  <div className="font-display font-bold text-slate-900 text-base">Cyber Vlogger &bull; Cutie</div>
                   <div className="text-xs font-sans font-bold text-pink-500">@Journey Day 1 🌸</div>
                 </div>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed font-sans">
-                Learning defensive and offensive engineering in public with cozy vibes. Breaking isolated labs, reverse engineering, and preparing for OSCP &amp; Security+!
+                Learning in public using the Feynman technique. Documenting every daily breakthrough, building virtual labs, and sharing walkthroughs for YouTube &amp; Blog!
               </p>
 
               <div className="pt-3 border-t border-pink-100 flex items-center justify-between text-[11px] font-sans font-semibold text-slate-500">
-                <span>LAB: Kali Linux 💻</span>
-                <span className="text-pink-600">100-Day Tracker ✨</span>
+                <span>FORMAT: Daily B-Log &amp; V-Log</span>
+                <span className="text-pink-600">Feynman Method ✨</span>
               </div>
             </div>
           </aside>

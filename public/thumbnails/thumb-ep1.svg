@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2" />
+      <stop offset="50%" stop-color="#fdf4ff" />
+      <stop offset="100%" stop-color="#f0f9ff" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#f472b6" flood-opacity="0.2" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="url(#bg1)" />
+
+  <!-- Cute pattern dots -->
+  <g fill="#f472b6" opacity="0.15">
+    <circle cx="60" cy="60" r="6" />
+    <circle cx="120" cy="60" r="6" />
+    <circle cx="180" cy="60" r="6" />
+    <circle cx="60" cy="120" r="6" />
+    <circle cx="120" cy="120" r="6" />
+    <circle cx="1180" cy="620" r="8" />
+    <circle cx="1220" cy="620" r="8" />
+    <circle cx="1200" cy="660" r="8" />
+  </g>
+
+  <!-- Decorative floating cards -->
+  <g filter="url(#shadow)">
+    <!-- Terminal window mockup -->
+    <rect x="100" y="90" width="1080" height="540" rx="36" fill="#ffffff" stroke="#fbcfe8" stroke-width="4" />
+    <rect x="100" y="90" width="1080" height="70" rx="36" fill="#fdf2f8" />
+    <!-- Window buttons -->
+    <circle cx="150" cy="125" r="10" fill="#fb7185" />
+    <circle cx="180" cy="125" r="10" fill="#fbbf24" />
+    <circle cx="210" cy="125" r="10" fill="#34d399" />
+    <text x="640" y="132" font-family="Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="18" fill="#ec4899" text-anchor="middle">🌸 CYBER BLOG &bull; EPISODE 01 ✨</text>
+  </g>
+
+  <!-- Episode Badge -->
+  <rect x="160" y="200" width="220" height="52" rx="26" fill="#f472b6" />
+  <text x="270" y="234" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20" fill="#ffffff" text-anchor="middle">★ EPISODE 01 ★</text>
+
+  <!-- Category Tag -->
+  <rect x="400" y="200" width="210" height="52" rx="26" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="2" />
+  <text x="505" y="233" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="18" fill="#db2777" text-anchor="middle">🌸 DAY 1 OF 100</text>
+
+  <!-- Main Headline -->
+  <text x="160" y="340" font-family="Fredoka, Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="64" fill="#1e1b4b">
+    Why I'm Starting
+  </text>
+  <text x="160" y="420" font-family="Fredoka, Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="64" fill="#db2777">
+    Cybersecurity In Public! ✨
+  </text>
+
+  <!-- Subtitle / Hook -->
+  <text x="160" y="480" font-family="Plus Jakarta Sans, sans-serif" font-weight="600" font-size="24" fill="#64748b">
+    The 100-Day Roadmap &bull; Feynman Technique &bull; $0 Zero to SOC
+  </text>
+
+  <!-- Bottom sticker badges -->
+  <rect x="160" y="530" width="220" height="42" rx="21" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2" />
+  <text x="270" y="557" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="16" fill="#16a34a" text-anchor="middle">🐾 ETHICAL LABS ONLY</text>
+
+  <rect x="400" y="530" width="250" height="42" rx="21" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" />
+  <text x="525" y="557" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="16" fill="#9333ea" text-anchor="middle">🎀 TARGET: OSCP &amp; SEC+</text>
+
+  <!-- Cute Big Character Mascot Emoji on Right -->
+  <circle cx="1000" cy="360" r="130" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="6" />
+  <text x="1000" y="390" font-size="100" text-anchor="middle">🌸</text>
+  <text x="1000" y="450" font-family="Fredoka, sans-serif" font-weight="bold" font-size="22" fill="#ec4899" text-anchor="middle">0xSEC NYAA~</text>
+</svg>

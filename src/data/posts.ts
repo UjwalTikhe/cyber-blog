@@ -3,11 +3,14 @@ import type { Post, JourneyMilestone, ArsenalTool } from '../types';
 export const INITIAL_POSTS: Post[] = [
   {
     id: 'day-1-embarking-on-cybersecurity-roadmap',
+    episode: 1,
     title: 'Day 1: Embarking on My Cybersecurity Journey — Roadmap & Philosophy',
     date: '2026-10-05',
     category: 'Foundations',
     difficulty: 'Beginner',
     readTime: '5 min read',
+    thumbnailUrl: './thumbnails/thumb-ep1.svg',
+    feynmanSummary: 'Certifications without hands-on proof of work are meaningless. Documenting my journey using the Feynman Technique forces me to truly understand core cybersecurity protocols instead of just memorizing slides.',
     tags: ['journey', 'roadmap', 'foundations', 'learning-in-public'],
     excerpt: 'Why I am committing to documenting every lab, failure, and breakthrough publicly. The 100-day strategy, certification milestones, and my initial tool setup.',
     content: `# Day 1: Embarking on My Cybersecurity Journey — Roadmap & Philosophy
@@ -77,11 +80,14 @@ Tomorrow, I will be setting up my primary battlefield: an isolated **VirtualBox 
   },
   {
     id: 'homelab-setup-virtualbox-kali-pfsense',
+    episode: 2,
     title: 'Day 2: Architecting an Isolated VirtualBox & Kali Homelab',
     date: '2026-10-06',
     category: 'Homelab',
     difficulty: 'Beginner',
     readTime: '7 min read',
+    thumbnailUrl: './thumbnails/thumb-ep2.svg',
+    feynmanSummary: 'A safe lab is like a digital submarine with watertight bulkheads: the attacker VM has an outside valve to download tools from the internet, but vulnerable victim machines are locked in an airtight room so malware can never escape into your real house network.',
     tags: ['homelab', 'virtualbox', 'kali-linux', 'networking', 'security'],
     excerpt: 'Step-by-step guide to designing a dual-adapter sandbox environment: keeping your attack machine connected for updates while completely isolating vulnerable targets.',
     content: `# Day 2: Architecting an Isolated VirtualBox & Kali Homelab
@@ -180,11 +186,14 @@ Tomorrow, we fire up Nmap and dissect how TCP handshakes look when scanned with 
   },
   {
     id: 'tryhackme-pre-security-and-nmap-basics',
+    episode: 3,
     title: 'Day 3: Demystifying the TCP 3-Way Handshake & Nmap Scanning Internals',
     date: '2026-10-07',
     category: 'Networking',
     difficulty: 'Intermediate',
     readTime: '8 min read',
+    thumbnailUrl: './thumbnails/thumb-ep3.svg',
+    feynmanSummary: "TCP is like a polite phone call: 'Hello can you hear me?' (SYN), 'Yes, can you hear me?' (SYN-ACK), 'Yes, connection active!' (ACK). Stealth Nmap scans hang up the phone right before the last sentence with RST so legacy firewalls never log that a connection took place.",
     tags: ['nmap', 'networking', 'tcp-ip', 'wireshark', 'recon'],
     excerpt: 'What actually happens at the packet level during an Nmap scan? Comparing TCP Connect (-sT) vs Stealth SYN (-sS) scans through raw Wireshark frames.',
     content: `# Day 3: Demystifying the TCP 3-Way Handshake & Nmap Scanning Internals

@@ -21,6 +21,10 @@ export interface Post {
   content: string; // Full markdown
   author?: string;
   isCustom?: boolean; // added via the live composer
+  episode?: number; // e.g. Ep. 01
+  thumbnailUrl?: string; // 16:9 thumbnail image URL
+  youtubeUrl?: string; // Optional YouTube vlog video URL or ID
+  feynmanSummary?: string; // ELI5 / simple breakdown
 }
 
 export interface JourneyMilestone {

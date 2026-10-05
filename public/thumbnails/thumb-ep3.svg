@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0f9ff" />
+      <stop offset="50%" stop-color="#fdf4ff" />
+      <stop offset="100%" stop-color="#fff1f2" />
+    </linearGradient>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0284c7" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg3)" />
+
+  <g filter="url(#shadow3)">
+    <rect x="100" y="90" width="1080" height="540" rx="36" fill="#ffffff" stroke="#bae6fd" stroke-width="4" />
+    <rect x="100" y="90" width="1080" height="70" rx="36" fill="#f0f9ff" />
+    <circle cx="150" cy="125" r="10" fill="#fb7185" />
+    <circle cx="180" cy="125" r="10" fill="#fbbf24" />
+    <circle cx="210" cy="125" r="10" fill="#34d399" />
+    <text x="640" y="132" font-family="Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="18" fill="#0284c7" text-anchor="middle">📡 CYBER BLOG &bull; EPISODE 03 🔍</text>
+  </g>
+
+  <rect x="160" y="200" width="220" height="52" rx="26" fill="#0284c7" />
+  <text x="270" y="234" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20" fill="#ffffff" text-anchor="middle">★ EPISODE 03 ★</text>
+
+  <rect x="400" y="200" width="230" height="52" rx="26" fill="#f0f9ff" stroke="#bae6fd" stroke-width="2" />
+  <text x="515" y="233" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="18" fill="#0369a1" text-anchor="middle">📡 TCP/IP &amp; NMAP INTERNALS</text>
+
+  <text x="160" y="340" font-family="Fredoka, Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="64" fill="#1e1b4b">
+    TCP 3-Way Handshake
+  </text>
+  <text x="160" y="420" font-family="Fredoka, Plus Jakarta Sans, sans-serif" font-weight="bold" font-size="64" fill="#0284c7">
+    &amp; Stealth Port Scans 🔍
+  </text>
+
+  <text x="160" y="480" font-family="Plus Jakarta Sans, sans-serif" font-weight="600" font-size="24" fill="#64748b">
+    SYN vs Connect Scans &bull; Wireshark Packets &bull; Snort Rules
+  </text>
+
+  <rect x="160" y="530" width="230" height="42" rx="21" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2" />
+  <text x="275" y="557" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="16" fill="#16a34a" text-anchor="middle">SYN &rarr; SYN-ACK &rarr; ACK</text>
+
+  <rect x="410" y="530" width="240" height="42" rx="21" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" />
+  <text x="530" y="557" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="16" fill="#9333ea" text-anchor="middle">🛡️ BLUE TEAM DETECT</text>
+
+  <circle cx="1000" cy="360" r="130" fill="#f0f9ff" stroke="#bae6fd" stroke-width="6" />
+  <text x="1000" y="390" font-size="100" text-anchor="middle">📡</text>
+  <text x="1000" y="450" font-family="Fredoka, sans-serif" font-weight="bold" font-size="22" fill="#0284c7" text-anchor="middle">WIRESHARK</text>
+</svg>
