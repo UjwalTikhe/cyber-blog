@@ -10,7 +10,7 @@ import { ArsenalView } from './components/ArsenalView';
 import { ComposeStudio } from './components/ComposeStudio';
 import { TerminalModal } from './components/TerminalModal';
 import { Footer } from './components/Footer';
-import { Search, Filter, Shield, Tag, X, PlusCircle } from 'lucide-react';
+import { Search, Filter, Tag, X, PlusCircle } from 'lucide-react';
 
 const CATEGORIES: ('All' | PostCategory)[] = [
   'All',
@@ -23,6 +23,17 @@ const CATEGORIES: ('All' | PostCategory)[] = [
   'Tools & Scripts',
 ];
 
+const categoryLabels: Record<'All' | PostCategory, string> = {
+  'All': 'All ✨',
+  'Foundations': '🌸 Foundations',
+  'Homelab': '🏠 Homelab',
+  'CTF & Labs': '🚩 CTF & Labs',
+  'Networking': '📡 Networking',
+  'Blue Team': '🛡️ Blue Team',
+  'Red Team': '⚔️ Red Team',
+  'Tools & Scripts': '✨ Tools & Scripts',
+};
+
 export function App() {
   // Posts state initialized from localStorage + defaults
   const [posts, setPosts] = useState<Post[]>(() => {
@@ -30,7 +41,6 @@ export function App() {
       const saved = localStorage.getItem('cyber_blog_posts');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Combine custom posts with initial posts (avoiding duplicate IDs)
         const initialIds = new Set(INITIAL_POSTS.map((p) => p.id));
         const customOnly = parsed.filter((p: Post) => !initialIds.has(p.id));
         return [...customOnly, ...INITIAL_POSTS];
@@ -106,24 +116,20 @@ export function App() {
       return updated;
     });
 
-    // Directly open the newly created post!
     handleSelectPost(newPost);
   };
 
   // Filter posts based on search, category, and active tag
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
-      // Category filter
       if (selectedCategory !== 'All' && post.category !== selectedCategory) {
         return false;
       }
 
-      // Tag filter
       if (activeTag && !post.tags.includes(activeTag)) {
         return false;
       }
 
-      // Search query
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesTitle = post.title.toLowerCase().includes(query);
@@ -145,8 +151,8 @@ export function App() {
   }, [posts]);
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-slate-200 flex flex-col font-sans selection:bg-emerald-500/25 selection:text-emerald-300">
-      {/* Top Navbar */}
+    <div className="min-h-screen bg-[#faf7f9] text-[#1e1b4b] flex flex-col font-sans selection:bg-pink-200 selection:text-pink-900">
+      {/* Top Cute Navbar */}
       <Navbar
         currentTab={currentTab}
         setCurrentTab={(tab) => {
@@ -196,21 +202,21 @@ export function App() {
 
             {/* Filter & Search Ribbon */}
             <section id="feed-section" className="max-w-6xl mx-auto px-4 pt-10 pb-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-cyber-border pb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-pink-100 pb-6">
                 {/* Search Bar */}
                 <div className="relative flex-1 max-w-md">
-                  <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Search className="w-4 h-4 text-pink-400 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Search logs by keyword, CVE, or tool..."
+                    placeholder="Search writeups by tool, concept, or tag..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-9 py-2 rounded-lg bg-cyber-card border border-cyber-border focus:border-emerald-500 text-xs font-mono text-white placeholder:text-slate-500 focus:outline-none transition-colors"
+                    className="w-full pl-11 pr-10 py-2.5 rounded-full bg-white border border-pink-200 focus:border-pink-500 text-xs font-sans text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all shadow-cute-pill"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -219,23 +225,23 @@ export function App() {
 
                 {/* Compose CTA helper */}
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-slate-400 hidden sm:inline">
-                    Showing <strong className="text-emerald-400">{filteredPosts.length}</strong> transmissions
+                  <span className="text-xs font-sans text-slate-500 font-medium hidden sm:inline">
+                    Showing <strong className="text-pink-600 font-bold">{filteredPosts.length}</strong> logs ✨
                   </span>
                   <button
                     onClick={() => setIsComposeOpen(true)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border hover:border-emerald-500/40 text-xs font-mono text-slate-200 transition-colors"
+                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-pink-600 transition-all shadow-cute-pill hover:scale-105"
                   >
-                    <PlusCircle className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>New Article</span>
+                    <PlusCircle className="w-3.5 h-3.5 text-pink-500" />
+                    <span>New Writeup 🌸</span>
                   </button>
                 </div>
               </div>
 
               {/* Category Pills Bar */}
               <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none">
-                <span className="text-[11px] font-mono text-slate-500 flex items-center gap-1 mr-1">
-                  <Filter className="w-3 h-3" />
+                <span className="text-[11px] font-sans font-bold text-slate-400 flex items-center gap-1 mr-1">
+                  <Filter className="w-3 h-3 text-pink-400" />
                   <span>FILTER:</span>
                 </span>
                 {CATEGORIES.map((cat) => (
@@ -245,13 +251,13 @@ export function App() {
                       setSelectedCategory(cat);
                       setActiveTag(null);
                     }}
-                    className={`px-3 py-1 rounded-md text-xs font-mono whitespace-nowrap transition-all ${
+                    className={`px-4 py-1.5 rounded-full text-xs font-sans font-bold whitespace-nowrap transition-all ${
                       selectedCategory === cat && !activeTag
-                        ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                        : 'bg-cyber-card text-slate-400 hover:text-slate-200 hover:bg-cyber-surface border border-cyber-border'
+                        ? 'bg-pink-500 text-white shadow-cute-pill'
+                        : 'bg-white text-slate-600 hover:text-pink-600 hover:bg-pink-50 border border-pink-200'
                     }`}
                   >
-                    {cat}
+                    {categoryLabels[cat]}
                   </button>
                 ))}
               </div>
@@ -259,16 +265,16 @@ export function App() {
               {/* Active Tag Filter Indicator */}
               {activeTag && (
                 <div className="flex items-center gap-2 py-2">
-                  <span className="text-xs font-mono text-slate-400">Filtering by tag:</span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-xs font-mono">
+                  <span className="text-xs font-sans text-slate-500 font-medium">Filtering by tag:</span>
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-pink-100 text-pink-700 text-xs font-sans font-bold border border-pink-200">
                     #{activeTag}
-                    <button onClick={() => setActiveTag(null)} className="hover:text-white ml-1">
+                    <button onClick={() => setActiveTag(null)} className="hover:text-pink-900 ml-1">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
                   <button
                     onClick={() => setActiveTag(null)}
-                    className="text-xs font-mono text-slate-500 hover:text-slate-300 underline"
+                    className="text-xs font-sans font-medium text-pink-500 hover:underline"
                   >
                     Clear tag
                   </button>
@@ -290,11 +296,11 @@ export function App() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-16 bg-cyber-card/40 border border-cyber-border rounded-xl p-8 max-w-lg mx-auto space-y-4">
-                  <Shield className="w-10 h-10 text-slate-600 mx-auto" />
-                  <h3 className="font-display font-bold text-lg text-white">No Transmissions Found</h3>
-                  <p className="text-xs text-slate-400 font-mono">
-                    No articles match your query "{searchQuery || activeTag}". Try clearing filters or create a new writeup in the Studio.
+                <div className="text-center py-16 bg-white border border-pink-200 rounded-3xl p-8 max-w-lg mx-auto space-y-4 shadow-cute-card">
+                  <div className="text-4xl">🌸</div>
+                  <h3 className="font-display font-bold text-xl text-slate-900">No Logs Found Dear~</h3>
+                  <p className="text-xs text-slate-600 font-sans">
+                    No articles match "{searchQuery || activeTag}". Try clearing the search or write a new entry in the Studio!
                   </p>
                   <button
                     onClick={() => {
@@ -302,28 +308,28 @@ export function App() {
                       setSelectedCategory('All');
                       setActiveTag(null);
                     }}
-                    className="px-4 py-2 rounded-lg bg-cyber-surface border border-cyber-border text-xs font-mono text-emerald-400 hover:border-emerald-500/40"
+                    className="px-5 py-2.5 rounded-full bg-pink-50 border border-pink-200 text-xs font-sans font-bold text-pink-600 hover:bg-pink-100 transition-colors shadow-cute-pill"
                   >
-                    Reset All Filters
+                    Reset All Filters ✨
                   </button>
                 </div>
               )}
 
               {/* Tag Cloud Overview */}
-              <div className="mt-16 pt-8 border-t border-cyber-border/60">
-                <div className="flex items-center gap-2 mb-4 font-mono text-xs text-slate-400">
-                  <Tag className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>KNOWLEDGE TOPIC CLUSTER</span>
+              <div className="mt-16 pt-8 border-t border-pink-100">
+                <div className="flex items-center gap-2 mb-4 font-display font-bold text-xs text-slate-700">
+                  <Tag className="w-3.5 h-3.5 text-pink-500" />
+                  <span>KNOWLEDGE TOPIC CLUSTER 🌸</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {allTags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => setActiveTag(tag)}
-                      className={`text-xs font-mono px-3 py-1 rounded-md border transition-all ${
+                      className={`text-xs font-sans font-semibold px-3.5 py-1.5 rounded-full border transition-all ${
                         activeTag === tag
-                          ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400'
-                          : 'bg-cyber-card/60 text-slate-400 hover:text-emerald-400 border-cyber-border hover:border-emerald-500/30'
+                          ? 'bg-pink-500 text-white font-bold border-pink-500 shadow-cute-pill'
+                          : 'bg-white text-slate-600 hover:text-pink-600 hover:bg-pink-50 border-pink-200 shadow-sm'
                       }`}
                     >
                       #{tag}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, type ReactNode, type FormEvent } from 'react';
 import type { Post } from '../types';
-import { Terminal as TerminalIcon, X, CornerDownLeft } from 'lucide-react';
+import { X, CornerDownLeft } from 'lucide-react';
 
 interface TerminalModalProps {
   isOpen: boolean;
@@ -29,9 +29,11 @@ export const TerminalModal = ({
       id: 'init',
       command: 'sys.status',
       output: (
-        <div className="text-slate-300 space-y-1">
-          <p className="text-emerald-400 font-bold">SYSTEM CONNECTED: 0xSEC KERNEL v2.6</p>
-          <p className="text-slate-400 text-xs">Type <span className="text-emerald-400 font-bold">help</span> to view commands, or search writeups by title / keyword.</p>
+        <div className="text-slate-700 space-y-1 font-sans">
+          <p className="text-pink-600 font-bold font-display">✨ CONNECTED TO NYAA~ SHELL v2.6 🐾</p>
+          <p className="text-slate-500 text-xs">
+            Type <span className="text-pink-600 font-bold bg-pink-50 px-1.5 py-0.5 rounded">help</span> to view cute commands, or search writeups by keyword!
+          </p>
         </div>
       ),
     },
@@ -58,9 +60,6 @@ export const TerminalModal = ({
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (isOpen) onClose();
-        else {
-          // Open handled by parent or state
-        }
       } else if (e.key === 'Escape' && isOpen) {
         onClose();
       }
@@ -82,15 +81,15 @@ export const TerminalModal = ({
 
     if (lower === 'help') {
       response = (
-        <div className="space-y-1 text-slate-300 text-xs font-mono">
-          <p className="text-emerald-400 font-bold">AVAILABLE COMMANDS:</p>
-          <p>• <span className="text-cyan-400">ls / posts</span> : List all available writeups</p>
-          <p>• <span className="text-cyan-400">read &lt;id&gt;</span> : Open a specific writeup by slug or number</p>
-          <p>• <span className="text-cyan-400">timeline</span> : View 100-Day progression tracker</p>
-          <p>• <span className="text-cyan-400">arsenal</span> : View homelab specifications &amp; tools</p>
-          <p>• <span className="text-cyan-400">whoami</span> : Print operator background &amp; certifications</p>
-          <p>• <span className="text-cyan-400">clear</span> : Clear terminal history</p>
-          <p>• <span className="text-cyan-400">exit</span> : Close terminal</p>
+        <div className="space-y-1.5 text-slate-700 text-xs font-sans">
+          <p className="text-pink-600 font-bold font-display">AVAILABLE COMMANDS 🌸:</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">ls / posts</span> : List all available writeups ✨</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">read &lt;id&gt;</span> : Open a writeup by number or slug 🎀</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">timeline</span> : Open 100-Day progression roadmap 🐾</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">arsenal</span> : View homelab specifications &amp; tools 🛠️</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">whoami</span> : Print operator background &amp; goals 🌸</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">clear</span> : Clear terminal history</p>
+          <p>• <span className="text-purple-600 font-bold font-mono">exit</span> : Close terminal</p>
         </div>
       );
     } else if (lower === 'clear') {
@@ -102,8 +101,8 @@ export const TerminalModal = ({
       return;
     } else if (lower === 'posts' || lower === 'ls') {
       response = (
-        <div className="space-y-1.5 text-xs font-mono">
-          <p className="text-emerald-400 font-bold">LOGGED TRANSMISSIONS ({posts.length}):</p>
+        <div className="space-y-1.5 text-xs font-sans">
+          <p className="text-pink-600 font-bold font-display">LOGGED TRANSMISSIONS ({posts.length}) 🌸:</p>
           {posts.map((p, idx) => (
             <div
               key={p.id}
@@ -111,10 +110,10 @@ export const TerminalModal = ({
                 onSelectPost(p);
                 onClose();
               }}
-              className="flex items-center justify-between p-1.5 rounded hover:bg-cyber-surface cursor-pointer text-slate-300 hover:text-emerald-400 group"
+              className="flex items-center justify-between p-2 rounded-xl bg-pink-50/60 hover:bg-pink-100 cursor-pointer text-slate-800 hover:text-pink-700 transition-colors group"
             >
               <span>[{idx + 1}] {p.title}</span>
-              <span className="text-slate-500 group-hover:text-emerald-400">read {idx + 1} &gt;</span>
+              <span className="text-pink-500 font-bold text-[11px]">read {idx + 1} &rarr;</span>
             </div>
           ))}
         </div>
@@ -129,11 +128,11 @@ export const TerminalModal = ({
       return;
     } else if (lower === 'whoami') {
       response = (
-        <div className="space-y-1 text-xs font-mono text-slate-300 border-l-2 border-emerald-500 pl-3 py-1">
-          <p className="text-emerald-400 font-bold">OPERATOR: Security Researcher / Student</p>
-          <p>MISSION: Document 100 consecutive days of ethical security research, lab attacks, and blue team defenses.</p>
-          <p>CERT GOALS: CompTIA Security+, eJPT, OSCP</p>
-          <p>LAB ENVIRONMENT: VirtualBox 7.x, Kali Linux, Isolated NAT/Host-Only Subnets</p>
+        <div className="space-y-1 text-xs font-sans text-slate-700 border-l-4 border-pink-400 pl-3 py-1 bg-pink-50/60 rounded-r-xl">
+          <p className="text-pink-600 font-bold font-display">OPERATOR: Cutie Security Researcher 🌸</p>
+          <p>MISSION: Document 100 days of hands-on security research, lab breaches &amp; blue team defense~</p>
+          <p>TARGETS: CompTIA Security+, eJPT, OSCP ✨</p>
+          <p>LAB: VirtualBox 7.x, Kali Linux, Air-gapped Host-Only subnet 💻</p>
         </div>
       );
     } else if (lower.startsWith('read ') || lower.startsWith('cat ')) {
@@ -152,7 +151,7 @@ export const TerminalModal = ({
         onClose();
         return;
       } else {
-        response = <p className="text-rose-400 text-xs">Error: Post matching "{target}" not found.</p>;
+        response = <p className="text-rose-600 text-xs">Error: Post matching "{target}" not found dear~ 🌸</p>;
       }
     } else {
       // Treat as keyword search
@@ -165,8 +164,8 @@ export const TerminalModal = ({
 
       if (matches.length > 0) {
         response = (
-          <div className="space-y-2 text-xs font-mono">
-            <p className="text-emerald-400">Search results for "{cmd}":</p>
+          <div className="space-y-2 text-xs font-sans">
+            <p className="text-pink-600 font-bold">Search results for "{cmd}" ✨:</p>
             {matches.map((m) => (
               <div
                 key={m.id}
@@ -174,18 +173,20 @@ export const TerminalModal = ({
                   onSelectPost(m);
                   onClose();
                 }}
-                className="p-2 rounded bg-cyber-surface border border-cyber-border hover:border-emerald-500/40 cursor-pointer text-slate-200 hover:text-emerald-400 flex items-center justify-between"
+                className="p-2.5 rounded-2xl bg-pink-50/70 border border-pink-200 hover:border-pink-400 cursor-pointer text-slate-800 hover:text-pink-600 flex items-center justify-between"
               >
-                <span>{m.title}</span>
-                <span className="text-[10px] text-slate-400">{m.category}</span>
+                <span className="font-semibold">{m.title}</span>
+                <span className="text-[10px] text-pink-600 font-bold bg-white px-2 py-0.5 rounded-full border border-pink-200">
+                  {m.category}
+                </span>
               </div>
             ))}
           </div>
         );
       } else {
         response = (
-          <p className="text-slate-400 text-xs">
-            Command or search query not recognized. Type <span className="text-emerald-400 font-bold">help</span> for commands.
+          <p className="text-slate-500 text-xs font-sans">
+            Command not recognized. Type <span className="text-pink-600 font-bold">help</span> to view commands~ 🐾
           </p>
         );
       }
@@ -203,20 +204,20 @@ export const TerminalModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
-      <div className="w-full max-w-2xl bg-cyber-card border border-cyber-border rounded-xl shadow-2xl overflow-hidden flex flex-col h-[520px]">
+    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+      <div className="w-full max-w-2xl bg-white border border-pink-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[520px]">
         {/* Terminal Title Bar */}
-        <div className="bg-cyber-surface px-4 py-3 border-b border-cyber-border flex items-center justify-between">
-          <div className="flex items-center gap-2 font-mono text-xs text-slate-300">
-            <TerminalIcon className="w-4 h-4 text-emerald-400" />
-            <span>OPERATOR_TERMINAL // INTERACTIVE CLI</span>
+        <div className="bg-gradient-to-r from-pink-50 via-white to-pink-50 px-5 py-3 border-b border-pink-100 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-display font-bold text-xs text-slate-800">
+            <span className="text-pink-500">🐾</span>
+            <span>NYAA~ SHELL // INTERACTIVE TERMINAL 🌸</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-mono text-slate-500 hidden sm:inline">ESC to close</span>
+            <span className="text-[10px] font-sans text-slate-400 hidden sm:inline">ESC to close</span>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-pink-100 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -224,11 +225,11 @@ export const TerminalModal = ({
         </div>
 
         {/* Console Log Area */}
-        <div className="flex-1 p-4 overflow-y-auto font-mono text-xs space-y-4 bg-cyber-bg/95">
+        <div className="flex-1 p-5 overflow-y-auto font-mono text-xs space-y-4 bg-pink-50/20">
           {history.map((item) => (
             <div key={item.id} className="space-y-1">
-              <div className="flex items-center gap-2 text-emerald-400">
-                <span className="text-slate-500">sec@kali:~$</span>
+              <div className="flex items-center gap-2 text-pink-600 font-bold">
+                <span className="text-purple-500">kawaii@kali:~$</span>
                 <span>{item.command}</span>
               </div>
               <div className="pl-4">{item.output}</div>
@@ -238,19 +239,19 @@ export const TerminalModal = ({
         </div>
 
         {/* Input prompt */}
-        <form onSubmit={handleCommandSubmit} className="p-3 bg-cyber-surface border-t border-cyber-border flex items-center gap-2">
-          <span className="font-mono text-xs text-emerald-400">sec@kali:~$</span>
+        <form onSubmit={handleCommandSubmit} className="p-3.5 bg-white border-t border-pink-100 flex items-center gap-2">
+          <span className="font-mono text-xs font-bold text-pink-600">kawaii@kali:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type 'help' or search writeups..."
-            className="flex-1 bg-transparent font-mono text-xs text-white focus:outline-none placeholder:text-slate-600"
+            className="flex-1 bg-transparent font-mono text-xs text-slate-800 focus:outline-none placeholder:text-slate-400"
           />
           <button
             type="submit"
-            className="p-1 rounded text-slate-400 hover:text-emerald-400 transition-colors"
+            className="p-1.5 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 transition-colors"
           >
             <CornerDownLeft className="w-4 h-4" />
           </button>

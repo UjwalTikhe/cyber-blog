@@ -1,28 +1,28 @@
-import { Shield, Radio } from 'lucide-react';
+import { Radio, Heart } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer className="w-full border-t border-cyber-border bg-cyber-surface/80 py-12 text-slate-400 font-mono text-xs">
+    <footer className="w-full border-t border-pink-100 bg-white/90 py-12 text-slate-500 font-sans text-xs">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-cyber-border/60">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-pink-100">
           {/* Brand info */}
           <div className="md:col-span-5 space-y-3">
-            <div className="flex items-center gap-2 text-white font-display font-bold text-base">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              <span>ROOT // LOGS</span>
-              <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                100-DAY LAB
+            <div className="flex items-center gap-2 text-slate-900 font-display font-bold text-base">
+              <span className="text-xl">🌸</span>
+              <span>0xSEC // CYBER LOGS</span>
+              <span className="text-[11px] text-pink-600 bg-pink-100 px-2.5 py-0.5 rounded-full border border-pink-200">
+                100-DAY DIARY ✨
               </span>
             </div>
-            <p className="text-slate-400 text-xs leading-relaxed font-sans max-w-sm">
-              Documenting the journey into offensive security and incident response. Every walkthrough reflects reproducible lab simulations with defensive mitigations.
+            <p className="text-slate-600 text-xs leading-relaxed font-sans max-w-sm">
+              Documenting the journey into offensive security and incident response with soft, cozy vibes. Every lab walkthrough reflects reproducible isolated simulations with blue team defenses~
             </p>
             <div className="flex items-center gap-3 pt-1">
               <a
-                href="https://github.com"
+                href="https://github.com/UjwalTikhe"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded bg-cyber-card border border-cyber-border hover:border-emerald-500/40 text-slate-300 hover:text-emerald-400 transition-colors"
+                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-pink-600 transition-colors shadow-cute-pill"
                 title="GitHub Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -33,47 +33,49 @@ export const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded bg-cyber-card border border-cyber-border hover:border-cyan-500/40 text-slate-300 hover:text-cyan-400 transition-colors"
+                className="p-2.5 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-400 text-slate-700 hover:text-pink-600 transition-colors shadow-cute-pill"
                 title="LinkedIn Profile"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                 </svg>
               </a>
-              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-cyber-card border border-cyber-border text-emerald-400 text-[11px]">
-                <Radio className="w-3 h-3 animate-pulse" />
-                <span>RSS READY</span>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-pink-600 text-[11px] font-bold shadow-cute-pill">
+                <Radio className="w-3 h-3 text-pink-500 animate-pulse" />
+                <span>RSS READY 🌸</span>
               </div>
             </div>
           </div>
 
           {/* Quick links */}
           <div className="md:col-span-3 space-y-2">
-            <div className="text-white font-bold tracking-wider text-[11px]">MISSION SECTIONS</div>
-            <ul className="space-y-1.5 text-slate-400">
-              <li><span className="text-emerald-400">//</span> Day 1 Roadmap &amp; Foundations</li>
-              <li><span className="text-emerald-400">//</span> Isolated Homelab Configurations</li>
-              <li><span className="text-emerald-400">//</span> Wireshark &amp; Protocol Forensics</li>
-              <li><span className="text-emerald-400">//</span> Blue Team Log Analysis</li>
+            <div className="text-slate-900 font-display font-bold tracking-wider text-xs">DIARY SECTIONS ✨</div>
+            <ul className="space-y-1.5 text-slate-600">
+              <li>🌸 Day 1 Roadmap &amp; Foundations</li>
+              <li>🏠 Isolated Homelab Architecture</li>
+              <li>📡 Wireshark &amp; Packet Forensics</li>
+              <li>🛡️ Blue Team Log Analysis</li>
             </ul>
           </div>
 
           {/* Ethics statement */}
           <div className="md:col-span-4 space-y-2">
-            <div className="text-white font-bold tracking-wider text-[11px]">ETHICAL COMPLIANCE</div>
-            <p className="text-slate-400 text-xs leading-relaxed font-sans">
-              All exploits and testing demonstrated on this journal are executed exclusively within private air-gapped sandboxes, TryHackMe, or HackTheBox ranges. Never attempt penetration tests without explicit written authorization.
+            <div className="text-slate-900 font-display font-bold tracking-wider text-xs">ETHICS &amp; SAFETY 🐾</div>
+            <p className="text-slate-600 text-xs leading-relaxed font-sans">
+              All exercises documented in this journal are performed strictly in private virtual labs or authorized CTF platforms. Always obey the law and hack ethically dear~ 🎀
             </p>
           </div>
         </div>
 
         {/* Bottom copyright */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-[11px]">
-          <div>
-            &copy; {new Date().getFullYear()} ROOT // LOGS. Built for the Cybersecurity Community.
-          </div>
           <div className="flex items-center gap-1">
-            <span>Powered by Vite, React, Tailwind &amp; Static Markdown</span>
+            <span>&copy; {new Date().getFullYear()} 0xSEC. Made with</span>
+            <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-400 inline" />
+            <span>&amp; iced coffee for the cybersecurity community ✨</span>
+          </div>
+          <div>
+            <span>Powered by Vite, React 19, Tailwind &amp; GitHub Pages</span>
           </div>
         </div>
       </div>

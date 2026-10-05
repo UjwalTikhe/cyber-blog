@@ -1,5 +1,5 @@
 import type { Post, PostCategory, PostDifficulty } from '../types';
-import { Calendar, Clock, ArrowRight, Shield, Terminal, HardDrive, Network, Eye, Crosshair, Wrench } from 'lucide-react';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 
 interface PostCardProps {
   post: Post;
@@ -7,86 +7,93 @@ interface PostCardProps {
   onTagClick?: (tag: string) => void;
 }
 
-const categoryIcons: Record<PostCategory, React.ReactNode> = {
-  'Foundations': <Shield className="w-3.5 h-3.5 text-emerald-400" />,
-  'Homelab': <HardDrive className="w-3.5 h-3.5 text-amber-400" />,
-  'CTF & Labs': <Crosshair className="w-3.5 h-3.5 text-rose-400" />,
-  'Networking': <Network className="w-3.5 h-3.5 text-cyan-400" />,
-  'Blue Team': <Eye className="w-3.5 h-3.5 text-blue-400" />,
-  'Red Team': <Terminal className="w-3.5 h-3.5 text-red-400" />,
-  'Tools & Scripts': <Wrench className="w-3.5 h-3.5 text-purple-400" />,
+const categoryEmojis: Record<PostCategory, string> = {
+  'Foundations': '🌸',
+  'Homelab': '🏠',
+  'CTF & Labs': '🚩',
+  'Networking': '📡',
+  'Blue Team': '🛡️',
+  'Red Team': '⚔️',
+  'Tools & Scripts': '✨',
 };
 
-const categoryColors: Record<PostCategory, string> = {
-  'Foundations': 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-  'Homelab': 'text-amber-400 border-amber-500/30 bg-amber-500/10',
-  'CTF & Labs': 'text-rose-400 border-rose-500/30 bg-rose-500/10',
-  'Networking': 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-  'Blue Team': 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-  'Red Team': 'text-red-400 border-red-500/30 bg-red-500/10',
-  'Tools & Scripts': 'text-purple-400 border-purple-500/30 bg-purple-500/10',
+const categoryStyles: Record<PostCategory, string> = {
+  'Foundations': 'text-pink-700 bg-pink-100/70 border-pink-200',
+  'Homelab': 'text-amber-700 bg-amber-100/70 border-amber-200',
+  'CTF & Labs': 'text-rose-700 bg-rose-100/70 border-rose-200',
+  'Networking': 'text-sky-700 bg-sky-100/70 border-sky-200',
+  'Blue Team': 'text-indigo-700 bg-indigo-100/70 border-indigo-200',
+  'Red Team': 'text-purple-700 bg-purple-100/70 border-purple-200',
+  'Tools & Scripts': 'text-teal-700 bg-teal-100/70 border-teal-200',
 };
 
-const difficultyColors: Record<PostDifficulty, string> = {
-  'Beginner': 'text-emerald-300 border-emerald-800/60 bg-emerald-950/40',
-  'Intermediate': 'text-amber-300 border-amber-800/60 bg-amber-950/40',
-  'Advanced': 'text-rose-300 border-rose-800/60 bg-rose-950/40',
+const difficultyStyles: Record<PostDifficulty, string> = {
+  'Beginner': 'text-emerald-700 bg-emerald-50 border-emerald-200',
+  'Intermediate': 'text-amber-700 bg-amber-50 border-amber-200',
+  'Advanced': 'text-rose-700 bg-rose-50 border-rose-200',
 };
 
-export const PostCard: React.FC<PostCardProps> = ({ post, onSelect, onTagClick }) => {
+const difficultyEmojis: Record<PostDifficulty, string> = {
+  'Beginner': '🐾',
+  'Intermediate': '🎀',
+  'Advanced': '🔥',
+};
+
+export const PostCard = ({ post, onSelect, onTagClick }: PostCardProps) => {
   return (
     <article
       onClick={() => onSelect(post)}
-      className="group relative bg-cyber-card/70 hover:bg-cyber-cardHover border border-cyber-border hover:border-emerald-500/50 rounded-xl p-6 transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-cyber-sm hover:shadow-cyber-glow-emerald"
+      className="group relative bg-white hover:bg-pink-50/20 border border-pink-100 hover:border-pink-300 rounded-3xl p-6 transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-cute-sm hover:shadow-cute-card hover:-translate-y-1"
     >
       <div className="space-y-4">
         {/* Meta Header */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-medium border ${
-                categoryColors[post.category] || 'text-slate-300 border-slate-700 bg-slate-800/50'
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-sans font-bold border ${
+                categoryStyles[post.category] || 'text-slate-700 bg-slate-100 border-slate-200'
               }`}
             >
-              {categoryIcons[post.category]}
+              <span>{categoryEmojis[post.category]}</span>
               <span>{post.category}</span>
             </span>
 
             <span
-              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider border ${
-                difficultyColors[post.difficulty]
+              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold border ${
+                difficultyStyles[post.difficulty]
               }`}
             >
-              {post.difficulty}
+              <span>{difficultyEmojis[post.difficulty]}</span>
+              <span>{post.difficulty}</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
+          <div className="flex items-center gap-2 text-xs font-sans text-slate-500 font-medium">
             <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-3.5 h-3.5 text-pink-400" />
               <span>{post.date}</span>
             </span>
-            <span className="text-slate-700">•</span>
+            <span>&bull;</span>
             <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" />
+              <Clock className="w-3.5 h-3.5 text-pink-400" />
               <span>{post.readTime}</span>
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h2 className="text-lg sm:text-xl font-display font-bold text-white group-hover:text-emerald-400 transition-colors line-clamp-2 leading-snug">
+        <h2 className="text-lg sm:text-xl font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors line-clamp-2 leading-snug">
           {post.title}
         </h2>
 
         {/* Excerpt */}
-        <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
+        <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 font-sans">
           {post.excerpt}
         </p>
       </div>
 
       {/* Footer: Tags and Action Link */}
-      <div className="pt-5 mt-5 border-t border-cyber-border/70 flex flex-wrap items-center justify-between gap-3">
+      <div className="pt-5 mt-5 border-t border-pink-100 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-1.5">
           {post.tags.map((tag) => (
             <button
@@ -95,15 +102,15 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onSelect, onTagClick }
                 e.stopPropagation();
                 if (onTagClick) onTagClick(tag);
               }}
-              className="text-[11px] font-mono text-slate-400 hover:text-emerald-400 bg-cyber-surface px-2 py-0.5 rounded border border-cyber-border hover:border-emerald-500/30 transition-colors"
+              className="text-[11px] font-sans font-semibold text-pink-600 hover:text-pink-800 bg-pink-50 hover:bg-pink-100 px-2.5 py-1 rounded-full border border-pink-200 transition-colors"
             >
               #{tag}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-1 font-mono text-xs text-emerald-400 group-hover:translate-x-1 transition-transform ml-auto">
-          <span>Read Log</span>
+        <div className="flex items-center gap-1 font-sans text-xs font-bold text-pink-600 group-hover:translate-x-1 transition-transform ml-auto">
+          <span>Read log</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </div>
       </div>

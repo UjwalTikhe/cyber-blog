@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { JourneyMilestone, Post } from '../types';
-import { CheckCircle2, Clock, ArrowRight, Target, Flag } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface JourneyTimelineProps {
   milestones: JourneyMilestone[];
@@ -8,11 +8,11 @@ interface JourneyTimelineProps {
   onSelectPost: (post: Post) => void;
 }
 
-export const JourneyTimeline: React.FC<JourneyTimelineProps> = ({
+export const JourneyTimeline = ({
   milestones,
   posts,
   onSelectPost,
-}) => {
+}: JourneyTimelineProps) => {
   const [filter, setFilter] = useState<'all' | 'completed' | 'in-progress' | 'upcoming'>('all');
 
   const filtered = milestones.filter((m) => {
@@ -25,28 +25,28 @@ export const JourneyTimeline: React.FC<JourneyTimelineProps> = ({
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
-      {/* Header */}
+      {/* Cute Header */}
       <div className="mb-10 text-center max-w-2xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs">
-          <Target className="w-3.5 h-3.5" />
-          <span>MISSION TRACKER // 100-DAY SECURITY ROADMAP</span>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-100 border border-pink-200 text-pink-700 font-sans text-xs font-bold shadow-cute-pill">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>ROADMAP // 100-DAY CYBER JOURNEY 🌸</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white">
-          The 100-Day Progression
+        <h1 className="text-3xl sm:text-5xl font-display font-bold text-slate-900">
+          The 100-Day Progression ✨
         </h1>
-        <p className="text-sm text-slate-400">
-          Tracking every milestone from initial network fundamentals to enterprise Active Directory penetration testing and industry certifications.
+        <p className="text-sm text-slate-600 font-sans">
+          Tracking every milestone from networking fundamentals to enterprise Active Directory penetration testing and industry certifications~
         </p>
 
-        {/* Progress bar */}
+        {/* Cute Progress bar */}
         <div className="pt-4 max-w-md mx-auto">
-          <div className="flex justify-between text-xs font-mono mb-2">
-            <span className="text-slate-400">Roadmap Progress</span>
-            <span className="text-emerald-400 font-bold">{completedCount} of {milestones.length} Milestones ({progressPercent}%)</span>
+          <div className="flex justify-between text-xs font-sans font-bold mb-2">
+            <span className="text-slate-600">Roadmap Progress 🐾</span>
+            <span className="text-pink-600">{completedCount} of {milestones.length} Milestones ({progressPercent}%) ✨</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-cyber-card border border-cyber-border overflow-hidden">
+          <div className="w-full h-3 rounded-full bg-pink-100 border border-pink-200 overflow-hidden p-0.5">
             <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-500"
+              className="h-full rounded-full bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 transition-all duration-500 shadow-sm"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -58,20 +58,23 @@ export const JourneyTimeline: React.FC<JourneyTimelineProps> = ({
             <button
               key={status}
               onClick={() => setFilter(status)}
-              className={`px-3 py-1 rounded-md text-xs font-mono uppercase tracking-wider transition-colors ${
+              className={`px-4 py-1.5 rounded-full text-xs font-sans font-bold uppercase tracking-wider transition-all ${
                 filter === status
-                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                  : 'bg-cyber-card text-slate-400 border border-cyber-border hover:border-slate-600'
+                  ? 'bg-pink-500 text-white shadow-cute-pill'
+                  : 'bg-white text-slate-600 border border-pink-200 hover:border-pink-300 hover:bg-pink-50'
               }`}
             >
-              {status}
+              {status === 'all' && 'All ✨'}
+              {status === 'completed' && 'Completed 🌸'}
+              {status === 'in-progress' && 'In Progress 🐾'}
+              {status === 'upcoming' && 'Upcoming 🎀'}
             </button>
           ))}
         </div>
       </div>
 
       {/* Timeline items list */}
-      <div className="relative border-l-2 border-cyber-border ml-4 sm:ml-32 space-y-8">
+      <div className="relative border-l-2 border-pink-200 ml-4 sm:ml-32 space-y-8">
         {filtered.map((milestone) => {
           const linkedPost = milestone.relatedPostId
             ? posts.find((p) => p.id === milestone.relatedPostId)
@@ -81,55 +84,56 @@ export const JourneyTimeline: React.FC<JourneyTimelineProps> = ({
             <div key={milestone.day} className="relative pl-6 sm:pl-8 group">
               {/* Dot on line */}
               <div
-                className={`absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-2 transition-all ${
+                className={`absolute -left-[11px] top-1.5 w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center text-[10px] ${
                   milestone.status === 'completed'
-                    ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.8)]'
+                    ? 'bg-pink-500 border-white text-white shadow-[0_0_12px_rgba(244,114,182,0.8)]'
                     : milestone.status === 'in-progress'
-                    ? 'bg-amber-500 border-amber-300 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.6)]'
-                    : 'bg-cyber-card border-slate-700'
+                    ? 'bg-purple-500 border-white text-white animate-pulse shadow-[0_0_12px_rgba(192,132,252,0.8)]'
+                    : 'bg-white border-pink-200'
                 }`}
-              />
+              >
+                {milestone.status === 'completed' ? '✓' : ''}
+              </div>
 
               {/* Day label on left (for desktop) */}
               <div className="hidden sm:block absolute -left-32 top-1 w-24 text-right">
-                <span className="font-mono text-xs font-bold text-slate-400">
+                <span className="font-display font-bold text-xs text-pink-600 bg-pink-100/70 px-2.5 py-0.5 rounded-full border border-pink-200">
                   DAY {milestone.day}
                 </span>
               </div>
 
               {/* Card */}
-              <div className="bg-cyber-card/80 border border-cyber-border group-hover:border-emerald-500/40 rounded-xl p-5 shadow-cyber-sm transition-all space-y-3">
+              <div className="bg-white border border-pink-100 group-hover:border-pink-300 rounded-3xl p-6 shadow-cute-sm hover:shadow-cute-card transition-all space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="sm:hidden font-mono text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                    <span className="sm:hidden font-display font-bold text-xs text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full">
                       DAY {milestone.day}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">
+                    <span className="text-[11px] font-sans font-bold text-slate-500 uppercase tracking-wider">
                       {milestone.phase}
                     </span>
                   </div>
 
                   <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider font-semibold border ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-sans font-bold border ${
                       milestone.status === 'completed'
-                        ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
+                        ? 'text-pink-700 bg-pink-50 border-pink-200'
                         : milestone.status === 'in-progress'
-                        ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
-                        : 'text-slate-400 bg-slate-800/50 border-slate-700'
+                        ? 'text-purple-700 bg-purple-50 border-purple-200'
+                        : 'text-slate-600 bg-slate-50 border-slate-200'
                     }`}
                   >
-                    {milestone.status === 'completed' && <CheckCircle2 className="w-3 h-3 text-emerald-400" />}
-                    {milestone.status === 'in-progress' && <Clock className="w-3 h-3 text-amber-400" />}
-                    {milestone.status === 'upcoming' && <Flag className="w-3 h-3 text-slate-400" />}
-                    <span>{milestone.status}</span>
+                    {milestone.status === 'completed' && <span>🌸 Completed</span>}
+                    {milestone.status === 'in-progress' && <span>🐾 In Progress</span>}
+                    {milestone.status === 'upcoming' && <span>🎀 Planned</span>}
                   </span>
                 </div>
 
-                <h3 className="text-lg font-display font-bold text-white group-hover:text-emerald-400 transition-colors">
+                <h3 className="text-xl font-display font-bold text-slate-900 group-hover:text-pink-600 transition-colors">
                   {milestone.title}
                 </h3>
 
-                <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                <p className="text-sm text-slate-600 leading-relaxed font-sans">
                   {milestone.description}
                 </p>
 
@@ -137,9 +141,9 @@ export const JourneyTimeline: React.FC<JourneyTimelineProps> = ({
                   <div className="pt-2">
                     <button
                       onClick={() => onSelectPost(linkedPost)}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-1.5 rounded-lg border border-emerald-500/30 transition-all"
+                      className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-pink-600 hover:text-pink-800 bg-pink-50 hover:bg-pink-100 px-3.5 py-1.5 rounded-full border border-pink-200 transition-all shadow-cute-pill"
                     >
-                      <span>Read Log: {linkedPost.title}</span>
+                      <span>Read Log: {linkedPost.title} 🌸</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
